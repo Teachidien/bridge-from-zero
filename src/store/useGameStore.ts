@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { Card } from '../types/card';
 import type { BidHistoryItem } from '../types/bidding';
 import { dealHands } from '../utils/dealer';
@@ -43,92 +44,105 @@ export interface GameStoreState {
 
 const initialProgress = getLocalProgress();
 
-export const useGameStore = create<GameStoreState>((set, get) => ({
-  activeMode: 'learning',
-  learningModule: 1,
-  learningStep: 1,
-  completedModules: initialProgress.completedModules || [1],
-  completedPuzzles: initialProgress.completedPuzzles || [],
+export const useGameStore = create<GameStoreState>()(
+  persist(
+    (set, get) => ({
+      activeMode: 'learning',
+      learningModule: 4, // Modul 4 = Katalog Tingkat 2
+      learningStep: 1,
+      completedModules: initialProgress.completedModules || [1],
+      completedPuzzles: initialProgress.completedPuzzles || [],
 
-  currentDeal: dealHands(),
-  bidHistory: [],
-  currentTurn: 'south',
-  isAuctionOver: false,
-  finalContract: null,
-  declarer: null,
-
-  currentTrickCards: [],
-  tricksWonNS: 0,
-  tricksWonEW: 0,
-
-  setActiveMode: (mode) => set({ activeMode: mode }),
-  setLearningModule: (module) => set({ learningModule: module, learningStep: 1 }),
-  setLearningStep: (step) => set({ learningStep: step }),
-
-  markModuleComplete: (modNum) => {
-    const state = get();
-    if (!state.completedModules.includes(modNum)) {
-      const updatedModules = [...state.completedModules, modNum];
-      set({ completedModules: updatedModules });
-      saveLocalProgress({ completedModules: updatedModules });
-      if (auth.currentUser) {
-        syncProgressToFirestore(auth.currentUser.uid, { completedModules: updatedModules });
-      }
-    }
-  },
-
-  markPuzzleComplete: (pId) => {
-    const state = get();
-    if (!state.completedPuzzles.includes(pId)) {
-      const updatedPuzzles = [...state.completedPuzzles, pId];
-      set({ completedPuzzles: updatedPuzzles });
-      saveLocalProgress({ completedPuzzles: updatedPuzzles });
-      if (auth.currentUser) {
-        syncProgressToFirestore(auth.currentUser.uid, { completedPuzzles: updatedPuzzles });
-      }
-    }
-  },
-
-  startNewDeal: () => {
-    const newDeal = dealHands();
-    set({
-      currentDeal: newDeal,
+      currentDeal: dealHands(),
       bidHistory: [],
       currentTurn: 'south',
       isAuctionOver: false,
       finalContract: null,
       declarer: null,
+
       currentTrickCards: [],
       tricksWonNS: 0,
       tricksWonEW: 0,
-    });
-  },
 
-  addBidCall: (item) =>
-    set((state) => ({
-      bidHistory: [...state.bidHistory, item],
-    })),
+      setActiveMode: (mode) => set({ activeMode: mode }),
+      setLearningModule: (module) => set({ learningModule: module, learningStep: 1 }),
+      setLearningStep: (step) => set({ learningStep: step }),
 
-  playCard: (player, card) =>
-    set((state) => {
-      const nextTrick = [...state.currentTrickCards, { player, card }];
-      return {
-        currentTrickCards: nextTrick,
-      };
+      markModuleComplete: (modNum) => {
+        const state = get();
+        if (!state.completedModules.includes(modNum)) {
+          const updatedModules = [...state.completedModules, modNum];
+          set({ completedModules: updatedModules });
+          saveLocalProgress({ completedModules: updatedModules });
+          if (auth.currentUser) {
+            syncProgressToFirestore(auth.currentUser.uid, { completedModules: updatedModules });
+          }
+        }
+      },
+
+      markPuzzleComplete: (pId) => {
+        const state = get();
+        if (!state.completedPuzzles.includes(pId)) {
+          const updatedPuzzles = [...state.completedPuzzles, pId];
+          set({ completedPuzzles: updatedPuzzles });
+          saveLocalProgress({ completedPuzzles: updatedPuzzles });
+          if (auth.currentUser) {
+            syncProgressToFirestore(auth.currentUser.uid, { completedPuzzles: updatedPuzzles });
+          }
+        }
+      },
+
+      startNewDeal: () => {
+        const newDeal = dealHands();
+        set({
+          currentDeal: newDeal,
+          bidHistory: [],
+          currentTurn: 'south',
+          isAuctionOver: false,
+          finalContract: null,
+          declarer: null,
+          currentTrickCards: [],
+          tricksWonNS: 0,
+          tricksWonEW: 0,
+        });
+      },
+
+      addBidCall: (item) =>
+        set((state) => ({
+          bidHistory: [...state.bidHistory, item],
+        })),
+
+      playCard: (player, card) =>
+        set((state) => {
+          const nextTrick = [...state.currentTrickCards, { player, card }];
+          return {
+            currentTrickCards: nextTrick,
+          };
+        }),
+
+      resetGame: () => {
+        const newDeal = dealHands();
+        set({
+          currentDeal: newDeal,
+          bidHistory: [],
+          currentTurn: 'south',
+          isAuctionOver: false,
+          finalContract: null,
+          declarer: null,
+          currentTrickCards: [],
+          tricksWonNS: 0,
+          tricksWonEW: 0,
+        });
+      },
     }),
-
-  resetGame: () => {
-    const newDeal = dealHands();
-    set({
-      currentDeal: newDeal,
-      bidHistory: [],
-      currentTurn: 'south',
-      isAuctionOver: false,
-      finalContract: null,
-      declarer: null,
-      currentTrickCards: [],
-      tricksWonNS: 0,
-      tricksWonEW: 0,
-    });
-  },
-}));
+    {
+      name: 'bridge_game_session',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        activeMode: state.activeMode,
+        learningModule: state.learningModule,
+        learningStep: state.learningStep,
+      }),
+    }
+  )
+);
