@@ -30,10 +30,10 @@ export const Module3Lesson: React.FC = () => {
   ];
 
   return (
-    <div className="bg-[#F1F5F9] text-slate-800 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+    <div className="bg-[#F1F5F9] text-slate-800 flex flex-col gap-3 p-3 sm:p-5 select-none">
       
       {/* Header Modul */}
-      <header className="w-full max-w-4xl mx-auto flex flex-col space-y-3 py-2 px-1">
+      <header className="w-full max-w-4xl mx-auto flex flex-col space-y-2">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <span className="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
@@ -52,8 +52,8 @@ export const Module3Lesson: React.FC = () => {
       </header>
 
       {/* Konten Utama Modul 3 */}
-      <main className="flex-1 max-w-3xl mx-auto w-full flex flex-col items-center justify-center my-4">
-        <div className="w-full bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-8 shadow-xl flex flex-col space-y-6">
+      <main className="max-w-3xl mx-auto w-full">
+        <div className="w-full bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col space-y-4">
           
           {/* Rumus HCP Ringkas Horizontal */}
           <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
@@ -119,7 +119,7 @@ export const Module3Lesson: React.FC = () => {
       </main>
 
       {/* Footer Navigation */}
-      <footer className="max-w-3xl mx-auto w-full flex justify-between items-center pt-2">
+      <footer className="max-w-3xl mx-auto w-full flex justify-between items-center">
         <button className="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-bold px-4 py-2 rounded-xl shadow-sm">
           ⬅️ Sebelumnya
         </button>

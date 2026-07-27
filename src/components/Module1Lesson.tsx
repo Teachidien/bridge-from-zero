@@ -11,10 +11,10 @@ export const Module1Lesson: React.FC = () => {
   ];
 
   return (
-    <div className="bg-[#F1F5F9] text-slate-800 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+    <div className="bg-[#F1F5F9] text-slate-800 flex flex-col gap-3 p-3 sm:p-5 select-none">
       
       {/* Header Modul */}
-      <header className="w-full max-w-4xl mx-auto flex flex-col space-y-3 py-2 px-1">
+      <header className="w-full max-w-4xl mx-auto flex flex-col space-y-2">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <span className="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
@@ -33,8 +33,8 @@ export const Module1Lesson: React.FC = () => {
       </header>
 
       {/* Konten Utama (Template Light Ivory Clean) */}
-      <main className="flex-1 max-w-3xl mx-auto w-full flex flex-col items-center justify-center my-4">
-        <div className="w-full bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-8 shadow-xl flex flex-col space-y-6">
+      <main className="max-w-3xl mx-auto w-full">
+        <div className="w-full bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col space-y-4">
           
           <div className="space-y-3">
             <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
@@ -47,8 +47,8 @@ export const Module1Lesson: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               {suits.map((suit) => (
                 <div key={suit.name} className="bg-[#F8FAFC] border border-slate-200 p-3.5 rounded-2xl flex flex-col items-center space-y-1 shadow-sm hover:-translate-y-1 transition">
-                  <span className="text-4xl font-bold" style={{ color: suit.color }}>{suit.symbol}</span>
-                  <span className="font-extrabold text-sm text-slate-900">{suit.name}</span>
+                  <span className="text-2xl font-bold" style={{ color: suit.color }}>{suit.symbol}</span>
+                  <span className="font-extrabold text-xs text-slate-900">{suit.name}</span>
                   <span className="text-[10px] text-slate-500 font-bold">{suit.category}</span>
                 </div>
               ))}
@@ -99,7 +99,7 @@ export const Module1Lesson: React.FC = () => {
       </main>
 
       {/* Footer Navigation */}
-      <footer className="max-w-3xl mx-auto w-full flex justify-between items-center pt-2">
+      <footer className="max-w-3xl mx-auto w-full flex justify-between items-center">
         <button disabled className="bg-slate-200 text-slate-400 text-xs font-bold px-4 py-2 rounded-xl cursor-not-allowed border border-slate-300">
           ⬅️ Sebelumnya
         </button>

@@ -53,10 +53,10 @@ export const Module2Lesson: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#F1F5F9] text-slate-800 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+    <div className="bg-[#F1F5F9] text-slate-800 flex flex-col gap-3 p-3 sm:p-5 select-none">
       
       {/* Header Modul */}
-      <header className="w-full max-w-4xl mx-auto flex flex-col space-y-3 py-2 px-1">
+      <header className="w-full max-w-4xl mx-auto flex flex-col space-y-2">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <span className="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
@@ -75,7 +75,7 @@ export const Module2Lesson: React.FC = () => {
       </header>
 
       {/* Konten Utama (2 Set Kartu Normal Berhadapan + Mini Suit Bidding Box) */}
-      <main className="flex-1 max-w-4xl mx-auto w-full flex flex-col items-center justify-between my-2 sm:my-4">
+      <main className="max-w-4xl mx-auto w-full">
         
         {/* Meja Kasino Hijau Emerald */}
         <div className="w-full bg-[#0B231B] border border-emerald-900 rounded-3xl p-3 sm:p-5 shadow-2xl flex flex-col justify-between space-y-4">
@@ -131,7 +131,7 @@ export const Module2Lesson: React.FC = () => {
       </main>
 
       {/* Footer Navigation */}
-      <footer className="max-w-4xl mx-auto w-full flex justify-between items-center pt-2">
+      <footer className="max-w-4xl mx-auto w-full flex justify-between items-center">
         <button className="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-bold px-4 py-2 rounded-xl shadow-sm">
           ⬅️ Sebelumnya
         </button>
