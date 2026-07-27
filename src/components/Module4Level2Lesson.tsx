@@ -329,10 +329,10 @@ export const Module4Level2Lesson: React.FC = () => {
             </div>
           )}
 
-          {/* ARENA MEJA KASINO POLA 4 ARAH MATA ANGIN "+" (CROSS / PLUS SHAPE) */}
+          {/* ARENA MEJA TRICK: TUMPUKAN KARTU BERTIMPIN (OVERLAPPING TRICK STACK AS PICTURED) */}
           <div className="flex flex-col items-center justify-center space-y-2 py-2">
             
-            {/* 1. NORTH HAND (DUMMY ATAS) */}
+            {/* 1. NORTH HAND (ATAS) */}
             <div className="flex flex-col items-center space-y-1">
               <span className="text-[10px] font-bold text-slate-400">NORTH (DUMMY)</span>
               <div className="transform scale-[1.1] sm:scale-100 origin-center">
@@ -340,65 +340,49 @@ export const Module4Level2Lesson: React.FC = () => {
               </div>
             </div>
 
-            {/* 2. MAT ARENA TRICK BENTUK TANDA TAMBAH "+" (CENTER MATRIX IS EMPTY IN MIDDLE) */}
-            <div className="w-full max-w-md my-2 bg-[#061812] border border-emerald-800/80 rounded-3xl p-4 sm:p-6 shadow-inner flex items-center justify-center relative min-h-[220px]">
+            {/* 2. CENTER TRICK MAT (TUMPUKAN 4 KARTU BERIMPITAN DI TENGAH) */}
+            <div className="w-full max-w-sm my-2 bg-[#061812] border border-emerald-800/80 rounded-3xl p-6 shadow-inner flex items-center justify-center relative min-h-[190px]">
               
-              {/* SLOT NORTH (UJUNG ATAS POLA +) */}
-              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-                <span className="text-[9px] font-bold text-slate-400 mb-0.5">NORTH</span>
-                {tableCenterCards.north ? (
-                  <div className="transform scale-80 sm:scale-90">
-                    <PlayingCard card={tableCenterCards.north} />
-                  </div>
-                ) : (
-                  <div className="w-14 h-20 border border-dashed border-emerald-800/50 rounded-lg flex items-center justify-center text-[9px] text-emerald-700 font-bold">N</div>
-                )}
-              </div>
-
-              {/* SLOT WEST (UJUNG KIRI POLA +) */}
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 flex flex-col items-center">
-                <span className="text-[9px] font-bold text-rose-400 mb-0.5">WEST</span>
-                {tableCenterCards.west ? (
-                  <div className="transform scale-80 sm:scale-90">
+              <div className="relative w-44 h-36 flex items-center justify-center">
+                {/* West Card (Kiri - Berada paling bawah layer) */}
+                {tableCenterCards.west && (
+                  <div className="absolute left-2 top-4 transform scale-90 -rotate-6 z-10 shadow-lg">
                     <PlayingCard card={tableCenterCards.west} />
                   </div>
-                ) : (
-                  <div className="w-14 h-20 border border-dashed border-emerald-800/50 rounded-lg flex items-center justify-center text-[9px] text-emerald-700 font-bold">W</div>
                 )}
-              </div>
 
-              {/* CENTER SPACE (TENGAH POLA + KOSONG) */}
-              <div className="w-16 h-16 rounded-full border border-emerald-900/30 flex items-center justify-center text-[10px] text-emerald-800 font-bold uppercase tracking-wider">
-                ✚
-              </div>
-
-              {/* SLOT EAST (UJUNG KANAN POLA +) */}
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex flex-col items-center">
-                <span className="text-[9px] font-bold text-rose-400 mb-0.5">EAST</span>
-                {tableCenterCards.east ? (
-                  <div className="transform scale-80 sm:scale-90">
-                    <PlayingCard card={tableCenterCards.east} />
-                  </div>
-                ) : (
-                  <div className="w-14 h-20 border border-dashed border-emerald-800/50 rounded-lg flex items-center justify-center text-[9px] text-emerald-700 font-bold">E</div>
-                )}
-              </div>
-
-              {/* SLOT SOUTH (UJUNG BAWAH POLA +) */}
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-                {tableCenterCards.south ? (
-                  <div className="transform scale-80 sm:scale-90">
+                {/* South Card (Bawah - Menumpuk sedikit di atas West) */}
+                {tableCenterCards.south && (
+                  <div className="absolute left-8 bottom-0 transform scale-90 z-20 shadow-xl">
                     <PlayingCard card={tableCenterCards.south} />
                   </div>
-                ) : (
-                  <div className="w-14 h-20 border border-dashed border-emerald-800/50 rounded-lg flex items-center justify-center text-[9px] text-emerald-700 font-bold">S</div>
                 )}
-                <span className="text-[9px] font-bold text-emerald-300 mt-0.5">SOUTH</span>
+
+                {/* East Card (Kanan - Menumpuk di atas South) */}
+                {tableCenterCards.east && (
+                  <div className="absolute right-4 top-6 transform scale-90 rotate-6 z-30 shadow-xl">
+                    <PlayingCard card={tableCenterCards.east} />
+                  </div>
+                )}
+
+                {/* North Card (Atas - Menumpuk paling atas) */}
+                {tableCenterCards.north && (
+                  <div className="absolute left-6 top-0 transform scale-90 z-40 shadow-2xl">
+                    <PlayingCard card={tableCenterCards.north} />
+                  </div>
+                )}
+
+                {/* Placeholder jika belum ada kartu di meja */}
+                {!tableCenterCards.north && !tableCenterCards.south && !tableCenterCards.west && !tableCenterCards.east && (
+                  <div className="text-center text-[11px] font-bold text-emerald-800 border-2 border-dashed border-emerald-900/60 p-4 rounded-2xl">
+                    MEJA TRICK
+                  </div>
+                )}
               </div>
 
             </div>
 
-            {/* 3. SOUTH HAND (ANDA BAWAH) */}
+            {/* 3. SOUTH HAND (BAWAH) */}
             <div className="flex flex-col items-center space-y-1">
               <div className="transform scale-[1.1] sm:scale-100 origin-center">
                 <CardHand cards={currentLesson.id === 'finesse' || currentLesson.id === 'crossruff' ? southCards : currentLesson.southHand} onSelectCard={(c) => handlePlayCard(c, 'south')} />
