@@ -75,9 +75,6 @@ export const Module2Lesson: React.FC = () => {
               MODUL 2: FIT & PENCOCOKAN KARTU
             </span>
           </div>
-          <span className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200 font-bold">
-            Tingkat 1 (Pemula)
-          </span>
         </div>
 
         <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden border border-slate-300">
@@ -102,12 +99,12 @@ export const Module2Lesson: React.FC = () => {
                 className="bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-[10px] sm:text-xs px-2.5 py-1 rounded-xl shadow flex items-center gap-1 transition active:scale-95"
               >
                 <span>🔄</span>
-                <span>Kocok Ulang (Redeal)</span>
+                <span>Redeal</span>
               </button>
             </div>
             
             <div className="w-full overflow-hidden flex justify-center py-1">
-              <div className="transform scale-[0.88] xs:scale-90 sm:scale-95 origin-center my-0">
+              <div className="transform scale-100 origin-center my-0">
                 <CardHand cards={northCards} />
               </div>
             </div>
@@ -154,7 +151,7 @@ export const Module2Lesson: React.FC = () => {
           {/* Kartu South (Anda) */}
           <div className="w-full flex flex-col items-center space-y-1">
             <div className="w-full overflow-hidden flex justify-center py-1">
-              <div className="transform scale-[0.88] xs:scale-90 sm:scale-95 origin-center my-0">
+              <div className="transform scale-100 origin-center my-0">
                 <CardHand cards={southCards} />
               </div>
             </div>

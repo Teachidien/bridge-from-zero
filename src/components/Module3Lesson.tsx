@@ -51,9 +51,6 @@ export const Module3Lesson: React.FC = () => {
               MODUL 3: MENGHITUNG POIN KARTU (HCP)
             </span>
           </div>
-          <span className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200 font-bold">
-            Tingkat 1 (Pemula)
-          </span>
         </div>
 
         <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden border border-slate-300">
@@ -63,54 +60,43 @@ export const Module3Lesson: React.FC = () => {
 
       {/* Konten Utama Modul 3 */}
       <main className="max-w-3xl mx-auto w-full">
-        <div className="w-full bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col space-y-4">
+        <div className="w-full bg-white border border-slate-200/80 rounded-2xl p-3 sm:p-6 shadow-xl flex flex-col space-y-3 sm:space-y-4">
           
-          {/* Rumus HCP Ringkas Horizontal */}
-          <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+          {/* Rumus HCP Ringkas + Tombol Redeal di Dalamnya */}
+          <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-3 sm:p-4 flex flex-wrap justify-between items-center gap-2">
             <div className="flex items-center space-x-2">
-              <span className="text-lg">🧮</span>
-              <span className="text-xs sm:text-sm font-extrabold text-slate-900">Nilai Poin Kartu Honor (HCP):</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              {honors.map(({ rank, points }) => (
-                <span key={rank} className="bg-white border border-slate-200 px-3 py-1 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5">
-                  <span>{rank}</span>
-                  <span className="bg-emerald-100 text-emerald-800 text-[11px] px-1.5 py-0.5 rounded-md font-extrabold">{points}</span>
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Visualisasi Kartu di Tangan (Dikecilkan agar 13 kartu pas & tidak terpotong) */}
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-xs font-extrabold text-slate-700">HITUNG TOTAL POIN HCP PADA 13 KARTU DI TANGAN ANDA:</span>
-              <button
-                onClick={handleRedeal}
-                className="bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5 transition active:scale-95"
-              >
-                <span>🔄</span>
-                <span>Kocok Ulang (Redeal)</span>
-              </button>
-            </div>
-            
-            <div className="bg-[#0B231B] p-2 sm:p-4 rounded-2xl border border-emerald-900 shadow-inner overflow-hidden flex justify-center py-1 sm:py-2">
-              <div className="transform scale-[0.88] xs:scale-90 sm:scale-100 origin-center my-0.5 sm:my-1">
-                <CardHand cards={currentHand} />
+              <span className="text-base sm:text-lg">🧮</span>
+              <span className="text-xs sm:text-sm font-extrabold text-slate-900">Nilai HCP:</span>
+              <div className="flex items-center gap-1">
+                {honors.map(({ rank, points }) => (
+                  <span key={rank} className="bg-white border border-slate-200 px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1">
+                    <span>{rank}</span>
+                    <span className="bg-emerald-100 text-emerald-800 text-[10px] sm:text-[11px] px-1 rounded font-extrabold">{points}</span>
+                  </span>
+                ))}
               </div>
             </div>
+
+            <button
+              onClick={handleRedeal}
+              className="bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs px-3 py-1.5 rounded-xl shadow flex items-center gap-1 transition active:scale-95 ml-auto"
+            >
+              <span>🔄</span>
+              <span>Redeal</span>
+            </button>
           </div>
 
-          {/* Kuis Interaktif Datar */}
-          <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-amber-600 tracking-wider">🎯 KUIS HITUNG HCP</span>
-              <span className="text-[10px] text-slate-500 font-bold">Kartu Acak Baru</span>
+          {/* Visualisasi Kartu di Tangan (Skala 100 di HP) */}
+          <div className="bg-[#0B231B] p-2 sm:p-4 rounded-2xl border border-emerald-900 shadow-inner overflow-hidden flex justify-center py-2">
+            <div className="transform scale-100 origin-center my-1">
+              <CardHand cards={currentHand} />
             </div>
+          </div>
 
-            <p className="text-xs sm:text-sm font-bold text-slate-900">
-              Berapa total nilai High Card Points (HCP) pada 13 kartu di tangan Anda di atas?
+          {/* Kuis Interaktif Ringkas */}
+          <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-3 sm:p-5 space-y-2 sm:space-y-3">
+            <p className="text-xs sm:text-sm font-extrabold text-slate-900">
+              Berapa total HCP kartu di atas?
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
@@ -118,7 +104,7 @@ export const Module3Lesson: React.FC = () => {
                 <button
                   key={pts}
                   onClick={() => setSelectedPoints(pts)}
-                  className={`text-center p-3 rounded-xl border font-bold text-sm transition shadow-sm ${
+                  className={`text-center p-2.5 sm:p-3 rounded-xl border font-bold text-xs sm:text-sm transition shadow-sm ${
                     selectedPoints === pts
                       ? pts === correctHcp
                         ? 'bg-emerald-600 text-white border-emerald-700'
@@ -132,11 +118,11 @@ export const Module3Lesson: React.FC = () => {
             </div>
 
             {selectedPoints !== null && (
-              <div className={`p-3 rounded-xl text-xs font-bold border ${selectedPoints === correctHcp ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-rose-100 border-rose-300 text-rose-900'}`}>
+              <div className={`p-2.5 rounded-xl text-xs font-bold border ${selectedPoints === correctHcp ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-rose-100 border-rose-300 text-rose-900'}`}>
                 {selectedPoints === correctHcp ? (
-                  <span>🎉 <strong>100% BENAR!</strong> Total High Card Points (HCP) tangan ini adalah <strong>{correctHcp} HCP Poin</strong>!</span>
+                  <span>🎉 <strong>BENAR!</strong> Total High Card Points (HCP) tangan ini adalah <strong>{correctHcp} HCP Poin</strong>!</span>
                 ) : (
-                  <span>❌ <strong>KURANG TEPAT!</strong> Jawaban yang benar adalah <strong>{correctHcp} HCP Poin</strong>. Ketuk <strong>Kocok Ulang (Redeal)</strong> untuk mencoba kartu baru!</span>
+                  <span>❌ <strong>KURANG TEPAT.</strong> Jawaban yang benar adalah <strong>{correctHcp} HCP Poin</strong>. Ketuk <strong>Redeal</strong> untuk kartu baru.</span>
                 )}
               </div>
             )}
