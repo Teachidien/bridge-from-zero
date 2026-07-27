@@ -95,19 +95,17 @@ const LEVEL_2_LESSONS: VisualLesson[] = [
     id: 'crossruff',
     title: 'Teknik Cross-Ruff (Memotong Silang)',
     category: 'Play',
-    description: 'North dan South saling memotong (ruff) menggunakan kartu Trump Spades ♠ di suit yang berbeda (Hearts ♥ dan Diamonds ♦).',
-    keyRule: 'Prinsip Cross-Ruff: Habiskan kartu samping sebelum memotong silang!',
+    description: 'Dengan Spades ♠ sebagai Trump, North memotong (ruff) suit Hearts ♥ menggunakan ♠K, dan South memotong suit Clubs ♣ menggunakan ♠A. Keduanya saling memotong secara bergantian!',
+    keyRule: 'Prinsip Cross-Ruff: Potong silang suit yang Anda tidak miliki menggunakan kartu Trump pasangan!',
     northHand: [
       { id: 'cr-n-1', suit: 'spades', rank: 'K', value: 13, hcp: 3 },
-      { id: 'cr-n-2', suit: 'spades', rank: '8', value: 8, hcp: 0 },
-      { id: 'cr-n-3', suit: 'diamonds', rank: 'A', value: 14, hcp: 4 },
+      { id: 'cr-n-2', suit: 'clubs', rank: '3', value: 3, hcp: 0 },
     ],
     southHand: [
       { id: 'cr-s-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
-      { id: 'cr-s-2', suit: 'spades', rank: '9', value: 9, hcp: 0 },
-      { id: 'cr-s-3', suit: 'hearts', rank: 'A', value: 14, hcp: 4 },
+      { id: 'cr-s-2', suit: 'hearts', rank: '3', value: 3, hcp: 0 },
     ],
-    actionNote: 'North potong ♥ dengan ♠K ➔ South potong ♦ dengan ♠A secara bergantian!'
+    actionNote: 'Alur Main (Trump ♠ Spades): South jalan ♥3 ➔ North potong dengan ♠K (Ruff ♥)! Lalu North jalan ♣3 ➔ South potong dengan ♠A (Ruff ♣) ➔ Menang 2 Trick!'
   },
   {
     id: 'lead',
@@ -215,11 +213,19 @@ export const Module4Level2Lesson: React.FC = () => {
             </div>
           )}
 
-          {/* KHUSUS FINESSE: Pertanyaan Utama di Atas Kartu */}
+          {/* Pertanyaan Utama di Atas Kartu (Finesse & Cross-Ruff) */}
           {currentLesson.id === 'finesse' && (
             <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-center">
               <p className="text-xs sm:text-sm font-extrabold text-amber-300">
-                ❓ Pertanyaan Finesse: Bagaimana cara membuat kombinasi kartu di bawah ini bisa menang 3x (3 Trick)?
+                ❓ Pertanyaan: Bagaimana cara membuat kombinasi kartu di bawah ini bisa menang 3x (3 Trick)?
+              </p>
+            </div>
+          )}
+
+          {currentLesson.id === 'crossruff' && (
+            <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-center">
+              <p className="text-xs sm:text-sm font-extrabold text-amber-300">
+                ❓ Pertanyaan: Bagaimana cara agar kombinasi kartu di bawah ini bisa menang 2x (2 Trick) dengan Trump ♠ Spades?
               </p>
             </div>
           )}
