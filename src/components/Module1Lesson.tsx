@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export const Module1Lesson: React.FC = () => {
-  const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
-
   const suits = [
-    { name: 'Spade', symbol: '♠', color: '#1E293B' },
-    { name: 'Heart', symbol: '♥', color: '#E11D48' },
-    { name: 'Diamond', symbol: '♦', color: '#D97706' },
-    { name: 'Club', symbol: '♣', color: '#059669' },
+    { name: 'Spade', symbol: '♠', color: '#1E293B', category: 'Major Suit', rank: 1 },
+    { name: 'Heart', symbol: '♥', color: '#E11D48', category: 'Major Suit', rank: 2 },
+    { name: 'Diamond', symbol: '♦', color: '#D97706', category: 'Minor Suit', rank: 3 },
+    { name: 'Club', symbol: '♣', color: '#059669', category: 'Minor Suit', rank: 4 },
   ];
 
   return (
@@ -34,57 +32,67 @@ export const Module1Lesson: React.FC = () => {
             <div key={suit.name} className="bg-white border border-slate-200/80 p-4 rounded-xl flex flex-col items-center justify-center space-y-1 shadow-sm hover:border-emerald-300 transition">
               <span className="text-3xl font-bold" style={{ color: suit.color }}>{suit.symbol}</span>
               <span className="font-extrabold text-xs text-slate-800">{suit.name}</span>
+              <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                suit.category === 'Major Suit' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600'
+              }`}>
+                {suit.category}
+              </span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Kuis Interaktif */}
-      <div className="bg-white border border-slate-200/80 rounded-xl p-4 sm:p-5 space-y-3 shadow-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-extrabold text-amber-600 tracking-wider">🎯 KUIS CEPAT</span>
-          <span className="text-[11px] text-slate-400 font-medium">Soal 1 dari 3</span>
-        </div>
-
-        <p className="text-xs sm:text-sm font-bold text-slate-900">
-          Manakah di bawah ini yang merupakan simbol <strong className="text-emerald-700">Major Suit</strong> (Simbol Bernilai Tinggi)?
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-          <button
-            onClick={() => setSelectedAnswer(true)}
-            className={`text-left p-3.5 rounded-xl border font-bold text-xs transition flex items-center justify-between shadow-sm ${
-              selectedAnswer === true
-                ? 'bg-emerald-50 border-emerald-500 text-emerald-900'
-                : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800'
-            }`}
-          >
-            <span>A. Spades (♠) & Hearts (♥)</span>
-            <span className="text-slate-400">➔</span>
-          </button>
-
-          <button
-            onClick={() => setSelectedAnswer(false)}
-            className={`text-left p-3.5 rounded-xl border font-bold text-xs transition flex items-center justify-between shadow-sm ${
-              selectedAnswer === false
-                ? 'bg-rose-50 border-rose-400 text-rose-900'
-                : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800'
-            }`}
-          >
-            <span>B. Clubs (♣) & Diamonds (♦)</span>
-            <span className="text-slate-400">➔</span>
-          </button>
-        </div>
-
-        {selectedAnswer !== null && (
-          <div className={`p-3 rounded-xl text-xs font-bold border ${selectedAnswer ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-rose-100 border-rose-300 text-rose-900'}`}>
-            {selectedAnswer ? (
-              <span>🎉 <strong>BENAR!</strong> Spades (♠) dan Hearts (♥) adalah Major Suit.</span>
-            ) : (
-              <span>❌ <strong>KURANG TEPAT.</strong> Clubs (♣) & Diamonds (♦) adalah Minor Suit. Major Suit adalah Spades (♠) & Hearts (♥).</span>
-            )}
+      {/* Kategori Major & Minor Suit */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-amber-50/70 border border-amber-200/80 rounded-xl p-4 space-y-1.5 shadow-sm">
+          <div className="flex items-center space-x-2">
+            <span className="text-base">⭐</span>
+            <h4 className="font-extrabold text-xs sm:text-sm text-amber-900">Major Suit (Bernilai Tinggi)</h4>
           </div>
-        )}
+          <p className="text-xs text-amber-800/90 leading-relaxed">
+            Terdiri dari <strong className="text-amber-950">Spade (♠)</strong> dan <strong className="text-amber-950">Heart (♥)</strong>. Memberikan poin penawaran lebih tinggi dalam permainan.
+          </p>
+        </div>
+
+        <div className="bg-slate-100/70 border border-slate-200 rounded-xl p-4 space-y-1.5 shadow-sm">
+          <div className="flex items-center space-x-2">
+            <span className="text-base">🔹</span>
+            <h4 className="font-extrabold text-xs sm:text-sm text-slate-800">Minor Suit (Bernilai Standar)</h4>
+          </div>
+          <p className="text-xs text-slate-600 leading-relaxed">
+            Terdiri dari <strong className="text-slate-900">Diamond (♦)</strong> dan <strong className="text-slate-900">Club (♣)</strong>. Digunakan sebagai fondasi dasar atau alternatif penawaran.
+          </p>
+        </div>
+      </div>
+
+      {/* Hirarki Simbol */}
+      <div className="bg-white border border-slate-200/80 rounded-xl p-4 space-y-2 shadow-sm">
+        <h4 className="font-extrabold text-xs sm:text-sm text-slate-900 flex items-center space-x-2">
+          <span>🏆</span>
+          <span>Hirarki Urutan Simbol (Tinggi ke Rendah)</span>
+        </h4>
+
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs sm:text-sm font-extrabold">
+          <div className="bg-slate-900 text-white px-3 py-1.5 rounded-lg flex items-center space-x-1">
+            <span>♠</span> <span>Spade</span>
+          </div>
+          <span className="text-slate-400 font-bold">&gt;</span>
+          <div className="bg-rose-600 text-white px-3 py-1.5 rounded-lg flex items-center space-x-1">
+            <span>♥</span> <span>Heart</span>
+          </div>
+          <span className="text-slate-400 font-bold">&gt;</span>
+          <div className="bg-amber-600 text-white px-3 py-1.5 rounded-lg flex items-center space-x-1">
+            <span>♦</span> <span>Diamond</span>
+          </div>
+          <span className="text-slate-400 font-bold">&gt;</span>
+          <div className="bg-emerald-700 text-white px-3 py-1.5 rounded-lg flex items-center space-x-1">
+            <span>♣</span> <span>Club</span>
+          </div>
+        </div>
+
+        <p className="text-[11px] text-slate-500 text-center font-medium pt-1">
+          Secara hirarki: <strong>Spade</strong> paling tinggi, diikuti <strong>Heart</strong>, <strong>Diamond</strong>, dan <strong>Club</strong> paling dasar.
+        </p>
       </div>
 
       {/* Footer Navigasi Modul */}
@@ -99,4 +107,5 @@ export const Module1Lesson: React.FC = () => {
     </div>
   );
 };
+
 
