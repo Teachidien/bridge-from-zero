@@ -19,7 +19,7 @@ export const CardHand: React.FC<CardHandProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`w-full flex justify-center items-end min-h-[110px] sm:min-h-[180px] py-1 sm:py-2 ${className}`}>
+    <div className={`w-full flex justify-center items-end min-h-[120px] sm:min-h-[180px] py-1 sm:py-2 ${className}`}>
       <div className="flex justify-center items-end relative max-w-full">
         <AnimatePresence>
           {cards.map((card, index) => {
@@ -40,8 +40,8 @@ export const CardHand: React.FC<CardHandProps> = ({
                 exit={{ opacity: 0, scale: 0.5, y: -100 }}
                 transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                 style={{
-                  zIndex: index + 10,
-                  marginLeft: index === 0 ? 0 : -72, // Tepat 25% area tampak (24px dari 96px lebar kartu, 75% tertutup)
+                  zIndex: index + 1, // zIndex meningkat dari kiri ke kanan (kartu kanan menumpuk DI ATAS kartu kiri)
+                  marginLeft: index === 0 ? 0 : -46, // Menampilkan 25% pojok kiri kartu-kartu di bawahnya
                 }}
                 className="card-hand-item flex-shrink-0 cursor-pointer"
                 onClick={() => onSelectCard && onSelectCard(card)}
