@@ -31,7 +31,7 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BRIDGEFROMZERO_E2581 }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT || secrets.FIREBASE_SERVICE_ACCOUNT_BRIDGEFROMZERO_E2581 }}'
           channelId: live
           projectId: bridgefromzero-e2581
           target: bridgefromzero
