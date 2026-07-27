@@ -215,6 +215,15 @@ export const Module4Level2Lesson: React.FC = () => {
             </div>
           )}
 
+          {/* KHUSUS FINESSE: Pertanyaan Utama di Atas Kartu */}
+          {currentLesson.id === 'finesse' && (
+            <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-center">
+              <p className="text-xs sm:text-sm font-extrabold text-amber-300">
+                ❓ Pertanyaan Finesse: Bagaimana cara membuat kombinasi kartu di bawah ini bisa menang 3x (3 Trick)?
+              </p>
+            </div>
+          )}
+
           {/* 1. VISUALISASI KARTU DI ATAS */}
           <div className="space-y-3 py-1">
             {/* Tampilan Kartu Finesse Variasi atau Standard */}
@@ -293,7 +302,7 @@ export const Module4Level2Lesson: React.FC = () => {
             )}
           </div>
 
-          {/* 2. PENJELASAN DI BAWAH KARTU */}
+          {/* 2. PENJELASAN MURNI DI BAWAH KARTU */}
           <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-white space-y-2">
             <h4 className="text-xs sm:text-sm font-extrabold text-amber-400">
               💡 {currentLesson.finesseVariants ? currentLesson.finesseVariants[finesseSubTab].title : 'Penjelasan Teknik:'}
