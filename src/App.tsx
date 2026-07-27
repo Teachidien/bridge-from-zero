@@ -1,16 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useGameStore } from './store/useGameStore';
 import { Navbar } from './components/Navbar';
 import { InteractiveLearningView } from './components/InteractiveLearningView';
 import { BiddingPracticeView } from './components/BiddingPracticeView';
 import { FullGameView } from './components/FullGameView';
 import { PuzzleModeView } from './components/PuzzleModeView';
+import { LandingPage } from './components/LandingPage';
 import { getCoachAdvice } from './utils/aiCoachEngine';
+import { subscribeToAuthChanges } from './utils/authService';
+import type { User } from 'firebase/auth';
 
 export function App() {
   const { activeMode, currentDeal } = useGameStore();
+  const [user, setUser] = useState<User | null>(null);
+  const [authChecking, setAuthChecking] = useState(true);
   const [aiModalOpen, setAiModalOpen] = useState(false);
   const [aiAdvice, setAiAdvice] = useState<string | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToAuthChanges((currentUser) => {
+      setUser(currentUser);
+      setAuthChecking(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  if (authChecking) {
+    return (
+      <div className="bg-[#064E3B] min-h-screen flex items-center justify-center text-emerald-200 text-sm font-bold">
+        Memuat Bridge From Zero...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <LandingPage />;
+  }
 
   const handleOpenAiCoach = async () => {
     setAiModalOpen(true);
@@ -39,8 +64,8 @@ export function App() {
       </main>
 
       {/* FOOTER */}
-      <footer className="w-full max-w-6xl mx-auto text-center py-2 text-xs text-emerald-300/80">
-        Bridge From Zero • Integrated 4 Main Game Modes Engine (Spark Plan 100% Free)
+      <footer className="w-full max-w-6xl mx-auto text-center py-2 text-xs text-emerald-300/80 font-medium">
+        bridge from zero made by sat
       </footer>
 
       {/* AI COACH DIALOG MODAL */}

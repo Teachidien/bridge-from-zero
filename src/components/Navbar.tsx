@@ -31,7 +31,6 @@ export const Navbar: React.FC<{ onOpenAiCoach?: () => void }> = ({ onOpenAiCoach
       <div className="flex items-center space-x-3">
         <span className="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></span>
         <span className="font-extrabold text-amber-300 tracking-wider text-sm sm:text-base">BRIDGE FROM ZERO</span>
-        <span className="text-[10px] sm:text-xs bg-[#02231A] text-emerald-300 px-2.5 py-1 rounded-full font-bold">Spark Plan</span>
       </div>
 
       <div className="flex flex-wrap justify-center gap-1.5 bg-[#02231A] p-1.5 rounded-xl text-xs font-bold">
