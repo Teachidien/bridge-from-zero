@@ -46,7 +46,8 @@ export const BiddingPracticeView: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#033629] p-4 sm:p-6 rounded-2xl shadow-xl max-w-5xl mx-auto w-full border border-[#055C45] space-y-4">
+    <div className="bg-[#033629] p-4 sm:p-6 rounded-2xl shadow-xl max-w-4xl mx-auto w-full border border-[#055C45] space-y-4">
+      {/* HEADER */}
       <div className="flex justify-between items-center border-b border-[#044D39] pb-3">
         <div>
           <h2 className="text-lg font-extrabold text-amber-300 flex items-center gap-2">
@@ -67,50 +68,47 @@ export const BiddingPracticeView: React.FC = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Left Column: Player Hand & Info */}
-        <div className="bg-[#02231A] p-4 rounded-xl space-y-3 border border-[#044D39]">
-          <div className="flex justify-between items-center text-xs font-bold text-amber-300">
-            <span>Kartu Anda (SOUTH)</span>
-            <span className="bg-[#033629] px-2.5 py-1 rounded-full text-emerald-300">
-              Total HCP: <strong className="text-amber-400">{totalHcp} Poin</strong>
-            </span>
-          </div>
-
-          <div className="bg-[#033629] p-3 rounded-xl flex justify-center items-center min-h-[160px]">
-            <CardHand cards={southHand} />
-          </div>
-
-          {feedback && (
-            <div className="p-3 bg-[#044D39] rounded-xl text-xs text-emerald-200 font-semibold border border-emerald-500/30">
-              {feedback}
+      {/* RIWAYAT AUCTION MATRIX */}
+      <div className="bg-[#02231A] p-3 rounded-xl border border-[#044D39] space-y-1">
+        <h3 className="text-xs font-bold text-emerald-300 mb-1">Riwayat Auction (PBN Matrix)</h3>
+        <div className="grid grid-cols-4 text-center text-xs font-extrabold text-amber-400 py-1 bg-[#033629] rounded-t-lg">
+          <div>NORTH</div><div>EAST</div><div>SOUTH</div><div>WEST</div>
+        </div>
+        <div className="grid grid-cols-4 text-center text-xs py-2 bg-[#02231A] border border-[#033629] rounded-b-lg gap-y-1 min-h-[60px] max-h-[120px] overflow-y-auto">
+          {bidHistory.map((item, idx) => (
+            <div key={idx} className="text-emerald-200 font-bold">
+              {item.call.type === 'bid'
+                ? `${item.call.bid.level}${item.call.bid.suit === 'NT' ? 'NT' : item.call.bid.suit[0].toUpperCase()}`
+                : item.call.call}
             </div>
-          )}
+          ))}
+        </div>
+      </div>
+
+      {/* BIDDING BOX (DI ATAS KARTU TANGAN) */}
+      <div className="bg-[#02231A] p-4 rounded-xl border border-[#044D39] space-y-2">
+        <div className="text-xs font-extrabold text-amber-300">Pilihan Bidding Box:</div>
+        <BiddingBox onMakeCall={handleCallSelect} canDouble={true} canRedouble={true} />
+      </div>
+
+      {/* KARTU TANGAN SOUTH (DI BAWAH BIDDING BOX) */}
+      <div className="bg-[#02231A] p-4 rounded-xl border border-[#044D39] space-y-3">
+        <div className="flex justify-between items-center text-xs font-bold text-amber-300">
+          <span>Kartu Anda (SOUTH)</span>
+          <span className="bg-[#033629] px-2.5 py-1 rounded-full text-emerald-300">
+            Total HCP: <strong className="text-amber-400">{totalHcp} Poin</strong>
+          </span>
         </div>
 
-        {/* Right Column: Bidding History & Bidding Box */}
-        <div className="bg-[#02231A] p-4 rounded-xl space-y-3 flex flex-col justify-between border border-[#044D39]">
-          <div>
-            <h3 className="text-xs font-bold text-emerald-300 mb-2">Riwayat Auction (PBN Matrix)</h3>
-            <div className="grid grid-cols-4 text-center text-xs font-extrabold text-amber-400 py-1 bg-[#033629] rounded-t-lg">
-              <div>NORTH</div><div>EAST</div><div>SOUTH</div><div>WEST</div>
-            </div>
-            <div className="grid grid-cols-4 text-center text-xs py-2 bg-[#02231A] border border-[#033629] rounded-b-lg gap-y-1 min-h-[100px] max-h-[150px] overflow-y-auto">
-              {bidHistory.map((item, idx) => (
-                <div key={idx} className="text-emerald-200 font-bold">
-                  {item.call.type === 'bid'
-                    ? `${item.call.bid.level}${item.call.bid.suit === 'NT' ? 'NT' : item.call.bid.suit[0].toUpperCase()}`
-                    : item.call.call}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <div className="text-xs font-bold text-slate-300">Pilihan Bidding Box:</div>
-            <BiddingBox onMakeCall={handleCallSelect} />
-          </div>
+        <div className="bg-[#0B231B] p-4 rounded-2xl flex justify-center items-center min-h-[160px] shadow-inner border border-emerald-900">
+          <CardHand cards={southHand} />
         </div>
+
+        {feedback && (
+          <div className="p-3 bg-[#044D39] rounded-xl text-xs text-emerald-200 font-semibold border border-emerald-500/30 text-center">
+            {feedback}
+          </div>
+        )}
       </div>
     </div>
   );
