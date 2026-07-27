@@ -4,10 +4,10 @@ export const Module1Lesson: React.FC = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
 
   const suits = [
-    { name: 'Spade (Sekop)', symbol: '♠', color: '#1E293B', category: 'Tinggi #1 (Major)' },
-    { name: 'Heart (Hati)', symbol: '♥', color: '#E11D48', category: 'Tinggi #2 (Major)' },
-    { name: 'Diamond (Wajik)', symbol: '♦', color: '#D97706', category: 'Tinggi #3 (Minor)' },
-    { name: 'Club (Keriting)', symbol: '♣', color: '#059669', category: 'Tinggi #4 (Minor)' },
+    { name: 'Spade', symbol: '♠', color: '#1E293B' },
+    { name: 'Heart', symbol: '♥', color: '#E11D48' },
+    { name: 'Diamond', symbol: '♦', color: '#D97706' },
+    { name: 'Club', symbol: '♣', color: '#059669' },
   ];
 
   return (
@@ -38,18 +38,17 @@ export const Module1Lesson: React.FC = () => {
           
           <div className="space-y-3">
             <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
-              <span>♦️</span> 1. Simbol Kartu Bridge (4-Color Muted Deck)
+              <span>♦️</span> 1. Simbol Kartu Bridge
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Dalam permainan Bridge, 52 kartu dibagi menjadi 4 simbol (suit). Setiap simbol memiliki hirarki dan warna khusus:
+              Dalam permainan Bridge, 52 kartu dibagi menjadi 4 simbol (suit):
             </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
               {suits.map((suit) => (
-                <div key={suit.name} className="bg-[#F8FAFC] border border-slate-200 p-3.5 rounded-2xl flex flex-col items-center space-y-1 shadow-sm hover:-translate-y-1 transition">
+                <div key={suit.name} className="bg-[#F8FAFC] border border-slate-200 p-3 rounded-xl flex flex-col items-center justify-center space-y-1 shadow-sm hover:-translate-y-0.5 transition">
                   <span className="text-2xl font-bold" style={{ color: suit.color }}>{suit.symbol}</span>
                   <span className="font-extrabold text-xs text-slate-900">{suit.name}</span>
-                  <span className="text-[10px] text-slate-500 font-bold">{suit.category}</span>
                 </div>
               ))}
             </div>
