@@ -22,20 +22,20 @@ const LEVEL_2_LESSONS: VisualLesson[] = [
     id: 'finesse',
     title: 'Teknik Finesse (Jebakan Kartu High)',
     category: 'Play',
-    description: 'Menjebak King lawan (East) yang tersembunyi dengan mengalirkan kartu kecil dari South menuju Ace-Queen di North.',
-    keyRule: 'Prinsip Finesse: Selalu jalankan kartu kecil menuju kombinasi A-Q / K-J!',
+    description: 'Bagaimana cara agar kombinasi kartu A-Q-J di North dan 2-3-4 di South bisa menang 3x (3 Trick)? Syarat utamanya: King lawan (K) harus berada di KIRI (West / Sebelum North), bukan di kanan (East)!',
+    keyRule: 'Prinsip Finesse: Finesse hanya berhasil jika King lawan berada di sebelah KIRI (sebelum kartu kehormatan A-Q-J)!',
     northHand: [
       { id: 'fin-n-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
       { id: 'fin-n-2', suit: 'spades', rank: 'Q', value: 12, hcp: 2 },
-      { id: 'fin-n-3', suit: 'spades', rank: '7', value: 7, hcp: 0 },
+      { id: 'fin-n-3', suit: 'spades', rank: 'J', value: 11, hcp: 1 },
     ],
     southHand: [
-      { id: 'fin-s-1', suit: 'spades', rank: '5', value: 5, hcp: 0 },
-      { id: 'fin-s-2', suit: 'spades', rank: '4', value: 4, hcp: 0 },
+      { id: 'fin-s-1', suit: 'spades', rank: '4', value: 4, hcp: 0 },
+      { id: 'fin-s-2', suit: 'spades', rank: '3', value: 3, hcp: 0 },
       { id: 'fin-s-3', suit: 'spades', rank: '2', value: 2, hcp: 0 },
     ],
-    eastCard: { id: 'fin-e-1', suit: 'spades', rank: 'K', value: 13, hcp: 3 },
-    actionNote: 'South jalan ♠2 ➔ East pasang ♠K (atau pasang kecil) ➔ North jebak dengan ♠A / ♠Q!'
+    westCard: { id: 'fin-w-1', suit: 'spades', rank: 'K', value: 13, hcp: 3 },
+    actionNote: 'Teka-Teki Finesse: Mainkan kartu kecil ♠2 dari South ➔ West (Kiri) memegang ♠K. Jika West pasang ♠K, sergap dengan ♠A. Jika West pasang kecil, mainkan ♠J / ♠Q ➔ Menang 3x (3 Trick)!'
   },
   {
     id: 'drop',
