@@ -3,16 +3,6 @@ import { CardHand } from './CardHand';
 import { PlayingCard } from './PlayingCard';
 import type { Card } from '../types/card';
 
-interface StepSimulation {
-  prompt: string;
-  allowedCards: string[]; 
-  westResponseCard?: Card;
-  eastResponseCard?: Card;
-  dummyCardPlayed?: Card;
-  feedbackSuccess: string;
-  feedbackFailure: string;
-}
-
 interface VisualLesson {
   id: string;
   title: string;
@@ -25,7 +15,6 @@ interface VisualLesson {
   westCard?: Card;
   playedCard?: Card;
   actionNote: string;
-  simulationSteps?: StepSimulation[];
 }
 
 const FINESSE_1_NORTH: Card[] = [
@@ -340,7 +329,10 @@ export const Module4Level2Lesson: React.FC = () => {
             </div>
           )}
 
-          <div className="flex flex-col items-center justify-center space-y-3 py-2">
+          {/* ARENA MEJA KASINO POLA 4 ARAH MATA ANGIN "+" (CROSS / PLUS SHAPE) */}
+          <div className="flex flex-col items-center justify-center space-y-2 py-2">
+            
+            {/* 1. NORTH HAND (DUMMY ATAS) */}
             <div className="flex flex-col items-center space-y-1">
               <span className="text-[10px] font-bold text-slate-400">NORTH (DUMMY)</span>
               <div className="transform scale-[1.1] sm:scale-100 origin-center">
@@ -348,44 +340,72 @@ export const Module4Level2Lesson: React.FC = () => {
               </div>
             </div>
 
-            <div className="w-full flex items-center justify-between px-2 sm:px-8 py-2">
-              <div className="flex flex-col items-center space-y-1 w-20">
-                <span className="text-[10px] font-bold text-rose-400">WEST (KIRI)</span>
+            {/* 2. MAT ARENA TRICK BENTUK TANDA TAMBAH "+" (CENTER MATRIX IS EMPTY IN MIDDLE) */}
+            <div className="w-full max-w-md my-2 bg-[#061812] border border-emerald-800/80 rounded-3xl p-4 sm:p-6 shadow-inner flex items-center justify-center relative min-h-[220px]">
+              
+              {/* SLOT NORTH (UJUNG ATAS POLA +) */}
+              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+                <span className="text-[9px] font-bold text-slate-400 mb-0.5">NORTH</span>
+                {tableCenterCards.north ? (
+                  <div className="transform scale-80 sm:scale-90">
+                    <PlayingCard card={tableCenterCards.north} />
+                  </div>
+                ) : (
+                  <div className="w-14 h-20 border border-dashed border-emerald-800/50 rounded-lg flex items-center justify-center text-[9px] text-emerald-700 font-bold">N</div>
+                )}
+              </div>
+
+              {/* SLOT WEST (UJUNG KIRI POLA +) */}
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 flex flex-col items-center">
+                <span className="text-[9px] font-bold text-rose-400 mb-0.5">WEST</span>
                 {tableCenterCards.west ? (
-                  <div className="transform scale-90 sm:scale-100">
+                  <div className="transform scale-80 sm:scale-90">
                     <PlayingCard card={tableCenterCards.west} />
                   </div>
                 ) : (
-                  <div className="w-14 h-20 sm:w-16 sm:h-24 border-2 border-dashed border-emerald-900/60 rounded-xl flex items-center justify-center text-[10px] text-emerald-700 font-bold">WEST</div>
+                  <div className="w-14 h-20 border border-dashed border-emerald-800/50 rounded-lg flex items-center justify-center text-[9px] text-emerald-700 font-bold">W</div>
                 )}
               </div>
 
-              <div className="relative w-40 sm:w-56 h-36 sm:h-44 bg-[#061812] border border-emerald-800/80 rounded-2xl flex items-center justify-center p-2 shadow-inner">
-                <span className="absolute top-1 text-[9px] font-extrabold text-amber-500/60 tracking-wider uppercase">Pola 4 Arah</span>
-                {tableCenterCards.north && <div className="absolute top-4 transform scale-75 z-10"><PlayingCard card={tableCenterCards.north} /></div>}
-                {tableCenterCards.south && <div className="absolute bottom-4 transform scale-75 z-10"><PlayingCard card={tableCenterCards.south} /></div>}
-                {tableCenterCards.west && <div className="absolute left-3 transform scale-75 z-10"><PlayingCard card={tableCenterCards.west} /></div>}
-                {tableCenterCards.east && <div className="absolute right-3 transform scale-75 z-10"><PlayingCard card={tableCenterCards.east} /></div>}
+              {/* CENTER SPACE (TENGAH POLA + KOSONG) */}
+              <div className="w-16 h-16 rounded-full border border-emerald-900/30 flex items-center justify-center text-[10px] text-emerald-800 font-bold uppercase tracking-wider">
+                ✚
               </div>
 
-              <div className="flex flex-col items-center space-y-1 w-20">
-                <span className="text-[10px] font-bold text-rose-400">EAST (KANAN)</span>
+              {/* SLOT EAST (UJUNG KANAN POLA +) */}
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex flex-col items-center">
+                <span className="text-[9px] font-bold text-rose-400 mb-0.5">EAST</span>
                 {tableCenterCards.east ? (
-                  <div className="transform scale-90 sm:scale-100">
+                  <div className="transform scale-80 sm:scale-90">
                     <PlayingCard card={tableCenterCards.east} />
                   </div>
                 ) : (
-                  <div className="w-14 h-20 sm:w-16 sm:h-24 border-2 border-dashed border-emerald-900/60 rounded-xl flex items-center justify-center text-[10px] text-emerald-700 font-bold">EAST</div>
+                  <div className="w-14 h-20 border border-dashed border-emerald-800/50 rounded-lg flex items-center justify-center text-[9px] text-emerald-700 font-bold">E</div>
                 )}
               </div>
+
+              {/* SLOT SOUTH (UJUNG BAWAH POLA +) */}
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+                {tableCenterCards.south ? (
+                  <div className="transform scale-80 sm:scale-90">
+                    <PlayingCard card={tableCenterCards.south} />
+                  </div>
+                ) : (
+                  <div className="w-14 h-20 border border-dashed border-emerald-800/50 rounded-lg flex items-center justify-center text-[9px] text-emerald-700 font-bold">S</div>
+                )}
+                <span className="text-[9px] font-bold text-emerald-300 mt-0.5">SOUTH</span>
+              </div>
+
             </div>
 
+            {/* 3. SOUTH HAND (ANDA BAWAH) */}
             <div className="flex flex-col items-center space-y-1">
               <div className="transform scale-[1.1] sm:scale-100 origin-center">
                 <CardHand cards={currentLesson.id === 'finesse' || currentLesson.id === 'crossruff' ? southCards : currentLesson.southHand} onSelectCard={(c) => handlePlayCard(c, 'south')} />
               </div>
               <span className="text-[10px] font-bold text-emerald-300">SOUTH (ANDA)</span>
             </div>
+
           </div>
 
           {feedback && (
@@ -433,3 +453,4 @@ export const Module4Level2Lesson: React.FC = () => {
     </div>
   );
 };
+
