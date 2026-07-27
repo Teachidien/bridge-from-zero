@@ -104,7 +104,7 @@ export const Module2Lesson: React.FC = () => {
             </div>
             
             <div className="w-full overflow-hidden flex justify-center py-1">
-              <div className="transform scale-100 origin-center my-0">
+              <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
                 <CardHand cards={northCards} />
               </div>
             </div>
@@ -151,7 +151,7 @@ export const Module2Lesson: React.FC = () => {
           {/* Kartu South (Anda) */}
           <div className="w-full flex flex-col items-center space-y-1">
             <div className="w-full overflow-hidden flex justify-center py-1">
-              <div className="transform scale-100 origin-center my-0">
+              <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
                 <CardHand cards={southCards} />
               </div>
             </div>

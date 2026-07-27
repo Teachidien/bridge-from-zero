@@ -86,9 +86,9 @@ export const Module3Lesson: React.FC = () => {
             </button>
           </div>
 
-          {/* Visualisasi Kartu di Tangan (Skala 100 di HP) */}
+          {/* Visualisasi Kartu di Tangan (Skala 125 di HP) */}
           <div className="bg-[#0B231B] p-2 sm:p-4 rounded-2xl border border-emerald-900 shadow-inner overflow-hidden flex justify-center py-2">
-            <div className="transform scale-100 origin-center my-1">
+            <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
               <CardHand cards={currentHand} />
             </div>
           </div>
