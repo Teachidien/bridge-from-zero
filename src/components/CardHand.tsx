@@ -41,7 +41,7 @@ export const CardHand: React.FC<CardHandProps> = ({
                 transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                 style={{
                   zIndex: index + 10,
-                  marginLeft: index === 0 ? 0 : -69, // Exactly 28% visible area (27px out of 96px width)
+                  marginLeft: index === 0 ? 0 : -72, // Tepat 25% area tampak (24px dari 96px lebar kartu, 75% tertutup)
                 }}
                 className="card-hand-item flex-shrink-0 cursor-pointer"
                 onClick={() => onSelectCard && onSelectCard(card)}
