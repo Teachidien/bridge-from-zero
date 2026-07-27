@@ -7,7 +7,7 @@ Dokumen ini berisi rencana pengerjaan proyek **Bridge From Zero** secara bertaha
 ## 🚦 Status Pengerjaan Ringkas
 
 - **Total Step:** 8 Fase Utama
-- **Status Saat Ini:** 🚀 **Fase 8 - Step 8.2: Konfigurasi CI/CD GitHub Actions**
+- **Status Saat Ini:** 🎉 **SELESAI 100% — APLIKASI LIVE DI https://bridgefromzero.web.app**
 
 ---
 
@@ -102,5 +102,7 @@ Dokumen ini berisi rencana pengerjaan proyek **Bridge From Zero** secara bertaha
 ### Fase 8: Testing Akhir, CI/CD Pipeline & Deployment Firebase
 - [x] **Step 8.1: Build Optimasi Produksi & Verifikasi Offline PWA** ✅ **SELESAI**
   - `npm run build`: 100% lulus, PWA Service Worker `dist/sw.js` tergenerasi. Vitest 12/12 tests passed.
-- [ ] **Step 8.2: Konfigurasi Otomatisasi CI/CD (GitHub Actions -> Firebase Hosting)**
-- [ ] **Step 8.3: Deploy ke Firebase Hosting (Live Release)**
+- [x] **Step 8.2: Konfigurasi Otomatisasi CI/CD (GitHub Actions -> Firebase Hosting)** ✅ **SELESAI**
+  - `.github/workflows/deploy.yml` dikonfigurasi. Kode di-push ke `https://github.com/Teachidien/bridge-from-zero`.
+- [x] **Step 8.3: Deploy ke Firebase Hosting (Live Release)** ✅ **SELESAI**
+  - Aplikasi berhasil tayang di **https://bridgefromzero.web.app** 🚀
