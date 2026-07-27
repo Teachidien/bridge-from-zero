@@ -82,7 +82,7 @@ export const Module3Lesson: React.FC = () => {
             </div>
           </div>
 
-          {/* Visualisasi Kartu di Tangan (Dikecilkan via Transform Scale & Overflow Fit) */}
+          {/* Visualisasi Kartu di Tangan (Dikecilkan agar 13 kartu pas & tidak terpotong) */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-xs font-extrabold text-slate-700">HITUNG TOTAL POIN HCP PADA 13 KARTU DI TANGAN ANDA:</span>
@@ -95,9 +95,9 @@ export const Module3Lesson: React.FC = () => {
               </button>
             </div>
             
-            <div className="bg-[#0B231B] p-2 sm:p-3 rounded-2xl border border-emerald-900 shadow-inner overflow-visible">
-              <div className="transform scale-[0.78] sm:scale-85 origin-center my-[-15px] sm:my-[-10px]">
-                <CardHand cards={currentHand} className="min-h-[160px] sm:min-h-[190px]" />
+            <div className="bg-[#0B231B] p-1.5 sm:p-2.5 rounded-2xl border border-emerald-900 shadow-inner overflow-hidden">
+              <div className="transform scale-75 sm:scale-85 origin-center -my-3 sm:-my-2">
+                <CardHand cards={currentHand} />
               </div>
             </div>
           </div>

@@ -41,7 +41,7 @@ export const CardHand: React.FC<CardHandProps> = ({
                 transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                 style={{
                   zIndex: index + 10,
-                  marginLeft: index === 0 ? 0 : -44, // Responsive margin di HP & PC (-44px mobile, -64px desktop via CSS)
+                  marginLeft: index === 0 ? 0 : -52, // Penumpukan kartu lebih rapat agar 13 kartu muat tanpa scrollbar
                 }}
                 className="card-hand-item flex-shrink-0 cursor-pointer"
                 onClick={() => onSelectCard && onSelectCard(card)}
