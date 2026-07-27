@@ -60,12 +60,13 @@ export const Module3Lesson: React.FC = () => {
 
       {/* Konten Utama Modul 3 */}
       <main className="max-w-4xl mx-auto w-full">
-        <div className="w-full bg-white border border-slate-200/80 rounded-2xl p-3 sm:p-6 shadow-xl flex flex-col space-y-3 sm:space-y-4">
+        {/* Meja Kasino Hijau Emerald (Sama Persis dengan Modul 2) */}
+        <div className="w-full bg-[#0B231B] border border-emerald-900 rounded-3xl p-3 sm:p-5 shadow-2xl flex flex-col space-y-3 sm:space-y-4">
           
           {/* Rumus HCP Ringkas + Tombol Redeal di Dalamnya */}
-          <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-3 sm:p-4 flex flex-wrap justify-between items-center gap-2">
+          <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-2.5 sm:p-4 flex flex-wrap justify-between items-center gap-2">
             <div className="flex items-center space-x-2">
-              <span className="text-xs sm:text-sm font-extrabold text-slate-900">HCP:</span>
+              <span className="text-xs sm:text-sm font-extrabold text-amber-400">HCP:</span>
               <div className="flex items-center gap-1">
                 {honors.map(({ rank, points }) => (
                   <span key={rank} className="bg-white border border-slate-200 px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1">
@@ -86,15 +87,15 @@ export const Module3Lesson: React.FC = () => {
           </div>
 
           {/* Visualisasi Kartu di Tangan (Skala 125 di HP) */}
-          <div className="bg-[#0B231B] p-2 sm:p-4 rounded-2xl border border-emerald-900 shadow-inner overflow-hidden flex justify-center py-2">
+          <div className="w-full overflow-hidden flex justify-center py-1">
             <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
               <CardHand cards={currentHand} />
             </div>
           </div>
 
-          {/* Kuis Interaktif Ringkas */}
-          <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-3 sm:p-5 space-y-2 sm:space-y-3">
-            <p className="text-xs sm:text-sm font-extrabold text-slate-900">
+          {/* Kuis Interaktif Ringkas di Dalam Meja */}
+          <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 sm:p-4 shadow-xl flex flex-col space-y-2 sm:space-y-3">
+            <p className="text-xs sm:text-sm font-extrabold text-amber-400 text-center">
               Berapa total HCP kartu di atas?
             </p>
 
@@ -108,7 +109,7 @@ export const Module3Lesson: React.FC = () => {
                       ? pts === correctHcp
                         ? 'bg-emerald-600 text-white border-emerald-700'
                         : 'bg-rose-600 text-white border-rose-700'
-                      : 'bg-white hover:bg-emerald-50 text-slate-800 border-slate-300'
+                      : 'bg-white hover:bg-slate-100 text-slate-800 border-slate-300'
                   }`}
                 >
                   {pts} Poin
@@ -117,7 +118,7 @@ export const Module3Lesson: React.FC = () => {
             </div>
 
             {selectedPoints !== null && (
-              <div className={`p-2.5 rounded-xl text-xs font-bold border ${selectedPoints === correctHcp ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-rose-100 border-rose-300 text-rose-900'}`}>
+              <div className={`p-2.5 rounded-xl text-xs font-bold text-center border ${selectedPoints === correctHcp ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-rose-100 border-rose-300 text-rose-900'}`}>
                 {selectedPoints === correctHcp ? (
                   <span>🎉 <strong>BENAR!</strong> Total High Card Points (HCP) tangan ini adalah <strong>{correctHcp} HCP Poin</strong>!</span>
                 ) : (
