@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pratinjau Model Kartu & Kartu di Tangan - Bridge From Zero</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    /* Style khusus tumpukan kartu di tangan (Fan-out overlap) */
+    .card-hand-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 20px;
+    }
+    .card-hand-item {
+      margin-left: -35px; /* Overlap antar kartu */
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-hand-item:first-child {
+      margin-left: 0;
+    }
+    .card-hand-item:hover {
+      transform: translateY(-24px) scale(1.05);
+      z-index: 50 !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#0B231B] text-slate-100 min-h-screen p-6 select-none space-y-12">
+
+  <header class="max-w-6xl mx-auto border-b border-emerald-900/60 pb-4">
+    <h1 class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
+      🎴 Pratinjau Model Kartu & Layout Tangan (Hand Fan-Out)
+    </h1>
+    <p class="text-xs text-emerald-300 mt-1">
+      Menggunakan palet warna resmi: Base Putih `#FFFFFF`, Spade Slate Navy `#1E293B`, Heart Crimson `#E11D48`, Diamond Amber `#D97706`, Club Emerald `#059669`.
+    </p>
+  </header>
+
+  <!-- SEKSI 1: 10 MODEL KARTU TERPISAH (PER PCS) -->
+  <section class="max-w-6xl mx-auto space-y-4">
+    <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+      <span>1. Demo 10 Model Kartu Terpisah (Per Pcs)</span>
+      <span class="text-xs font-normal text-slate-400">(Arahkan kursor untuk melihat animasi hover)</span>
+    </h2>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+
+      <!-- Model 1: Ace of Spades (Normal) -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-32 h-48 bg-white rounded-2xl shadow-xl border border-slate-200 flex flex-col justify-between p-3.5 transform hover:-translate-y-3 transition duration-200 cursor-pointer">
+          <div class="text-[#1E293B] font-bold text-xl leading-none">A<br><span class="text-xl">♠</span></div>
+          <div class="text-[#1E293B] text-5xl text-center">♠</div>
+          <div class="text-[#1E293B] font-bold text-xl leading-none text-right">♠<br>A</div>
+        </div>
+        <span class="text-xs text-slate-300 font-medium">1. Ace Spade (Normal)</span>
+      </div>
+
+      <!-- Model 2: King of Hearts (Selected / Terangkat) -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-32 h-48 bg-white rounded-2xl shadow-2xl border-2 border-amber-500 flex flex-col justify-between p-3.5 transform -translate-y-4 transition duration-200 cursor-pointer ring-4 ring-amber-500/20">
+          <div class="text-[#E11D48] font-bold text-xl leading-none">K<br><span class="text-xl">♥</span></div>
+          <div class="text-[#E11D48] text-5xl text-center">♥</div>
+          <div class="text-[#E11D48] font-bold text-xl leading-none text-right">♥<br>K</div>
+        </div>
+        <span class="text-xs text-amber-400 font-bold">2. King Heart (Selected)</span>
+      </div>
+
+      <!-- Model 3: Queen of Diamonds (Playable / Glowing Suggestion) -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-32 h-48 bg-white rounded-2xl shadow-xl border-2 border-emerald-500 flex flex-col justify-between p-3.5 transform hover:-translate-y-3 transition duration-200 cursor-pointer ring-4 ring-emerald-500/30">
+          <div class="text-[#D97706] font-bold text-xl leading-none">Q<br><span class="text-xl">♦</span></div>
+          <div class="text-[#D97706] text-5xl text-center">♦</div>
+          <div class="text-[#D97706] font-bold text-xl leading-none text-right">♦<br>Q</div>
+        </div>
+        <span class="text-xs text-emerald-400 font-bold">3. Queen Diamond (Playable)</span>
+      </div>
+
+      <!-- Model 4: Jack of Clubs (Dimmed / Unplayable) -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-32 h-48 bg-slate-200 opacity-50 rounded-2xl shadow border border-slate-300 flex flex-col justify-between p-3.5 cursor-not-allowed">
+          <div class="text-[#059669] font-bold text-xl leading-none">J<br><span class="text-xl">♣</span></div>
+          <div class="text-[#059669] text-5xl text-center">♣</div>
+          <div class="text-[#059669] font-bold text-xl leading-none text-right">♣<br>J</div>
+        </div>
+        <span class="text-xs text-slate-400 font-medium">4. Jack Club (Dimmed)</span>
+      </div>
+
+      <!-- Model 5: 10 of Spades -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-32 h-48 bg-white rounded-2xl shadow-xl border border-slate-200 flex flex-col justify-between p-3.5 transform hover:-translate-y-3 transition duration-200 cursor-pointer">
+          <div class="text-[#1E293B] font-bold text-xl leading-none">10<br><span class="text-xl">♠</span></div>
+          <div class="text-[#1E293B] text-4xl text-center font-bold">10</div>
+          <div class="text-[#1E293B] font-bold text-xl leading-none text-right">♠<br>10</div>
+        </div>
+        <span class="text-xs text-slate-300 font-medium">5. 10 Spade</span>
+      </div>
+
+      <!-- Model 6: 9 of Hearts -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-32 h-48 bg-white rounded-2xl shadow-xl border border-slate-200 flex flex-col justify-between p-3.5 transform hover:-translate-y-3 transition duration-200 cursor-pointer">
+          <div class="text-[#E11D48] font-bold text-xl leading-none">9<br><span class="text-xl">♥</span></div>
+          <div class="text-[#E11D48] text-4xl text-center font-bold">9</div>
+          <div class="text-[#E11D48] font-bold text-xl leading-none text-right">♥<br>9</div>
+        </div>
+        <span class="text-xs text-slate-300 font-medium">6. 9 Heart</span>
+      </div>
+
+      <!-- Model 7: 8 of Diamonds -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-32 h-48 bg-white rounded-2xl shadow-xl border border-slate-200 flex flex-col justify-between p-3.5 transform hover:-translate-y-3 transition duration-200 cursor-pointer">
+          <div class="text-[#D97706] font-bold text-xl leading-none">8<br><span class="text-xl">♦</span></div>
+          <div class="text-[#D97706] text-4xl text-center font-bold">8</div>
+          <div class="text-[#D97706] font-bold text-xl leading-none text-right">♦<br>8</div>
+        </div>
+        <span class="text-xs text-slate-300 font-medium">7. 8 Diamond</span>
+      </div>
+
+      <!-- Model 8: 7 of Clubs -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-32 h-48 bg-white rounded-2xl shadow-xl border border-slate-200 flex flex-col justify-between p-3.5 transform hover:-translate-y-3 transition duration-200 cursor-pointer">
+          <div class="text-[#059669] font-bold text-xl leading-none">7<br><span class="text-xl">♣</span></div>
+          <div class="text-[#059669] text-4xl text-center font-bold">7</div>
+          <div class="text-[#059669] font-bold text-xl leading-none text-right">♣<br>7</div>
+        </div>
+        <span class="text-xs text-slate-300 font-medium">8. 7 Club</span>
+      </div>
+
+      <!-- Model 9: 2 of Spades (Low Card) -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-32 h-48 bg-white rounded-2xl shadow-xl border border-slate-200 flex flex-col justify-between p-3.5 transform hover:-translate-y-3 transition duration-200 cursor-pointer">
+          <div class="text-[#1E293B] font-bold text-xl leading-none">2<br><span class="text-xl">♠</span></div>
+          <div class="text-[#1E293B] text-4xl text-center font-bold">2</div>
+          <div class="text-[#1E293B] font-bold text-xl leading-none text-right">♠<br>2</div>
+        </div>
+        <span class="text-xs text-slate-300 font-medium">9. 2 Spade</span>
+      </div>
+
+      <!-- Model 10: Card Back (Kartu Belakang Motif Kasino) -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-32 h-48 bg-[#182232] rounded-2xl shadow-xl border-2 border-slate-700 flex items-center justify-center p-2 transform hover:-translate-y-3 transition duration-200 cursor-pointer">
+          <div class="w-full h-full border border-slate-600/60 rounded-xl flex items-center justify-center bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:8px_8px]">
+            <span class="text-2xl text-slate-500 font-bold">♠♥♦♣</span>
+          </div>
+        </div>
+        <span class="text-xs text-slate-300 font-medium">10. Belakang Kartu</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SEKSI 2: TAMPILAN 13 KARTU TERPASED & TERSUSUN RAPI DI TANGAN PEMAIN -->
+  <section class="max-w-6xl mx-auto space-y-4 pt-6 border-t border-emerald-900/60">
+    <div class="flex justify-between items-end">
+      <div>
+        <h2 class="text-lg font-bold text-amber-400">2. Layout 13 Kartu Tersusun Rapi di Tangan (South Player Hand)</h2>
+        <p class="text-xs text-slate-300">Kartu otomatis terurut rapi berdasarkan simbol (♠ ➔ ♥ ➔ ♦ ➔ ♣) dan tingkatan nilai (A, K, Q, J... 2).</p>
+      </div>
+      <span class="text-xs bg-[#14352A] px-3 py-1 rounded text-emerald-200 border border-emerald-800">13 Kartu di Tangan</span>
+    </div>
+
+    <!-- Container Kartu di Tangan (Fan-out Overlap) -->
+    <div class="bg-[#071E17] p-8 rounded-3xl border border-emerald-900/80 shadow-2xl flex justify-center items-center overflow-x-auto min-h-[260px]">
+      <div class="card-hand-container">
+        
+        <!-- SPADES group -->
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-10">
+          <div class="text-[#1E293B] font-bold text-base leading-none">A<br><span>♠</span></div>
+          <div class="text-[#1E293B] text-3xl text-center">♠</div>
+          <div class="text-[#1E293B] font-bold text-base leading-none text-right">♠<br>A</div>
+        </div>
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-11">
+          <div class="text-[#1E293B] font-bold text-base leading-none">K<br><span>♠</span></div>
+          <div class="text-[#1E293B] text-3xl text-center">♠</div>
+          <div class="text-[#1E293B] font-bold text-base leading-none text-right">♠<br>K</div>
+        </div>
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-12">
+          <div class="text-[#1E293B] font-bold text-base leading-none">10<br><span>♠</span></div>
+          <div class="text-[#1E293B] text-2xl text-center font-bold">10</div>
+          <div class="text-[#1E293B] font-bold text-base leading-none text-right">♠<br>10</div>
+        </div>
+
+        <!-- HEARTS group (KARTU SELECTED TERANGKAT DIPAKAI) -->
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-13">
+          <div class="text-[#E11D48] font-bold text-base leading-none">Q<br><span>♥</span></div>
+          <div class="text-[#E11D48] text-3xl text-center">♥</div>
+          <div class="text-[#E11D48] font-bold text-base leading-none text-right">♥<br>Q</div>
+        </div>
+        <!-- SELECTED ITEM -->
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-2xl border-2 border-amber-500 flex flex-col justify-between p-2.5 cursor-pointer z-14 transform -translate-y-6 ring-4 ring-amber-500/20">
+          <div class="text-[#E11D48] font-bold text-base leading-none">J<br><span>♥</span></div>
+          <div class="text-[#E11D48] text-3xl text-center">♥</div>
+          <div class="text-[#E11D48] font-bold text-base leading-none text-right">♥<br>J</div>
+        </div>
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-15">
+          <div class="text-[#E11D48] font-bold text-base leading-none">7<br><span>♥</span></div>
+          <div class="text-[#E11D48] text-2xl text-center font-bold">7</div>
+          <div class="text-[#E11D48] font-bold text-base leading-none text-right">♥<br>7</div>
+        </div>
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-16">
+          <div class="text-[#E11D48] font-bold text-base leading-none">3<br><span>♥</span></div>
+          <div class="text-[#E11D48] text-2xl text-center font-bold">3</div>
+          <div class="text-[#E11D48] font-bold text-base leading-none text-right">♥<br>3</div>
+        </div>
+
+        <!-- DIAMONDS group -->
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-17">
+          <div class="text-[#D97706] font-bold text-base leading-none">A<br><span>♦</span></div>
+          <div class="text-[#D97706] text-3xl text-center">♦</div>
+          <div class="text-[#D97706] font-bold text-base leading-none text-right">♦<br>A</div>
+        </div>
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-18">
+          <div class="text-[#D97706] font-bold text-base leading-none">8<br><span>♦</span></div>
+          <div class="text-[#D97706] text-2xl text-center font-bold">8</div>
+          <div class="text-[#D97706] font-bold text-base leading-none text-right">♦<br>8</div>
+        </div>
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-19">
+          <div class="text-[#D97706] font-bold text-base leading-none">2<br><span>♦</span></div>
+          <div class="text-[#D97706] text-2xl text-center font-bold">2</div>
+          <div class="text-[#D97706] font-bold text-base leading-none text-right">♦<br>2</div>
+        </div>
+
+        <!-- CLUBS group -->
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-20">
+          <div class="text-[#059669] font-bold text-base leading-none">K<br><span>♣</span></div>
+          <div class="text-[#059669] text-3xl text-center">♣</div>
+          <div class="text-[#059669] font-bold text-base leading-none text-right">♣<br>K</div>
+        </div>
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-21">
+          <div class="text-[#059669] font-bold text-base leading-none">9<br><span>♣</span></div>
+          <div class="text-[#059669] text-2xl text-center font-bold">9</div>
+          <div class="text-[#059669] font-bold text-base leading-none text-right">♣<br>9</div>
+        </div>
+        <div class="card-hand-item w-28 h-40 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 cursor-pointer z-22">
+          <div class="text-[#059669] font-bold text-base leading-none">5<br><span>♣</span></div>
+          <div class="text-[#059669] text-2xl text-center font-bold">5</div>
+          <div class="text-[#059669] font-bold text-base leading-none text-right">♣<br>5</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

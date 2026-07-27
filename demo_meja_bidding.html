@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Pratinjau Tombol NT Base Putih Clean</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    
+    .hand-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      width: 100%;
+      padding-top: 16px;
+      padding-bottom: 8px;
+    }
+    
+    .card-hand-item {
+      margin-left: -44px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+      position: relative;
+    }
+    @media (min-width: 640px) {
+      .card-hand-item {
+        margin-left: -64px;
+      }
+    }
+    .card-hand-item:first-child {
+      margin-left: 0;
+    }
+    
+    .card-hand-item:hover {
+      transform: translateY(-24px);
+      z-index: 999 !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#0B231B] text-slate-100 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+  <!-- Header Navigation -->
+  <header class="w-full max-w-5xl mx-auto flex justify-between items-center py-2 px-1">
+    <div class="flex items-center space-x-2">
+      <span class="font-extrabold text-base sm:text-xl tracking-tight text-white flex items-center gap-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+        BRIDGE FROM ZERO
+      </span>
+    </div>
+    
+    <div class="flex items-center space-x-2">
+      <button class="bg-[#14352A] text-emerald-100 text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg border border-emerald-800/60">
+        🇮🇩 ID / 🇬🇧 EN
+      </button>
+      <button class="bg-[#E11D48] text-white text-[11px] sm:text-xs font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg shadow-sm">
+        Tanya Pelatih
+      </button>
+    </div>
+  </header>
+
+  <!-- Area Meja Game Tengah -->
+  <main class="flex-1 max-w-4xl mx-auto w-full flex flex-col items-center justify-between my-2 sm:my-4 relative min-h-[300px]">
+    
+    <!-- Info Kontrak / Fase Auction -->
+    <div class="bg-[#061812] text-slate-300 text-[11px] sm:text-xs px-4 py-1.5 rounded-full border border-emerald-900 mb-2 flex items-center space-x-3 shadow-inner">
+      <span class="text-amber-400 font-bold">FASE AUCTION</span>
+      <span>•</span>
+      <span>Giliran: <strong class="text-white font-semibold">South (Anda)</strong></span>
+    </div>
+
+    <!-- Papan Riwayat Bidding 4 Pemain di Tengah Meja -->
+    <div class="bg-[#061812]/90 border border-emerald-900 rounded-2xl p-3 shadow-2xl max-w-sm w-full my-auto">
+      <div class="text-[10px] text-emerald-300 font-extrabold mb-1.5 text-center border-b border-emerald-900 pb-1">
+        PAPAN AUCTION
+      </div>
+      <div class="grid grid-cols-4 gap-1 text-center text-xs font-bold">
+        <div class="text-slate-400 text-[10px]">WEST</div>
+        <div class="text-slate-400 text-[10px]">NORTH</div>
+        <div class="text-slate-400 text-[10px]">EAST</div>
+        <div class="text-amber-400 text-[10px] border-b-2 border-amber-500">SOUTH</div>
+
+        <div class="bg-[#14352A] py-1 rounded text-slate-300">Pass</div>
+        <div class="bg-[#14352A] py-1 rounded text-white font-extrabold text-emerald-400">1♣</div>
+        <div class="bg-[#14352A] py-1 rounded text-slate-300">Pass</div>
+        <div class="bg-amber-500/20 text-amber-400 py-1 rounded border border-amber-500/50 animate-pulse">?</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- AREA BOTTOM CLEAN: TOMBOL NT DIUBAH MENJADI BASE PUTIH DENGAN TEKS SERAGAM -->
+  <footer class="w-full max-w-3xl mx-auto bg-[#071E17] p-2.5 sm:p-4 rounded-3xl shadow-2xl border border-emerald-900/80 flex flex-col space-y-3">
+    
+    <!-- 🎴 PANEL BIDDING BOX CLEAN -->
+    <div class="w-full bg-[#0B2A20] border border-emerald-800/80 rounded-2xl p-2.5 sm:p-3 shadow-xl flex flex-col space-y-2">
+      
+      <!-- Baris 1: Tombol PASS + Level 1 - 7 -->
+      <div class="flex items-center gap-1.5">
+        <button class="bg-[#059669] hover:bg-[#047857] text-white font-extrabold px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs shadow-md transition border border-emerald-500 flex-shrink-0">
+          PASS
+        </button>
+
+        <div class="flex items-center gap-1 sm:gap-1.5 flex-1">
+          <button class="flex-1 bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm shadow transition border border-slate-200">1</button>
+          <button class="flex-1 bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm shadow transition border border-slate-200">2</button>
+          <button class="flex-1 bg-amber-500 text-slate-900 font-extrabold py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm shadow transition ring-2 ring-amber-400">3</button>
+          <button class="flex-1 bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm shadow transition border border-slate-200">4</button>
+          <button class="flex-1 bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm shadow transition border border-slate-200">5</button>
+          <button class="flex-1 bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm shadow transition border border-slate-200">6</button>
+          <button class="flex-1 bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm shadow transition border border-slate-200">7</button>
+        </div>
+      </div>
+
+      <!-- Baris 2: Simbol Suits (♣ ♦ ♥ ♠ NT) + DBL / RDBL (TOMBOL NT DIUBAH PUTIH) -->
+      <div class="flex items-center justify-between gap-1.5">
+        <div class="flex items-center gap-1 sm:gap-1.5 flex-1">
+          <button class="flex-1 bg-white hover:bg-slate-100 text-[#059669] font-extrabold py-1.5 sm:py-2 rounded-xl text-base sm:text-lg shadow transition border border-slate-200">♣</button>
+          <button class="flex-1 bg-white hover:bg-slate-100 text-[#D97706] font-extrabold py-1.5 sm:py-2 rounded-xl text-base sm:text-lg shadow transition border border-slate-200">♦</button>
+          <button class="flex-1 bg-white hover:bg-slate-100 text-[#E11D48] font-extrabold py-1.5 sm:py-2 rounded-xl text-base sm:text-lg shadow transition border border-slate-200">♥</button>
+          <button class="flex-1 bg-white hover:bg-slate-100 text-[#1E293B] font-extrabold py-1.5 sm:py-2 rounded-xl text-base sm:text-lg shadow transition border border-slate-200">♠</button>
+          
+          <!-- TOMBOL NT DIUBAH BASE PUTIH DENGAN TEKS SLATE SERAGAM -->
+          <button class="flex-1 bg-white hover:bg-slate-100 text-[#1E293B] font-extrabold py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm shadow transition border border-slate-200">
+            NT
+          </button>
+        </div>
+
+        <div class="flex space-x-1 flex-shrink-0">
+          <button class="bg-[#E11D48] hover:bg-[#BE123C] text-white font-extrabold px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl text-[11px] sm:text-xs shadow">
+            DBL
+          </button>
+          <button class="bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-extrabold px-2.5 py-2 sm:px-3 sm:py-2.5 rounded-xl text-[11px] sm:text-xs shadow">
+            RDBL
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 🎴 TANGAN PEMAIN CLEAN -->
+    <div class="w-full flex justify-center items-center overflow-x-auto min-h-[110px] sm:min-h-[180px]">
+      <div class="hand-container">
+        
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 10;">
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none">A<br><span class="text-[10px] sm:text-sm">♠</span></div>
+          <div class="text-[#1E293B] text-sm sm:text-3xl text-center font-bold">♠</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none text-right">♠<br>A</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 11;">
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none">K<br><span class="text-[10px] sm:text-sm">♠</span></div>
+          <div class="text-[#1E293B] text-sm sm:text-3xl text-center font-bold">♠</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none text-right">♠<br>K</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 12;">
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none">10<br><span class="text-[10px] sm:text-sm">♠</span></div>
+          <div class="text-[#1E293B] text-xs sm:text-xl text-center font-bold">10</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none text-right">♠<br>10</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 13;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none">A<br><span class="text-[10px] sm:text-sm">♥</span></div>
+          <div class="text-[#E11D48] text-sm sm:text-3xl text-center font-bold">♥</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none text-right">♥<br>A</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 14;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none">Q<br><span class="text-[10px] sm:text-sm">♥</span></div>
+          <div class="text-[#E11D48] text-sm sm:text-3xl text-center font-bold">♥</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none text-right">♥<br>Q</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 15;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none">7<br><span class="text-[10px] sm:text-sm">♥</span></div>
+          <div class="text-[#E11D48] text-xs sm:text-xl text-center font-bold">7</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none text-right">♥<br>7</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 16;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none">3<br><span class="text-[10px] sm:text-sm">♥</span></div>
+          <div class="text-[#E11D48] text-xs sm:text-xl text-center font-bold">3</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none text-right">♥<br>3</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 17;">
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none">A<br><span class="text-[10px] sm:text-sm">♦</span></div>
+          <div class="text-[#D97706] text-sm sm:text-3xl text-center font-bold">♦</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none text-right">♦<br>A</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 18;">
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none">8<br><span class="text-[10px] sm:text-sm">♦</span></div>
+          <div class="text-[#D97706] text-xs sm:text-xl text-center font-bold">8</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none text-right">♦<br>8</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 19;">
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none">2<br><span class="text-[10px] sm:text-sm">♦</span></div>
+          <div class="text-[#D97706] text-xs sm:text-xl text-center font-bold">2</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none text-right">♦<br>2</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 20;">
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none">K<br><span class="text-[10px] sm:text-sm">♣</span></div>
+          <div class="text-[#059669] text-sm sm:text-3xl text-center font-bold">♣</div>
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none text-right">♣<br>K</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 21;">
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none">9<br><span class="text-[10px] sm:text-sm">♠</span></div>
+          <div class="text-[#059669] text-xs sm:text-xl text-center font-bold">9</div>
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none text-right">♣<br>9</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 cursor-pointer" style="z-index: 22;">
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none">5<br><span class="text-[10px] sm:text-sm">♣</span></div>
+          <div class="text-[#059669] text-sm sm:text-3xl text-center font-bold">5</div>
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none text-right">♣<br>5</div>
+        </div>
+
+      </div>
+    </div>
+
+  </footer>
+
+</body>
+</html>

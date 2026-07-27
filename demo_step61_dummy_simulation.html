@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Reverse Card Order for Right-Side East Dummy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    .hand-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      width: 100%;
+      padding-top: 10px;
+      padding-bottom: 4px;
+    }
+    .card-hand-item {
+      margin-left: -54px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+      position: relative;
+    }
+    @media (min-width: 640px) {
+      .card-hand-item {
+        margin-left: -74px;
+      }
+    }
+    .card-hand-item:first-child {
+      margin-left: 0;
+    }
+    .card-hand-item:hover {
+      transform: translateY(-20px);
+      z-index: 999 !important;
+    }
+
+    /* GRID DUMMY SIDE */
+    .side-dummy-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: #02231A;
+      padding: 10px;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+
+    .side-dummy-card-overlap {
+      width: 44px;
+      height: 66px;
+      background: white;
+      border-radius: 7px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 4px;
+      font-weight: 800;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+      margin-left: -24px;
+      flex-shrink: 0;
+      position: relative;
+      transition: transform 0.15s;
+    }
+    .side-dummy-card-overlap:first-child {
+      margin-left: 0;
+    }
+    .side-dummy-card-overlap:hover {
+      transform: translateY(-8px);
+      z-index: 100 !important;
+    }
+
+    @media (min-width: 640px) {
+      .side-dummy-card-overlap {
+        width: 54px;
+        height: 80px;
+        margin-left: -30px;
+        padding: 5px;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#064E3B] text-slate-100 min-h-screen flex flex-col justify-between p-2 sm:p-4 select-none overflow-hidden">
+
+  <!-- HEADER BAR SELECTOR -->
+  <header class="w-full max-w-5xl mx-auto flex justify-between items-center bg-[#033629] rounded-2xl px-4 py-2.5 shadow-md text-xs">
+    <div class="flex items-center space-x-3">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+      <span class="font-extrabold text-amber-300 tracking-wider">SKENARIO DUMMY KANAN (ACE PALING KANAN & KARTU KECIL DI KIRI)</span>
+    </div>
+
+    <!-- SELECTOR -->
+    <div class="flex items-center space-x-2">
+      <span class="text-emerald-100 font-bold text-[11px]">Pilih Dummy:</span>
+      <select id="dummy-selector" onchange="renderScenario()" class="bg-[#02231A] text-amber-300 font-extrabold text-xs px-3 py-1.5 rounded-xl border border-[#044D39] shadow-sm">
+        <option value="east" selected>EAST (Dummy Kanan - As di Kanan & Kecil di Kiri)</option>
+        <option value="west">WEST (Dummy Kiri - As di Kiri & Kecil di Kanan)</option>
+        <option value="north">NORTH (Partner Anda) = Dummy</option>
+        <option value="south">SOUTH (Anda Sendiri) = Dummy</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- ARENA MEJA GAME -->
+  <main class="flex-1 max-w-5xl mx-auto w-full grid grid-rows-[auto_1fr_auto] grid-cols-1 my-2 gap-2 relative">
+    
+    <!-- 1. NORTH -->
+    <div id="area-north" class="flex flex-col items-center space-y-1">
+      <!-- Dynamic Render North -->
+    </div>
+
+    <!-- 2. MID SECTION (WEST - TABLE CENTER - EAST) -->
+    <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3 w-full min-h-[280px] sm:min-h-[340px]">
+      <!-- WEST -->
+      <div id="area-west" class="flex flex-col items-start space-y-1">
+        <!-- Dynamic Render West -->
+      </div>
+
+      <!-- MID TRICK TABLE AREA -->
+      <div class="bg-[#033629] rounded-3xl p-4 sm:p-6 flex flex-col items-center justify-center space-y-4 shadow-xl relative w-full h-full">
+        <div class="text-xs sm:text-sm font-extrabold text-amber-300 bg-[#02231A] px-4 py-1.5 rounded-full shadow">
+          KONTRAK: <span id="contract-badge" class="text-white">4♠ oleh WEST</span> (Trump: Spades ♠)
+        </div>
+
+        <!-- 4 PLAYED CARDS -->
+        <div class="grid grid-cols-3 grid-rows-3 gap-2 sm:gap-3 w-56 h-56 sm:w-80 sm:h-80 items-center justify-items-center bg-[#022B20] p-3 sm:p-4 rounded-3xl shadow-inner border border-[#044D39]/60">
+          <div></div>
+          <div id="trick-north" class="w-14 h-20 sm:w-20 sm:h-28 bg-white rounded-xl border border-slate-300 p-1.5 sm:p-2 flex flex-col justify-between text-[#1E293B] shadow-md">
+            <span class="text-xs sm:text-base font-extrabold leading-none">A♠</span>
+            <span class="text-center text-base sm:text-3xl font-extrabold">♠</span>
+          </div>
+          <div></div>
+
+          <div id="trick-west" class="w-14 h-20 sm:w-20 sm:h-28 bg-white rounded-xl border border-slate-300 p-1.5 sm:p-2 flex flex-col justify-between text-[#1E293B] shadow-md">
+            <span class="text-xs sm:text-base font-extrabold leading-none">4♠</span>
+            <span class="text-center text-base sm:text-3xl font-extrabold">♠</span>
+          </div>
+          <div class="text-xs sm:text-sm font-extrabold text-emerald-300 text-center tracking-wider">TRICK #1</div>
+          <div id="trick-east" class="w-14 h-20 sm:w-20 sm:h-28 bg-white rounded-xl border border-slate-300 p-1.5 sm:p-2 flex flex-col justify-between text-[#E11D48] shadow-md">
+            <span class="text-xs sm:text-base font-extrabold leading-none">K♥</span>
+            <span class="text-center text-base sm:text-3xl font-extrabold">♥</span>
+          </div>
+
+          <div></div>
+          <div id="trick-south" class="w-14 h-20 sm:w-20 sm:h-28 bg-white rounded-xl border border-slate-300 p-1.5 sm:p-2 flex flex-col justify-between text-[#1E293B] shadow-md">
+            <span class="text-xs sm:text-base font-extrabold leading-none">Q♠</span>
+            <span class="text-center text-base sm:text-3xl font-extrabold">♠</span>
+          </div>
+          <div></div>
+        </div>
+      </div>
+
+      <!-- EAST (RATA KANAN MURNI WITH REVERSED ORDER: KECIL DI KIRI & AS DI KANAN!) -->
+      <div id="area-east" class="flex flex-col items-end justify-self-end space-y-1">
+        <!-- Dynamic Render East -->
+      </div>
+    </div>
+
+    <!-- 3. SOUTH -->
+    <div id="area-south" class="flex flex-col items-center space-y-1 w-full">
+      <!-- Dynamic Render South -->
+    </div>
+
+  </main>
+
+  <script>
+    const sample13CardsDummy = [
+      { rank: 'A', suit: 'spades', color: '#1E293B' }, { rank: 'K', suit: 'spades', color: '#1E293B' }, { rank: 'J', suit: 'spades', color: '#1E293B' }, { rank: '8', suit: 'spades', color: '#1E293B' },
+      { rank: 'Q', suit: 'hearts', color: '#E11D48' }, { rank: '7', suit: 'hearts', color: '#E11D48' }, { rank: '2', suit: 'hearts', color: '#E11D48' },
+      { rank: 'K', suit: 'diamonds', color: '#D97706' }, { rank: '9', suit: 'diamonds', color: '#D97706' }, { rank: '4', suit: 'diamonds', color: '#D97706' },
+      { rank: '10', suit: 'clubs', color: '#059669' }, { rank: '5', suit: 'clubs', color: '#059669' }, { rank: '2', suit: 'clubs', color: '#059669' }
+    ];
+
+    const suitSymbols = { spades: '♠', hearts: '♥', diamonds: '♦', clubs: '♣' };
+
+    function renderHorizontalHand(hand, label, isDummy) {
+      let html = `
+        <div class="text-xs font-bold text-amber-300 bg-[#033629] px-3.5 py-1 rounded-full flex items-center gap-2 shadow-sm">
+          <span>${label} ${isDummy ? '📖 DUMMY (Kartu Terbuka)' : ''}</span>
+        </div>
+        <div class="w-full flex justify-center items-center overflow-x-auto min-h-[110px] sm:min-h-[170px]">
+          <div class="hand-container">
+      `;
+
+      hand.forEach((card, idx) => {
+        const isHigh = card.rank === 'A' || card.rank === 'K' || card.rank === 'Q' || card.rank === 'J';
+        const rankFontSize = isHigh ? 'text-sm sm:text-3xl' : 'text-xs sm:text-xl';
+        html += `
+          <div style="z-index: ${10+idx}; margin-left: ${idx === 0 ? '0' : '-54px'};" 
+               class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5 flex-shrink-0 cursor-pointer">
+            <div class="font-extrabold text-[11px] sm:text-base leading-none" style="color: ${card.color};">
+              ${card.rank}<br>${suitSymbols[card.suit]}
+            </div>
+            <div class="${rankFontSize} text-center font-bold" style="color: ${card.color};">
+              ${isHigh ? suitSymbols[card.suit] : card.rank}
+            </div>
+            <div class="font-extrabold text-[11px] sm:text-base leading-none text-right" style="color: ${card.color};">
+              ${suitSymbols[card.suit]}<br>${card.rank}
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div></div>`;
+      return html;
+    }
+
+    // LOGIKA KHUSUS DUMMY KANAN (EAST):
+    // URUTAN KARTU DIBALIK (REVERSED): Kartu Kecil di KIRI & As (A) di KANAN!
+    function renderLargerSideDummy(hand, isRightAligned) {
+      const grouped = { spades: [], hearts: [], diamonds: [], clubs: [] };
+      hand.forEach(c => grouped[c.suit].push(c));
+
+      let html = `<div class="side-dummy-grid ${isRightAligned ? 'items-end' : 'items-start'}">`;
+      ['spades', 'hearts', 'diamonds', 'clubs'].forEach(suit => {
+        if (grouped[suit].length > 0) {
+          const rowAlign = isRightAligned ? 'justify-end' : 'justify-start';
+          
+          // Jika KANAN (East Dummy) -> DIBALIK (Reverse array agar As di Kanan & Kecil di Kiri)
+          let cardsInSuit = [...grouped[suit]];
+          if (isRightAligned) {
+            cardsInSuit.reverse();
+          }
+
+          html += `<div class="flex ${rowAlign} w-full">`;
+          cardsInSuit.forEach((c, idx) => {
+            html += `
+              <div class="side-dummy-card-overlap" style="z-index: ${10+idx};">
+                <span class="text-xs sm:text-base leading-none font-extrabold" style="color: ${c.color};">${c.rank}</span>
+                <span class="text-center text-sm sm:text-xl font-extrabold" style="color: ${c.color};">${suitSymbols[c.suit]}</span>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        }
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    function renderScenario() {
+      const dummyRole = document.getElementById('dummy-selector').value;
+
+      const northArea = document.getElementById('area-north');
+      if (dummyRole === 'north') {
+        northArea.innerHTML = renderHorizontalHand(sample13CardsDummy, '👤 PARTNER (NORTH)', true);
+      } else {
+        northArea.innerHTML = `
+          <div class="bg-[#033629] px-3.5 py-1 rounded-full text-[11px] font-bold text-emerald-100 shadow-sm">NORTH</div>
+          <div class="flex -space-x-8 opacity-75">
+            <div class="w-9 h-12 bg-[#02231A] rounded-lg shadow"></div>
+            <div class="w-9 h-12 bg-[#02231A] rounded-lg shadow"></div>
+          </div>
+        `;
+      }
+
+      const southArea = document.getElementById('area-south');
+      if (dummyRole === 'south') {
+        southArea.innerHTML = renderHorizontalHand(sample13CardsDummy, '👤 KARTU ANDA (SOUTH)', true);
+      } else {
+        southArea.innerHTML = renderHorizontalHand(sample13CardsDummy, '👤 KARTU ANDA (SOUTH)', false);
+      }
+
+      // WEST DUMMY (RATA KIRI: As di Kiri & Kecil di Kanan)
+      const westArea = document.getElementById('area-west');
+      if (dummyRole === 'west') {
+        westArea.innerHTML = `
+          <div class="text-[10px] font-extrabold text-amber-300 bg-[#033629] px-2 py-0.5 rounded shadow mb-1">WEST DUMMY</div>
+          ${renderLargerSideDummy(sample13CardsDummy, false)}
+        `;
+      } else {
+        westArea.innerHTML = `<div class="bg-[#033629] px-3.5 py-1 rounded-full text-[11px] font-bold text-emerald-100 shadow-sm">WEST</div>`;
+      }
+
+      // EAST DUMMY (RATA KANAN MURNI WITH REVERSED ORDER: Kecil di Kiri & As di Kanan!)
+      const eastArea = document.getElementById('area-east');
+      if (dummyRole === 'east') {
+        eastArea.innerHTML = `
+          <div class="text-[10px] font-extrabold text-amber-300 bg-[#033629] px-2 py-0.5 rounded shadow mb-1 text-right self-end">EAST DUMMY</div>
+          ${renderLargerSideDummy(sample13CardsDummy, true)}
+        `;
+      } else {
+        eastArea.innerHTML = `<div class="bg-[#033629] px-3.5 py-1 rounded-full text-[11px] font-bold text-emerald-100 shadow-sm">EAST</div>`;
+      }
+
+      document.getElementById('contract-badge').innerText = `4♠ oleh ${dummyRole === 'east' ? 'WEST' : 'NORTH'}`;
+    }
+
+    renderScenario();
+  </script>
+
+</body>
+</html>

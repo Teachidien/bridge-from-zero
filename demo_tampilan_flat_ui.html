@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Pratinjau Tampilan Web Mobile & Desktop (Fully Responsive)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    
+    /* Layout Kipas Kartu di Layar Mobile/HP (Dempet Presisi - Hanya Pojok Kiri Atas yang Kelihatan) */
+    .hand-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      width: 100%;
+      padding-top: 32px;
+      padding-bottom: 8px;
+    }
+    
+    /* Margin dempet presisi: Simbol besar di tengah kartu tertutup 100% oleh kartu sebelahnya */
+    .card-hand-item {
+      margin-left: -54px; /* Dempet rapat agar simbol tengah kartu tertutup sepenuhnya */
+      transition: all 0.15s ease-out;
+      flex-shrink: 0;
+      position: relative;
+    }
+    @media (min-width: 640px) {
+      .card-hand-item {
+        margin-left: -64px; /* Dempet presisi di layar Laptop/PC */
+      }
+    }
+    .card-hand-item:first-child {
+      margin-left: 0;
+    }
+    
+    /* Animasi Terangkat Bersih: Hanya terangkat lurus ke atas tanpa border glowing/efek AI */
+    .card-hand-item:hover,
+    .card-hand-item:active {
+      transform: translateY(-28px);
+      z-index: 999 !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#0B231B] text-slate-100 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+  <!-- Header Navigation -->
+  <header class="w-full max-w-6xl mx-auto flex justify-between items-center py-2 px-1">
+    <div class="flex items-center space-x-2">
+      <span class="font-extrabold text-base sm:text-xl tracking-tight text-white flex items-center gap-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+        BRIDGE FROM ZERO
+      </span>
+    </div>
+    
+    <div class="flex items-center space-x-2">
+      <button class="bg-[#14352A] hover:bg-[#1C4839] text-emerald-100 text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg border border-emerald-800/60 transition">
+        🇮🇩 ID / 🇬🇧 EN
+      </button>
+      <button class="bg-[#E11D48] hover:bg-[#BE123C] text-white text-[11px] sm:text-xs font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg shadow-sm transition">
+        Tanya Pelatih
+      </button>
+    </div>
+  </header>
+
+  <!-- Area Meja Game Tengah -->
+  <main class="flex-1 max-w-5xl mx-auto w-full flex flex-col items-center justify-center my-2 sm:my-4">
+    
+    <!-- Info Kontrak Ringkas -->
+    <div class="bg-[#061812] text-slate-300 text-[11px] sm:text-xs px-4 py-1.5 rounded-full border border-emerald-900/80 mb-4 sm:mb-6 flex items-center space-x-3 shadow-inner">
+      <span>Kontrak: <strong class="text-amber-400 font-bold">1NT</strong></span>
+      <span class="text-emerald-900">•</span>
+      <span>Declarer: <strong class="text-white font-semibold">South</strong></span>
+      <span class="text-emerald-900">•</span>
+      <span>Trick: <strong class="text-white font-semibold">3/13</strong></span>
+    </div>
+
+    <!-- Area 4 Kartu di Meja (Tengah) -->
+    <div class="grid grid-cols-2 gap-3 sm:gap-6 scale-95 sm:scale-100">
+      
+      <!-- Kartu 1: Ace of Spades -->
+      <div class="w-24 h-36 sm:w-32 sm:h-48 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 sm:p-3.5">
+        <div class="text-[#1E293B] font-bold text-base sm:text-xl leading-none">A<br><span class="text-sm sm:text-xl">♠</span></div>
+        <div class="text-[#1E293B] text-3xl sm:text-5xl text-center">♠</div>
+        <div class="text-[#1E293B] font-bold text-base sm:text-xl leading-none text-right">♠<br>A</div>
+      </div>
+
+      <!-- Kartu 2: King of Hearts -->
+      <div class="w-24 h-36 sm:w-32 sm:h-48 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 sm:p-3.5">
+        <div class="text-[#E11D48] font-bold text-base sm:text-xl leading-none">K<br><span class="text-sm sm:text-xl">♥</span></div>
+        <div class="text-[#E11D48] text-3xl sm:text-5xl text-center">♥</div>
+        <div class="text-[#E11D48] font-bold text-base sm:text-xl leading-none text-right">♥<br>K</div>
+      </div>
+
+      <!-- Kartu 3: Queen of Diamonds -->
+      <div class="w-24 h-36 sm:w-32 sm:h-48 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 sm:p-3.5">
+        <div class="text-[#D97706] font-bold text-base sm:text-xl leading-none">Q<br><span class="text-sm sm:text-xl">♦</span></div>
+        <div class="text-[#D97706] text-3xl sm:text-5xl text-center">♦</div>
+        <div class="text-[#D97706] font-bold text-base sm:text-xl leading-none text-right">♦<br>Q</div>
+      </div>
+
+      <!-- Kartu 4: Jack of Clubs -->
+      <div class="w-24 h-36 sm:w-32 sm:h-48 bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2.5 sm:p-3.5">
+        <div class="text-[#059669] font-bold text-base sm:text-xl leading-none">J<br><span class="text-sm sm:text-xl">♣</span></div>
+        <div class="text-[#059669] text-3xl sm:text-5xl text-center">♣</div>
+        <div class="text-[#059669] font-bold text-base sm:text-xl leading-none text-right">♣<br>J</div>
+      </div>
+
+    </div>
+
+    <!-- Petunjuk Pelatih -->
+    <div class="mt-4 bg-[#14352A] text-emerald-100 text-[11px] sm:text-xs px-4 py-1.5 rounded-lg border border-emerald-800/80 shadow text-center">
+      💡 Pilihlah kartu <strong class="text-amber-400 font-bold">Queen Diamond (♦)</strong> untuk memenangkan trick ini.
+    </div>
+
+  </main>
+
+  <!-- AREA TANGAN PEMAIN DI BOTTOM (13 KARTU DEMPET RAPI - HANYA HURUFS/ANGKA POJOK KIRI YANG KELIHAN - SEMUA RATA) -->
+  <footer class="w-full max-w-5xl mx-auto bg-[#071E17] p-2.5 sm:p-3.5 rounded-2xl shadow-2xl border border-emerald-900/60 flex flex-col space-y-2">
+    
+    <div class="text-[10px] sm:text-xs text-emerald-300 font-bold px-1 flex justify-between">
+      <span>TANGAN ANDA (13 KARTU):</span>
+      <span class="text-amber-400">Dempet Presisi | Hanya Pojok Kiri Atas Kelihatan</span>
+    </div>
+
+    <!-- Container 13 Kartu Menumpuk Dempet Rata (Z-Index Kiri ke Kanan) -->
+    <div class="w-full flex justify-center items-center overflow-x-auto min-h-[140px] sm:min-h-[180px]">
+      <div class="hand-container">
+        
+        <!-- SPADES group -->
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 10;">
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none">A<br><span class="text-[10px] sm:text-xs">♠</span></div>
+          <div class="text-[#1E293B] text-sm sm:text-2xl text-center font-bold">♠</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none text-right">♠<br>A</div>
+        </div>
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 11;">
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none">K<br><span class="text-[10px] sm:text-xs">♠</span></div>
+          <div class="text-[#1E293B] text-sm sm:text-2xl text-center font-bold">♠</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none text-right">♠<br>K</div>
+        </div>
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 12;">
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none">10<br><span class="text-[10px] sm:text-xs">♠</span></div>
+          <div class="text-[#1E293B] text-xs sm:text-lg text-center font-bold">10</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none text-right">♠<br>10</div>
+        </div>
+
+        <!-- HEARTS group -->
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 13;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none">Q<br><span class="text-[10px] sm:text-xs">♥</span></div>
+          <div class="text-[#E11D48] text-sm sm:text-2xl text-center font-bold">♥</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none text-right">♥<br>Q</div>
+        </div>
+        <!-- JH RATA (SAMA SEPERTI KARTU LAIN) -->
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 14;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none">J<br><span class="text-[10px] sm:text-xs">♥</span></div>
+          <div class="text-[#E11D48] text-sm sm:text-2xl text-center font-bold">♥</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none text-right">♥<br>J</div>
+        </div>
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 15;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none">7<br><span class="text-[10px] sm:text-xs">♥</span></div>
+          <div class="text-[#E11D48] text-xs sm:text-lg text-center font-bold">7</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none text-right">♥<br>7</div>
+        </div>
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 16;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none">3<br><span class="text-[10px] sm:text-xs">♥</span></div>
+          <div class="text-[#E11D48] text-xs sm:text-lg text-center font-bold">3</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none text-right">♥<br>3</div>
+        </div>
+
+        <!-- DIAMONDS group -->
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 17;">
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none">A<br><span class="text-[10px] sm:text-xs">♦</span></div>
+          <div class="text-[#D97706] text-sm sm:text-2xl text-center font-bold">♦</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none text-right">♦<br>A</div>
+        </div>
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 18;">
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none">8<br><span class="text-[10px] sm:text-xs">♦</span></div>
+          <div class="text-[#D97706] text-xs sm:text-lg text-center font-bold">8</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none text-right">8<br>8</div>
+        </div>
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 19;">
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none">2<br><span class="text-[10px] sm:text-xs">♦</span></div>
+          <div class="text-[#D97706] text-xs sm:text-lg text-center font-bold">2</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none text-right">♦<br>2</div>
+        </div>
+
+        <!-- CLUBS group (Kartu paling kanan 5♣ nampak 100%) -->
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 20;">
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none">K<br><span class="text-[10px] sm:text-xs">♣</span></div>
+          <div class="text-[#059669] text-sm sm:text-2xl text-center font-bold">♣</div>
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none text-right">♣<br>K</div>
+        </div>
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 21;">
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none">9<br><span class="text-[10px] sm:text-xs">♣</span></div>
+          <div class="text-[#059669] text-xs sm:text-lg text-center font-bold">9</div>
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none text-right">♣<br>9</div>
+        </div>
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 22;">
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none">5<br><span class="text-[10px] sm:text-xs">♣</span></div>
+          <div class="text-[#059669] text-sm sm:text-2xl text-center font-bold">♣</div>
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none text-right">♣<br>5</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tombol Kontrol Bawah -->
+    <div class="flex justify-between items-center pt-1 gap-2">
+      <button class="bg-[#14352A] hover:bg-[#1C4839] text-emerald-100 text-[11px] sm:text-xs font-bold px-3 py-2 rounded-xl border border-emerald-800/80 transition">
+        ↩ Undo
+      </button>
+
+      <div class="flex space-x-2">
+        <button class="bg-white hover:bg-slate-100 text-slate-800 text-[11px] sm:text-xs font-bold px-3.5 py-2 rounded-xl shadow border border-slate-200 transition flex items-center space-x-1">
+          <span>🎴</span>
+          <span>Bidding Box</span>
+        </button>
+        <button class="bg-[#059669] hover:bg-[#047857] text-white text-[11px] sm:text-xs font-bold px-4 py-2 rounded-xl shadow-lg transition">
+          Mainkan ➔
+        </button>
+      </div>
+    </div>
+
+  </footer>
+
+</body>
+</html>

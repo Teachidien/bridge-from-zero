@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Step 6.2: 4 Main Game Modes Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    .card-hand-item {
+      margin-left: -54px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+      position: relative;
+    }
+    @media (min-width: 640px) {
+      .card-hand-item {
+        margin-left: -70px;
+      }
+    }
+    .card-hand-item:first-child {
+      margin-left: 0;
+    }
+    .card-hand-item:hover {
+      transform: translateY(-24px);
+      z-index: 999 !important;
+    }
+    .mode-tab {
+      transition: all 0.2s ease;
+    }
+    .mode-tab.active {
+      background-color: #D97706;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-[#064E3B] text-slate-100 min-h-screen flex flex-col justify-between p-2 sm:p-4 select-none">
+
+  <!-- TOP NAVBAR & MODE SWITCHER -->
+  <header class="w-full max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center bg-[#033629] rounded-2xl px-4 py-3 shadow-lg gap-3">
+    <div class="flex items-center space-x-3">
+      <span class="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></span>
+      <span class="font-extrabold text-amber-300 tracking-wider text-base">BRIDGE FROM ZERO</span>
+      <span class="text-xs bg-[#02231A] text-emerald-300 px-2.5 py-1 rounded-full font-bold">Step 6.2 Demo</span>
+    </div>
+
+    <!-- 4 MODE NAVIGATION TABS -->
+    <div class="flex flex-wrap justify-center gap-1.5 bg-[#02231A] p-1.5 rounded-xl text-xs font-bold">
+      <button id="tab-learning" onclick="switchMode('learning')" class="mode-tab active px-3.5 py-1.5 rounded-lg text-emerald-200 hover:text-white">
+        📚 Mode 1: Learning
+      </button>
+      <button id="tab-bidding" onclick="switchMode('bidding')" class="mode-tab px-3.5 py-1.5 rounded-lg text-emerald-200 hover:text-white">
+        🗣️ Mode 2: Bidding Practice
+      </button>
+      <button id="tab-fullgame" onclick="switchMode('fullgame')" class="mode-tab px-3.5 py-1.5 rounded-lg text-emerald-200 hover:text-white">
+        🃏 Mode 3: Full Game vs Bot
+      </button>
+      <button id="tab-puzzle" onclick="switchMode('puzzle')" class="mode-tab px-3.5 py-1.5 rounded-lg text-emerald-200 hover:text-white">
+        🧩 Mode 4: Puzzles
+      </button>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button onclick="toggleAiModal()" class="bg-[#D97706] hover:bg-[#B45309] text-white font-extrabold px-3 py-1.5 rounded-xl shadow text-xs flex items-center gap-1">
+        <span>💡 AI Pelatih</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENT CONTAINER FOR 4 MODES -->
+  <main class="flex-1 max-w-6xl mx-auto w-full my-3 flex flex-col justify-center">
+
+    <!-- MODE 1: INTERACTIVE LEARNING -->
+    <div id="view-learning" class="mode-view space-y-4">
+      <div class="bg-[#033629] p-5 rounded-2xl shadow-xl max-w-4xl mx-auto border border-[#055C45]">
+        <div class="flex justify-between items-center border-b border-[#044D39] pb-3 mb-4">
+          <div>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Tingkat 1 - Modul Interactive</span>
+            <h2 id="module-title" class="text-xl font-extrabold text-white">Modul 1: Pengenalan Kartu & Symbol</h2>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="setModule(1)" class="px-3 py-1 bg-[#055C45] hover:bg-[#067357] text-white rounded-lg text-xs font-bold">Modul 1</button>
+            <button onclick="setModule(2)" class="px-3 py-1 bg-[#055C45] hover:bg-[#067357] text-white rounded-lg text-xs font-bold">Modul 2</button>
+            <button onclick="setModule(3)" class="px-3 py-1 bg-[#055C45] hover:bg-[#067357] text-white rounded-lg text-xs font-bold">Modul 3</button>
+          </div>
+        </div>
+
+        <div id="module-content" class="bg-[#02231A] p-6 rounded-xl space-y-4">
+          <!-- Dynamic Content Loaded via JS -->
+        </div>
+
+        <div class="flex justify-between items-center mt-4">
+          <button onclick="prevStep()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-4 py-2 rounded-xl text-xs">
+            ⬅️ Langkah Sebelumnya
+          </button>
+          <span id="step-indicator" class="text-xs font-bold text-emerald-300">Langkah 1 dari 3</span>
+          <button onclick="nextStep()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-xs">
+            Langkah Selanjutnya ➡️
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODE 2: BIDDING PRACTICE -->
+    <div id="view-bidding" class="mode-view hidden space-y-4">
+      <div class="bg-[#033629] p-5 rounded-2xl shadow-xl max-w-4xl mx-auto border border-[#055C45]">
+        <div class="flex justify-between items-center border-b border-[#044D39] pb-3 mb-3">
+          <div>
+            <h2 class="text-lg font-extrabold text-amber-300">🗣️ Bidding Practice Arena (SAYC Standard)</h2>
+            <p class="text-xs text-emerald-200">Latih insting penawaran kartu kamu bersama 3 Bot SAYC.</p>
+          </div>
+          <button onclick="resetBiddingPractice()" class="bg-[#059669] hover:bg-[#047857] px-3 py-1.5 rounded-xl text-xs font-bold">
+            🔄 Deal Baru
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Left: Hand & Info -->
+          <div class="bg-[#02231A] p-4 rounded-xl space-y-3">
+            <div class="flex justify-between text-xs font-bold text-amber-300">
+              <span>Kartu Anda (SOUTH)</span>
+              <span>HCP: <strong id="bidding-hcp" class="text-emerald-400">16 Poin</strong></span>
+            </div>
+            <div id="bidding-hand" class="flex justify-center py-4 bg-[#033629] rounded-xl">
+              <!-- Hand cards -->
+            </div>
+            <div class="bg-[#044D39] p-3 rounded-lg text-xs space-y-1">
+              <p class="font-bold text-amber-300">💡 SAYC Guideline Tip:</p>
+              <p class="text-slate-200">Tangan ini memiliki 16 HCP dengan pola balanced (5-3-3-2). Pembukaan standar SAYC adalah <strong>1NT (15-17 HCP)</strong>.</p>
+            </div>
+          </div>
+
+          <!-- Right: Bidding Box & Auction Matrix -->
+          <div class="bg-[#02231A] p-4 rounded-xl space-y-3 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xs font-bold text-emerald-300 mb-2">Riwayat Bidding (Auction)</h3>
+              <div class="grid grid-cols-4 text-center text-xs font-extrabold text-amber-400 py-1 bg-[#033629] rounded-t-lg">
+                <div>NORTH</div><div>EAST</div><div>SOUTH</div><div>WEST</div>
+              </div>
+              <div id="bidding-history" class="grid grid-cols-4 text-center text-xs py-2 bg-[#02231A] border border-[#033629] rounded-b-lg gap-y-1">
+                <div class="text-slate-400">-</div><div class="text-slate-400">-</div><div class="text-emerald-300 font-bold">1NT</div><div class="text-slate-300">Pass</div>
+                <div class="text-slate-300">Pass</div><div class="text-slate-300">Pass</div><div></div><div></div>
+              </div>
+            </div>
+
+            <!-- Interactive Bidding Buttons -->
+            <div class="space-y-2">
+              <div class="text-xs font-bold text-slate-300">Pilih Bid Kamu:</div>
+              <div class="grid grid-cols-5 gap-1.5">
+                <button onclick="makeBid('1NT')" class="bg-amber-600 hover:bg-amber-500 font-bold py-1.5 rounded text-xs">1NT</button>
+                <button onclick="makeBid('1♠')" class="bg-slate-800 hover:bg-slate-700 font-bold py-1.5 rounded text-xs text-sky-400">1♠</button>
+                <button onclick="makeBid('2♣')" class="bg-slate-800 hover:bg-slate-700 font-bold py-1.5 rounded text-xs text-emerald-400">2♣</button>
+                <button onclick="makeBid('Pass')" class="bg-slate-700 hover:bg-slate-600 font-bold py-1.5 rounded text-xs">Pass</button>
+                <button onclick="makeBid('2NT')" class="bg-amber-600 hover:bg-amber-500 font-bold py-1.5 rounded text-xs">2NT</button>
+              </div>
+              <div id="bidding-feedback" class="text-xs p-2 rounded bg-emerald-900/60 border border-emerald-500 text-emerald-200 font-bold text-center">
+                ✅ Bid 1NT Sempurna! Sesuai standar 15-17 HCP balanced hand.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODE 3: FULL GAME VS BOT -->
+    <div id="view-fullgame" class="mode-view hidden space-y-3">
+      <div class="bg-[#033629] rounded-2xl p-4 shadow-xl max-w-5xl mx-auto border border-[#055C45]">
+        <div class="flex justify-between items-center text-xs mb-3 border-b border-[#044D39] pb-2">
+          <div class="flex items-center gap-3">
+            <span class="font-extrabold text-amber-300">🃏 FULL GAME SIMULATOR</span>
+            <span class="bg-[#02231A] text-emerald-300 px-2 py-0.5 rounded font-bold">Kontrak: 4♥ (South)</span>
+            <span class="text-slate-300">Trick: <strong>3 / 13</strong></span>
+          </div>
+          <button onclick="redealFullGame()" class="bg-[#059669] hover:bg-[#047857] px-3 py-1 rounded-lg font-bold">🔄 Match Baru</button>
+        </div>
+
+        <!-- NORTH (DUMMY) -->
+        <div class="flex flex-col items-center space-y-1 mb-2">
+          <span class="text-[11px] font-bold text-amber-300 bg-[#02231A] px-3 py-0.5 rounded-full">NORTH (Dummy - Terbuka)</span>
+          <div class="flex -space-x-12 bg-[#02231A] p-2 rounded-xl border border-[#044D39]">
+            <!-- Dummy hand -->
+            <div class="w-11 h-16 bg-white text-slate-900 rounded-md font-bold p-1 shadow flex flex-col justify-between text-xs"><span>A♠</span><span>♠</span></div>
+            <div class="w-11 h-16 bg-white text-slate-900 rounded-md font-bold p-1 shadow flex flex-col justify-between text-xs"><span>K♠</span><span>♠</span></div>
+            <div class="w-11 h-16 bg-white text-rose-600 rounded-md font-bold p-1 shadow flex flex-col justify-between text-xs"><span>Q♥</span><span>♥</span></div>
+            <div class="w-11 h-16 bg-white text-rose-600 rounded-md font-bold p-1 shadow flex flex-col justify-between text-xs"><span>J♥</span><span>♥</span></div>
+            <div class="w-11 h-16 bg-white text-amber-600 rounded-md font-bold p-1 shadow flex flex-col justify-between text-xs"><span>10♦</span><span>♦</span></div>
+          </div>
+        </div>
+
+        <!-- CENTER GAME ARENA -->
+        <div class="grid grid-cols-[80px_1fr_80px] items-center gap-2 bg-[#02231A] p-4 rounded-2xl shadow-inner min-h-[220px]">
+          <!-- WEST -->
+          <div class="text-center">
+            <span class="text-[11px] font-bold text-emerald-300 block mb-1">WEST</span>
+            <div class="w-10 h-14 bg-[#033629] rounded border border-emerald-800 mx-auto"></div>
+          </div>
+
+          <!-- TRICK PLAYED CARDS -->
+          <div class="flex justify-center items-center gap-3">
+            <div class="text-center space-y-1">
+              <span class="text-[10px] text-slate-400 block">West</span>
+              <div class="w-12 h-16 bg-white text-slate-900 rounded-lg p-1 font-bold text-xs shadow-md">8♠</div>
+            </div>
+            <div class="text-center space-y-1">
+              <span class="text-[10px] text-slate-400 block">North</span>
+              <div class="w-12 h-16 bg-white text-slate-900 rounded-lg p-1 font-bold text-xs shadow-md">K♠</div>
+            </div>
+            <div class="text-center space-y-1">
+              <span class="text-[10px] text-slate-400 block">East</span>
+              <div class="w-12 h-16 bg-white text-slate-900 rounded-lg p-1 font-bold text-xs shadow-md">3♠</div>
+            </div>
+            <div class="text-center space-y-1">
+              <span class="text-[10px] text-amber-300 block">South</span>
+              <div class="w-12 h-16 bg-white text-rose-600 rounded-lg p-1 font-bold text-xs shadow-md border-2 border-amber-400">A♥</div>
+            </div>
+          </div>
+
+          <!-- EAST -->
+          <div class="text-center">
+            <span class="text-[11px] font-bold text-emerald-300 block mb-1">EAST</span>
+            <div class="w-10 h-14 bg-[#033629] rounded border border-emerald-800 mx-auto"></div>
+          </div>
+        </div>
+
+        <!-- SOUTH (USER HAND) -->
+        <div class="flex flex-col items-center mt-3">
+          <span class="text-[11px] font-bold text-amber-300 mb-1">SOUTH (Pemain Anda) - Pilih Kartu Untuk Dimainkan</span>
+          <div class="hand-container overflow-visible py-2">
+            <div class="card-hand-item cursor-pointer hover:scale-105"><div class="w-14 h-20 bg-white text-rose-600 rounded-lg p-1.5 font-bold shadow-md border border-slate-300 flex flex-col justify-between"><span>A♥</span><span class="text-right">♥</span></div></div>
+            <div class="card-hand-item cursor-pointer hover:scale-105"><div class="w-14 h-20 bg-white text-rose-600 rounded-lg p-1.5 font-bold shadow-md border border-slate-300 flex flex-col justify-between"><span>K♥</span><span class="text-right">♥</span></div></div>
+            <div class="card-hand-item cursor-pointer hover:scale-105"><div class="w-14 h-20 bg-white text-rose-600 rounded-lg p-1.5 font-bold shadow-md border border-slate-300 flex flex-col justify-between"><span>10♥</span><span class="text-right">♥</span></div></div>
+            <div class="card-hand-item cursor-pointer hover:scale-105"><div class="w-14 h-20 bg-white text-amber-600 rounded-lg p-1.5 font-bold shadow-md border border-slate-300 flex flex-col justify-between"><span>A♦</span><span class="text-right">♦</span></div></div>
+            <div class="card-hand-item cursor-pointer hover:scale-105"><div class="w-14 h-20 bg-white text-emerald-600 rounded-lg p-1.5 font-bold shadow-md border border-slate-300 flex flex-col justify-between"><span>K♣</span><span class="text-right">♣</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODE 4: PUZZLES -->
+    <div id="view-puzzle" class="mode-view hidden space-y-4">
+      <div class="bg-[#033629] p-5 rounded-2xl shadow-xl max-w-4xl mx-auto border border-[#055C45]">
+        <div class="flex justify-between items-center border-b border-[#044D39] pb-3 mb-4">
+          <div>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">🧩 Bridge Puzzle #1</span>
+            <h2 class="text-xl font-extrabold text-white">The Heart Finesse Challenge</h2>
+          </div>
+          <span class="bg-[#D97706] text-white text-xs font-bold px-3 py-1 rounded-full">Target: Menangkan 2 Trick</span>
+        </div>
+
+        <div class="bg-[#02231A] p-5 rounded-xl space-y-4">
+          <p class="text-xs text-slate-200 leading-relaxed">
+            <strong>Misi:</strong> East memegang King of Hearts (K♥). Kamu memegang Ace (A♥) dan Jack (J♥) di South, serta Queen (Q♥) di North (Dummy). Temukan urutan memainkan kartu agar bisa menjebak (finesse) K♥ lawan!
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 bg-[#033629] p-4 rounded-xl">
+            <div class="text-center">
+              <span class="text-xs font-bold text-amber-300 block mb-2">North (Dummy)</span>
+              <div class="flex justify-center gap-2">
+                <button onclick="playPuzzleCard('Q♥')" class="w-12 h-16 bg-white text-rose-600 font-bold rounded-lg shadow hover:scale-110 transition">Q♥</button>
+                <button onclick="playPuzzleCard('5♥')" class="w-12 h-16 bg-white text-rose-600 font-bold rounded-lg shadow hover:scale-110 transition">5♥</button>
+              </div>
+            </div>
+            <div class="text-center">
+              <span class="text-xs font-bold text-amber-300 block mb-2">South (Anda)</span>
+              <div class="flex justify-center gap-2">
+                <button onclick="playPuzzleCard('A♥')" class="w-12 h-16 bg-white text-rose-600 font-bold rounded-lg shadow hover:scale-110 transition">A♥</button>
+                <button onclick="playPuzzleCard('J♥')" class="w-12 h-16 bg-white text-rose-600 font-bold rounded-lg shadow hover:scale-110 transition">J♥</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="puzzle-feedback" class="p-3 bg-[#044D39] rounded-xl text-xs text-center text-amber-300 font-bold">
+            💡 Tips: Lead (mainkan pertama) kartu kecil dari South menuju Queen di North!
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full max-w-6xl mx-auto text-center py-2 text-[11px] text-emerald-300/80">
+    Bridge From Zero • Integrated 4 Main Game Modes Engine
+  </footer>
+
+  <!-- SCRIPT UNTUK NAVIGATION & DYNAMIC DEMO -->
+  <script>
+    let currentMode = 'learning';
+    let currentModule = 1;
+    let currentStep = 1;
+
+    const moduleData = {
+      1: {
+        title: "Modul 1: Pengenalan Kartu & Symbol",
+        steps: [
+          `<div>
+            <h3 class="font-bold text-amber-300 text-sm mb-2">1. Hirarki Kartu & 4 Suit (Lambang)</h3>
+            <p class="text-xs text-slate-300 mb-3">Bridge menggunakan 52 kartu standar yang dibagi menjadi 4 Warna/Suit:</p>
+            <div class="grid grid-cols-4 gap-2 text-center text-xs font-bold">
+              <div class="bg-[#033629] p-3 rounded-lg border border-slate-600 text-slate-100">♠ Spade (Navy)</div>
+              <div class="bg-[#033629] p-3 rounded-lg border border-rose-800 text-rose-400">♥ Heart (Crimson)</div>
+              <div class="bg-[#033629] p-3 rounded-lg border border-amber-700 text-amber-400">♦ Diamond (Amber)</div>
+              <div class="bg-[#033629] p-3 rounded-lg border border-emerald-700 text-emerald-400">♣ Club (Emerald)</div>
+            </div>
+          </div>`,
+          `<div>
+            <h3 class="font-bold text-amber-300 text-sm mb-2">2. Major Suit vs Minor Suit</h3>
+            <p class="text-xs text-slate-300 mb-3">Spade (♠) & Heart (♥) adalah <strong>Major Suits</strong> (skor tinggi). Diamond (♦) & Club (♣) adalah <strong>Minor Suits</strong>.</p>
+            <div class="p-3 bg-[#033629] rounded-lg text-xs text-emerald-200">
+              💡 Major Suits memberikan 30 poin per trick di atas 6, sedangkan Minor Suits memberikan 20 poin.
+            </div>
+          </div>`,
+          `<div>
+            <h3 class="font-bold text-amber-300 text-sm mb-2">3. Kuis Interaktif Pengenalan</h3>
+            <p class="text-xs text-slate-300 mb-3">Manakah yang termasuk Major Suit dalam Bridge?</p>
+            <div class="flex gap-2">
+              <button onclick="alert('✅ Benar! Heart & Spade adalah Major Suit!')" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-600 rounded-lg text-xs font-bold">Spade & Heart</button>
+              <button onclick="alert('❌ Salah! Diamond & Club adalah Minor Suit.')" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-bold">Diamond & Club</button>
+            </div>
+          </div>`
+        ]
+      },
+      2: {
+        title: "Modul 2: Fit & Pencocokan Kartu",
+        steps: [
+          `<div>
+            <h3 class="font-bold text-amber-300 text-sm mb-2">1. Konsep 8-Card Fit</h3>
+            <p class="text-xs text-slate-300 mb-3">Kemitraan (North & South) membutuhkan total minimal <strong>8 kartu</strong> dalam satu suit yang sama untuk dijadikan Trump (Fit).</p>
+          </div>`,
+          `<div>
+            <h3 class="font-bold text-amber-300 text-sm mb-2">2. No-Trump (NT) Contract</h3>
+            <p class="text-xs text-slate-300 mb-3">Jika tidak ada 8-Card Fit, mainkan kontrak No-Trump (NT) di mana tidak ada warna truf.</p>
+          </div>`
+        ]
+      },
+      3: {
+        title: "Modul 3: Menghitung Poin Kartu (HCP)",
+        steps: [
+          `<div>
+            <h3 class="font-bold text-amber-300 text-sm mb-2">1. High Card Points (HCP)</h3>
+            <div class="grid grid-cols-4 gap-2 text-center text-xs font-extrabold my-3">
+              <div class="bg-[#033629] p-3 rounded-lg text-amber-300">Ace (A) = 4 HCP</div>
+              <div class="bg-[#033629] p-3 rounded-lg text-amber-300">King (K) = 3 HCP</div>
+              <div class="bg-[#033629] p-3 rounded-lg text-amber-300">Queen (Q) = 2 HCP</div>
+              <div class="bg-[#033629] p-3 rounded-lg text-amber-300">Jack (J) = 1 HCP</div>
+            </div>
+          </div>`
+        ]
+      }
+    };
+
+    function switchMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.mode-view').forEach(v => v.classList.add('hidden'));
+
+      document.getElementById(`tab-${mode}`).classList.add('active');
+      document.getElementById(`view-${mode}`).classList.remove('hidden');
+    }
+
+    function setModule(mod) {
+      currentModule = mod;
+      currentStep = 1;
+      renderModule();
+    }
+
+    function renderModule() {
+      const data = moduleData[currentModule];
+      document.getElementById('module-title').innerText = data.title;
+      document.getElementById('module-content').innerHTML = data.steps[currentStep - 1];
+      document.getElementById('step-indicator').innerText = `Langkah ${currentStep} dari ${data.steps.length}`;
+    }
+
+    function nextStep() {
+      if (currentStep < moduleData[currentModule].steps.length) {
+        currentStep++;
+        renderModule();
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        renderModule();
+      }
+    }
+
+    function makeBid(bid) {
+      const feedback = document.getElementById('bidding-feedback');
+      if (bid === '1NT') {
+        feedback.className = "text-xs p-2 rounded bg-emerald-900/80 border border-emerald-400 text-emerald-200 font-bold text-center";
+        feedback.innerText = "✅ Bid 1NT Sempurna! Sesuai standar SAYC 15-17 HCP balanced hand.";
+      } else {
+        feedback.className = "text-xs p-2 rounded bg-amber-900/80 border border-amber-400 text-amber-200 font-bold text-center";
+        feedback.innerText = `💡 Bid ${bid} kurang tepat. Dengan 16 HCP balanced, 1NT adalah pilihan terbaik.`;
+      }
+    }
+
+    function playPuzzleCard(card) {
+      const feedback = document.getElementById('puzzle-feedback');
+      if (card === 'Q♥') {
+        feedback.className = "p-3 bg-emerald-900/80 border border-emerald-400 rounded-xl text-xs text-center text-emerald-200 font-bold";
+        feedback.innerText = "🎉 BERHASIL! Q♥ memancing K♥ milik East dan memenangkan trick!";
+      } else {
+        feedback.innerText = `Memainkan ${card}... Cobalah memimpin kartu rendah dari South dulu!`;
+      }
+    }
+
+    function toggleAiModal() {
+      alert("💡 AI Pelatih Gemini: 'Dalam posisi ini, evaluasi jumlah High Card Points (HCP) dan distribusi warna kartu Anda!'");
+    }
+
+    // Init Modul 1
+    renderModule();
+  </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Simulasikan Step 4.1: Dealer & Evaluator Kartu 4 Arah</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#F1F5F9] text-slate-800 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+  <!-- Header Control Demo Step 4.1 -->
+  <header class="w-full max-w-4xl mx-auto flex flex-col space-y-3 py-2 px-1">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <span class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+          STEP 4.1: DEALER ENGINE & HAND EVALUATOR
+        </span>
+      </div>
+      <button onclick="dealNewHand()" class="bg-[#059669] hover:bg-[#047857] text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow transition border border-emerald-600 flex items-center gap-1.5">
+        <span>🎴</span>
+        <span>KOCOK & BAGI KARTU BARU</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- KONTEN STATISTIK 4 MATA ANGIN -->
+  <main class="flex-1 max-w-4xl mx-auto w-full flex flex-col items-center justify-center my-2 sm:my-4 space-y-4">
+    
+    <!-- STATISTIK RINGKAS 4 MATA ANGIN (HCP & DISTRIBUSI) -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full">
+      <!-- NORTH -->
+      <div class="bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm space-y-1">
+        <span class="text-xs font-bold text-slate-500">NORTH (Partner)</span>
+        <div class="flex justify-between items-center">
+          <span id="hcp-north" class="text-lg font-extrabold text-emerald-700">12 HCP</span>
+          <span id="dist-north" class="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">4-3-3-3</span>
+        </div>
+      </div>
+
+      <!-- SOUTH -->
+      <div class="bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm space-y-1">
+        <span class="text-xs font-bold text-slate-500">SOUTH (Anda)</span>
+        <div class="flex justify-between items-center">
+          <span id="hcp-south" class="text-lg font-extrabold text-emerald-700">14 HCP</span>
+          <span id="dist-south" class="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">5-4-2-2</span>
+        </div>
+      </div>
+
+      <!-- EAST -->
+      <div class="bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm space-y-1">
+        <span class="text-xs font-bold text-slate-500">EAST (Lawan Kanan)</span>
+        <div class="flex justify-between items-center">
+          <span id="hcp-east" class="text-lg font-extrabold text-emerald-700">8 HCP</span>
+          <span id="dist-east" class="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">4-4-3-2</span>
+        </div>
+      </div>
+
+      <!-- WEST -->
+      <div class="bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm space-y-1">
+        <span class="text-xs font-bold text-slate-500">WEST (Lawan Kiri)</span>
+        <div class="flex justify-between items-center">
+          <span id="hcp-west" class="text-lg font-extrabold text-emerald-700">6 HCP</span>
+          <span id="dist-west" class="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">5-3-3-2</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PENGUJIAN LOGIKA SUMMARY KARTU SOUTH -->
+    <div class="w-full bg-white border border-slate-200 rounded-3xl p-5 shadow-xl space-y-3">
+      <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+        <span class="text-xs font-extrabold text-slate-900 tracking-wider">📋 HASIL PENGURUTAN KARTU SOUTH DI TANGAN:</span>
+        <span class="text-xs font-bold text-emerald-700">Total Pas 52 Kartu Terbagi 13/Pemain</span>
+      </div>
+
+      <!-- Teks Notasi PBN Standard Bridge -->
+      <div class="bg-[#F8FAFC] border border-slate-200 p-3.5 rounded-2xl font-mono text-xs text-slate-800 space-y-1.5">
+        <div class="flex items-center space-x-2"><span class="font-bold text-[#1E293B] w-12">♠ Spade:</span><span id="cards-spade" class="font-bold">A K J 8 3</span></div>
+        <div class="flex items-center space-x-2"><span class="font-bold text-[#E11D48] w-12">♥ Heart:</span><span id="cards-heart" class="font-bold">Q 7 2</span></div>
+        <div class="flex items-center space-x-2"><span class="font-bold text-[#D97706] w-12">♦ Diamond:</span><span id="cards-diamond" class="font-bold">K 9 4</span></div>
+        <div class="flex items-center space-x-2"><span class="font-bold text-[#059669] w-12">♣ Club:</span><span id="cards-club" class="font-bold">10 5</span></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const suits = ['spades', 'hearts', 'diamonds', 'clubs'];
+    const ranks = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
+    const hcpMap = { 'A': 4, 'K': 3, 'Q': 2, 'J': 1 };
+
+    function createDeck() {
+      const deck = [];
+      suits.forEach(s => {
+        ranks.forEach(r => {
+          deck.push({ suit: s, rank: r, hcp: hcpMap[r] || 0 });
+        });
+      });
+      return deck;
+    }
+
+    function shuffle(deck) {
+      const shuffled = [...deck];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    function evalHand(hand) {
+      let hcp = 0;
+      let count = { spades: 0, hearts: 0, diamonds: 0, clubs: 0 };
+      let holdings = { spades: [], hearts: [], diamonds: [], clubs: [] };
+
+      hand.forEach(c => {
+        hcp += c.hcp;
+        count[c.suit]++;
+        holdings[c.suit].push(c.rank);
+      });
+
+      const distArr = Object.values(count).sort((a, b) => b - a).join('-');
+      return { hcp, dist: distArr, holdings };
+    }
+
+    function dealNewHand() {
+      const deck = shuffle(createDeck());
+      const hands = {
+        south: deck.slice(0, 13),
+        north: deck.slice(13, 26),
+        east: deck.slice(26, 39),
+        west: deck.slice(39, 52)
+      };
+
+      ['south', 'north', 'east', 'west'].forEach(pos => {
+        const res = evalHand(hands[pos]);
+        document.getElementById(`hcp-${pos}`).innerText = `${res.hcp} HCP`;
+        document.getElementById(`dist-${pos}`).innerText = res.dist;
+        
+        if(pos === 'south') {
+          document.getElementById('cards-spade').innerText = res.holdings.spades.join(' ') || '-';
+          document.getElementById('cards-heart').innerText = res.holdings.hearts.join(' ') || '-';
+          document.getElementById('cards-diamond').innerText = res.holdings.diamonds.join(' ') || '-';
+          document.getElementById('cards-club').innerText = res.holdings.clubs.join(' ') || '-';
+        }
+      });
+    }
+
+    // Run first deal
+    dealNewHand();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Template Resmi Modul Edukasi (Light Ivory Clean)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#F1F5F9] text-slate-800 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+  <!-- Header Navigation & Progress Bar -->
+  <header class="w-full max-w-4xl mx-auto flex flex-col space-y-3 py-2 px-1">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <span class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+          MODUL 1: PENGENALAN KARTU & SIMBOL
+        </span>
+      </div>
+      <span class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200 font-bold">
+        Tingkat 1 (Pemula)
+      </span>
+    </div>
+
+    <!-- Progress Bar Modul -->
+    <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden border border-slate-300">
+      <div class="bg-gradient-to-r from-emerald-500 to-amber-500 h-full w-1/3 transition-all duration-500"></div>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA MODUL 1 (TEMPLATE RESMI LIGHT IVORY CLEAN) -->
+  <main class="flex-1 max-w-3xl mx-auto w-full flex flex-col items-center justify-center my-4">
+    
+    <div class="w-full bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-8 shadow-xl flex flex-col space-y-6">
+      
+      <!-- Pengenalan 4 Simbol Suit -->
+      <div class="space-y-3">
+        <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
+          <span>♦️</span> 1. Simbol Kartu Bridge (4-Color Muted Deck)
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+          Dalam permainan Bridge, 52 kartu dibagi menjadi 4 simbol (suit). Setiap simbol memiliki hirarki dan warna khusus:
+        </p>
+
+        <!-- Card Grid 4 Simbol -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+          
+          <!-- Spade -->
+          <div class="bg-[#F8FAFC] border border-slate-200 p-3.5 rounded-2xl flex flex-col items-center space-y-1 shadow-sm transform hover:-translate-y-1 transition">
+            <span class="text-4xl text-[#1E293B] font-bold">♠</span>
+            <span class="font-extrabold text-sm text-slate-900">Spade (Sekop)</span>
+            <span class="text-[10px] text-slate-500 font-bold">Tinggi #1 (Major)</span>
+          </div>
+
+          <!-- Heart -->
+          <div class="bg-[#F8FAFC] border border-slate-200 p-3.5 rounded-2xl flex flex-col items-center space-y-1 shadow-sm transform hover:-translate-y-1 transition">
+            <span class="text-4xl text-[#E11D48] font-bold">♥</span>
+            <span class="font-extrabold text-sm text-slate-900">Heart (Hati)</span>
+            <span class="text-[10px] text-slate-500 font-bold">Tinggi #2 (Major)</span>
+          </div>
+
+          <!-- Diamond -->
+          <div class="bg-[#F8FAFC] border border-slate-200 p-3.5 rounded-2xl flex flex-col items-center space-y-1 shadow-sm transform hover:-translate-y-1 transition">
+            <span class="text-4xl text-[#D97706] font-bold">♦</span>
+            <span class="font-extrabold text-sm text-slate-900">Diamond (Wajik)</span>
+            <span class="text-[10px] text-slate-500 font-bold">Tinggi #3 (Minor)</span>
+          </div>
+
+          <!-- Club -->
+          <div class="bg-[#F8FAFC] border border-slate-200 p-3.5 rounded-2xl flex flex-col items-center space-y-1 shadow-sm transform hover:-translate-y-1 transition">
+            <span class="text-4xl text-[#059669] font-bold">♣</span>
+            <span class="font-extrabold text-sm text-slate-900">Club (Keriting)</span>
+            <span class="text-[10px] text-slate-500 font-bold">Tinggi #4 (Minor)</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- KUIS SOAL INTERAKTIF LANGSUNG -->
+      <div class="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold text-amber-600 tracking-wider">🎯 KUIS CEPAT MODUL 1</span>
+          <span class="text-[10px] text-slate-500 font-bold">Soal 1 dari 3</span>
+        </div>
+
+        <p class="text-xs sm:text-sm font-bold text-slate-900">
+          Manakah di bawah ini yang merupakan simbol <strong class="text-amber-600">Major Suit (Simbol Bernilai Tinggi)</strong>?
+        </p>
+
+        <!-- Opsi Jawaban Kuis -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+          <button onclick="answerQuiz(true)" class="bg-white hover:bg-emerald-50 text-left p-3.5 rounded-xl border border-slate-300 transition flex items-center justify-between group shadow-sm">
+            <span class="text-xs font-bold text-slate-800 group-hover:text-emerald-900">A. Spades (♠) & Hearts (♥)</span>
+            <span class="text-xs text-slate-400 group-hover:text-emerald-600">➔</span>
+          </button>
+          <button onclick="answerQuiz(false)" class="bg-white hover:bg-emerald-50 text-left p-3.5 rounded-xl border border-slate-300 transition flex items-center justify-between group shadow-sm">
+            <span class="text-xs font-bold text-slate-800 group-hover:text-emerald-900">B. Clubs (♣) & Diamonds (♦)</span>
+            <span class="text-xs text-slate-400 group-hover:text-emerald-600">➔</span>
+          </button>
+        </div>
+
+        <!-- Umpan Balik Jawaban -->
+        <div id="quiz-feedback" class="hidden p-3 rounded-xl text-xs font-bold transition"></div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer Navigation Modul -->
+  <footer class="max-w-3xl mx-auto w-full flex justify-between items-center pt-2">
+    <button disabled class="bg-slate-200 text-slate-400 text-xs font-bold px-4 py-2 rounded-xl cursor-not-allowed border border-slate-300">
+      ⬅️ Sebelumnya
+    </button>
+    <button class="bg-[#059669] hover:bg-[#047857] text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md transition">
+      Modul Berikutnya ➔
+    </button>
+  </footer>
+
+  <script>
+    function answerQuiz(isCorrect) {
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.classList.remove('hidden', 'bg-emerald-100', 'bg-rose-100', 'text-emerald-900', 'text-rose-900', 'border-emerald-300', 'border-rose-300');
+      
+      if (isCorrect) {
+        feedback.className = 'p-3 rounded-xl text-xs font-bold transition bg-emerald-100 border border-emerald-300 text-emerald-900 block';
+        feedback.innerHTML = '🎉 <strong>BENAR!</strong> Spades (♠) dan Hearts (♥) adalah Major Suit (bernilai tinggi dalam Bridge).';
+      } else {
+        feedback.className = 'p-3 rounded-xl text-xs font-bold transition bg-rose-100 border border-rose-300 text-rose-900 block';
+        feedback.innerHTML = '❌ <strong>KURANG TEPAT!</strong> Clubs (♣) & Diamonds (♦) merupakan Minor Suit. Major Suit adalah Spades (♠) & Hearts (♥).';
+      }
+    }
+  </script>
+
+</body>
+</html>

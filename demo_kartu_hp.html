@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pratinjau Layout HP (Mobile Hand Fan-out) - Bridge From Zero</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    
+    /* Layout Kipas Kartu di Layar HP (Tight Mobile Hand Overlap) */
+    .mobile-hand-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      width: 100%;
+      padding-top: 30px;
+      padding-bottom: 10px;
+    }
+    
+    /* Tumpukan kartu di HP (saling menumpuk rapat) */
+    .mobile-card-item {
+      margin-left: -48px; /* Tumpukan sangat rapat di HP agar 13 kartu muat */
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+    }
+    .mobile-card-item:first-child {
+      margin-left: 0;
+    }
+    
+    /* Efek Sentuh / Lift Kartu di HP */
+    .mobile-card-item:active,
+    .mobile-card-item:hover {
+      transform: translateY(-28px) scale(1.1);
+      z-index: 99 !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#0B231B] text-slate-100 min-h-screen flex justify-center items-center p-3 select-none">
+
+  <!-- FRAME EMBULATOR HP (Simulasi Layar Smartphone 390px x 844px) -->
+  <div class="w-full max-w-[390px] h-[780px] bg-[#0D3B2E] border-4 border-slate-700 rounded-[40px] shadow-2xl flex flex-col justify-between p-4 relative overflow-hidden ring-1 ring-slate-600">
+    
+    <!-- Notch / Camera Bar HP -->
+    <div class="absolute top-2 left-1/2 -translate-x-1/2 w-28 h-4 bg-slate-800 rounded-full z-50"></div>
+
+    <!-- Header HP -->
+    <header class="pt-4 flex justify-between items-center text-xs">
+      <span class="font-extrabold text-white tracking-wider flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        BRIDGE FROM ZERO
+      </span>
+      <span class="bg-[#14352A] px-2.5 py-1 rounded text-emerald-200 text-[10px] border border-emerald-800">
+        🇮🇩 ID
+      </span>
+    </header>
+
+    <!-- Meja Tengah (Simulasi Play Area di HP) -->
+    <div class="flex-1 flex flex-col items-center justify-center relative my-2">
+      
+      <!-- Info Kontrak Ringkas di HP -->
+      <div class="bg-[#061812]/90 text-slate-200 text-[11px] px-3 py-1 rounded-full border border-emerald-900 mb-4 flex space-x-2">
+        <span>Kontrak: <strong class="text-amber-400">1NT</strong></span>
+        <span>•</span>
+        <span>Trick: <strong class="text-white">3/13</strong></span>
+      </div>
+
+      <!-- Area 4 Kartu di Meja HP -->
+      <div class="grid grid-cols-2 gap-2.5 scale-90">
+        <!-- North -->
+        <div class="w-20 h-28 bg-white rounded-lg shadow border border-slate-200 flex flex-col justify-between p-1.5">
+          <div class="text-[#1E293B] font-bold text-xs leading-none">A<br>♠</div>
+          <div class="text-[#1E293B] text-2xl text-center">♠</div>
+          <div class="text-[#1E293B] font-bold text-xs leading-none text-right">♠<br>A</div>
+        </div>
+        <!-- East -->
+        <div class="w-20 h-28 bg-white rounded-lg shadow border border-slate-200 flex flex-col justify-between p-1.5">
+          <div class="text-[#E11D48] font-bold text-xs leading-none">K<br>♥</div>
+          <div class="text-[#E11D48] text-2xl text-center">♥</div>
+          <div class="text-[#E11D48] font-bold text-xs leading-none text-right">♥<br>K</div>
+        </div>
+        <!-- West -->
+        <div class="w-20 h-28 bg-white rounded-lg shadow border border-slate-200 flex flex-col justify-between p-1.5">
+          <div class="text-[#059669] font-bold text-xs leading-none">J<br>♣</div>
+          <div class="text-[#059669] text-2xl text-center">♣</div>
+          <div class="text-[#059669] font-bold text-xs leading-none text-right">♣<br>J</div>
+        </div>
+        <!-- South (Played) -->
+        <div class="w-20 h-28 bg-white rounded-lg shadow border-2 border-amber-500 flex flex-col justify-between p-1.5 ring-2 ring-amber-500/20">
+          <div class="text-[#D97706] font-bold text-xs leading-none">Q<br>♦</div>
+          <div class="text-[#D97706] text-2xl text-center">♦</div>
+          <div class="text-[#D97706] font-bold text-xs leading-none text-right">♦<br>Q</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- AREA TANGAN PEMAIN DI HP (13 KARTU TERPAS KIPAS RAPAT) -->
+    <div class="w-full bg-[#071E17] rounded-2xl border border-emerald-900/80 p-2 shadow-2xl">
+      <div class="text-[10px] text-emerald-300 font-bold mb-1 px-1 flex justify-between">
+        <span>TANGAN ANDA (13 KARTU):</span>
+        <span class="text-amber-400">Ketuk kartu untuk pilih</span>
+      </div>
+
+      <!-- Kipas 13 Kartu Rapat di HP -->
+      <div class="mobile-hand-container">
+        
+        <!-- Spades (3 Kartu) -->
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-10">
+          <div class="text-[#1E293B] font-extrabold text-[11px] leading-none">A<br><span class="text-[10px]">♠</span></div>
+          <div class="text-[#1E293B] text-base text-center font-bold">♠</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] leading-none text-right">♠<br>A</div>
+        </div>
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-11">
+          <div class="text-[#1E293B] font-extrabold text-[11px] leading-none">K<br><span class="text-[10px]">♠</span></div>
+          <div class="text-[#1E293B] text-base text-center font-bold">♠</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] leading-none text-right">♠<br>K</div>
+        </div>
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-12">
+          <div class="text-[#1E293B] font-extrabold text-[11px] leading-none">10<br><span class="text-[10px]">♠</span></div>
+          <div class="text-[#1E293B] text-sm text-center font-bold">10</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] leading-none text-right">♠<br>10</div>
+        </div>
+
+        <!-- Hearts (4 Kartu - 1 Selected) -->
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-13">
+          <div class="text-[#E11D48] font-extrabold text-[11px] leading-none">Q<br><span class="text-[10px]">♥</span></div>
+          <div class="text-[#E11D48] text-base text-center font-bold">♥</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] leading-none text-right">♥<br>Q</div>
+        </div>
+        <!-- SELECTED ITEM TERANGKAT DI HP -->
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-xl border-2 border-amber-500 flex flex-col justify-between p-1 cursor-pointer z-14 transform -translate-y-5 ring-2 ring-amber-500/30">
+          <div class="text-[#E11D48] font-extrabold text-[11px] leading-none">J<br><span class="text-[10px]">♥</span></div>
+          <div class="text-[#E11D48] text-base text-center font-bold">♥</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] leading-none text-right">♥<br>J</div>
+        </div>
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-15">
+          <div class="text-[#E11D48] font-extrabold text-[11px] leading-none">7<br><span class="text-[10px]">♥</span></div>
+          <div class="text-[#E11D48] text-sm text-center font-bold">7</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] leading-none text-right">♥<br>7</div>
+        </div>
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-16">
+          <div class="text-[#E11D48] font-extrabold text-[11px] leading-none">3<br><span class="text-[10px]">♥</span></div>
+          <div class="text-[#E11D48] text-sm text-center font-bold">3</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] leading-none text-right">♥<br>3</div>
+        </div>
+
+        <!-- Diamonds (3 Kartu) -->
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-17">
+          <div class="text-[#D97706] font-extrabold text-[11px] leading-none">A<br><span class="text-[10px]">♦</span></div>
+          <div class="text-[#D97706] text-base text-center font-bold">♦</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] leading-none text-right">♦<br>A</div>
+        </div>
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-18">
+          <div class="text-[#D97706] font-extrabold text-[11px] leading-none">8<br><span class="text-[10px]">♦</span></div>
+          <div class="text-[#D97706] text-sm text-center font-bold">8</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] leading-none text-right">♦<br>8</div>
+        </div>
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-19">
+          <div class="text-[#D97706] font-extrabold text-[11px] leading-none">2<br><span class="text-[10px]">♦</span></div>
+          <div class="text-[#D97706] text-sm text-center font-bold">2</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] leading-none text-right">♦<br>2</div>
+        </div>
+
+        <!-- Clubs (3 Kartu) -->
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-20">
+          <div class="text-[#059669] font-extrabold text-[11px] leading-none">K<br><span class="text-[10px]">♣</span></div>
+          <div class="text-[#059669] text-base text-center font-bold">♣</div>
+          <div class="text-[#059669] font-extrabold text-[11px] leading-none text-right">♣<br>K</div>
+        </div>
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-21">
+          <div class="text-[#059669] font-extrabold text-[11px] leading-none">9<br><span class="text-[10px]">♣</span></div>
+          <div class="text-[#059669] text-sm text-center font-bold">9</div>
+          <div class="text-[#059669] font-extrabold text-[11px] leading-none text-right">♣<br>9</div>
+        </div>
+        <div class="mobile-card-item w-16 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex flex-col justify-between p-1 cursor-pointer z-22">
+          <div class="text-[#059669] font-extrabold text-[11px] leading-none">5<br><span class="text-[10px]">♣</span></div>
+          <div class="text-[#059669] text-sm text-center font-bold">5</div>
+          <div class="text-[#059669] font-extrabold text-[11px] leading-none text-right">♣<br>5</div>
+        </div>
+
+      </div>
+
+      <!-- Tombol Aksi di Layar HP -->
+      <div class="mt-2 pt-2 border-t border-emerald-900 flex justify-between items-center gap-2">
+        <button class="bg-[#14352A] text-emerald-100 text-[10px] font-bold px-3 py-1.5 rounded-lg border border-emerald-800">
+          ↩ Undo
+        </button>
+        <button class="bg-white text-slate-800 text-[10px] font-extrabold px-3 py-1.5 rounded-lg shadow border border-slate-200">
+          🎴 Bidding Box
+        </button>
+        <button class="bg-[#059669] text-white text-[10px] font-extrabold px-4 py-1.5 rounded-lg shadow">
+          Mainkan ➔
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

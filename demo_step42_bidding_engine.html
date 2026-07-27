@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Step 4.2: PBN Matrix Auction Table (North, East, South, West Grid)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#F1F5F9] text-slate-800 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+  <!-- Header Navigation -->
+  <header class="w-full max-w-4xl mx-auto flex flex-col space-y-3 py-2 px-1">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <span class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+          STEP 4.2: PBN MATRIKS TABEL AUCTION (OFFSETS ALIGNMENT)
+        </span>
+      </div>
+
+      <!-- KONTROL PEMILIHAN DEALER PERTAMA -->
+      <div class="flex items-center space-x-2">
+        <span class="text-xs font-bold text-slate-600">Pilih Dealer Pertama:</span>
+        <select id="dealer-select" onchange="resetAuction()" class="bg-white border border-slate-300 text-xs font-extrabold px-3 py-1.5 rounded-xl text-slate-800 shadow-sm">
+          <option value="west">WEST (Baris 1 Kosong 3 Kolom)</option>
+          <option value="east">EAST (Baris 1 Kosong 1 Kolom)</option>
+          <option value="north" selected>NORTH (Baris 1 Penuh)</option>
+          <option value="south">SOUTH (Baris 1 Kosong 2 Kolom)</option>
+        </select>
+        <button onclick="resetAuction()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow transition border border-slate-600">
+          🔄 RESET
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA: TABEL MATRIKS MATERI RESMI BRIDGE PBN (NORTH, EAST, SOUTH, WEST) -->
+  <main class="flex-1 max-w-4xl mx-auto w-full flex flex-col items-center justify-center my-2 sm:my-4 space-y-4">
+    
+    <!-- MEJA RECORD RIWAYAT AUCTION MATRIKS PBN -->
+    <div class="w-full bg-[#0B231B] border border-emerald-900 rounded-3xl p-4 sm:p-6 shadow-2xl space-y-4">
+      
+      <div class="flex justify-between items-center border-b border-emerald-800/80 pb-3">
+        <span class="text-xs font-extrabold text-amber-400 flex items-center gap-2">
+          <span>📜 TABEL AUCTION MATRIKS RESMI</span>
+          <span id="dealer-badge" class="bg-emerald-900 text-emerald-300 px-2 py-0.5 rounded text-[11px]">Dealer: WEST</span>
+        </span>
+        <span id="turn-indicator" class="text-xs font-bold bg-emerald-900 text-emerald-200 px-3 py-1 rounded-full border border-emerald-700">
+          Giliran: WEST
+        </span>
+      </div>
+
+      <!-- MATRIKS TABEL REAL RESMI BRIDGE: NORTH | EAST | SOUTH | WEST -->
+      <div class="bg-[#071E17] p-3 rounded-2xl border border-emerald-800/80 overflow-x-auto">
+        <table class="w-full text-center border-collapse">
+          <thead>
+            <tr class="border-b border-emerald-800 text-xs font-extrabold">
+              <th class="py-1.5 text-slate-300 w-1/4">NORTH</th>
+              <th class="py-1.5 text-slate-300 w-1/4">EAST</th>
+              <th class="py-1.5 text-emerald-400 w-1/4">SOUTH (Anda)</th>
+              <th class="py-1.5 text-slate-300 w-1/4">WEST</th>
+            </tr>
+          </thead>
+          <tbody id="auction-table-body" class="text-xs font-bold text-slate-200 divide-y divide-emerald-950">
+            <!-- Render matriks baris auction dinamis -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- STATUS FINAL CONTRACT BANNER -->
+      <div id="contract-banner" class="hidden bg-emerald-900/90 border border-emerald-500 p-4 rounded-2xl text-center space-y-1">
+        <span class="text-xs font-bold text-emerald-300 tracking-wider">🏆 AUCTION SELESAI (3x PASS BERTURUT-TURUT)!</span>
+        <div id="contract-result" class="text-lg font-extrabold text-amber-400">FINAL CONTRACT: --</div>
+      </div>
+
+      <!-- BIDDING BOX STREAMLINED -->
+      <div id="bidding-box-panel" class="w-full max-w-lg mx-auto bg-[#071E17] border border-emerald-800 rounded-2xl p-3 shadow-xl space-y-2.5">
+        
+        <!-- BARIS 1: LEVEL (1-7) -->
+        <div class="flex justify-between items-center gap-1.5">
+          <span class="text-[10px] font-extrabold text-slate-400 w-10">LEVEL:</span>
+          <div id="level-buttons" class="flex-1 grid grid-cols-7 gap-1"></div>
+        </div>
+
+        <!-- BARIS 2: SUIT (♣ ♦ ♥ ♠ NT) -->
+        <div class="flex justify-between items-center gap-1.5">
+          <span class="text-[10px] font-extrabold text-slate-400 w-10">SUIT:</span>
+          <div id="suit-buttons" class="flex-1 grid grid-cols-5 gap-1"></div>
+        </div>
+
+        <!-- BARIS 3: SPECIAL CALLS (PASS, DBL, RDBL) -->
+        <div class="flex justify-between items-center gap-2 pt-1 border-t border-emerald-900/80">
+          <button onclick="placeSpecialCall('PASS')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-2 rounded-xl text-xs shadow transition">
+            PASS
+          </button>
+          <button id="btn-dbl" onclick="placeSpecialCall('DBL')" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white font-extrabold py-2 rounded-xl text-xs shadow transition">
+            DBL
+          </button>
+          <button id="btn-rdbl" onclick="placeSpecialCall('RDBL')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-2 rounded-xl text-xs shadow transition">
+            RDBL
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    const suits = [
+      { code: '♣', name: 'clubs', order: 1, color: '#059669' },
+      { code: '♦', name: 'diamonds', order: 2, color: '#D97706' },
+      { code: '♥', name: 'hearts', order: 3, color: '#E11D48' },
+      { code: '♠', name: 'spades', order: 4, color: '#1E293B' },
+      { code: 'NT', name: 'nt', order: 5, color: '#1E293B' }
+    ];
+
+    // ROTASI RESMI BRIDGE: NORTH (0), EAST (1), SOUTH (2), WEST (3)
+    const POSITIONS = ['north', 'east', 'south', 'west'];
+    
+    let dealerPos = 'north';
+    let currentTurnIdx = 0; // Index relative to POSITIONS array
+    let history = [];
+    let passStreak = 0;
+    let lastContractBid = null;
+    let selectedLevel = null;
+    let isFinished = false;
+
+    function getBidValue(level, suitOrder) {
+      return (level - 1) * 5 + suitOrder;
+    }
+
+    function renderBiddingBox() {
+      // 1. Render Level Buttons (1-7)
+      const levelContainer = document.getElementById('level-buttons');
+      levelContainer.innerHTML = '';
+
+      for (let lvl = 1; lvl <= 7; lvl++) {
+        const btn = document.createElement('button');
+        const maxValOnThisLevel = getBidValue(lvl, 5);
+        const lastVal = lastContractBid ? lastContractBid.val : 0;
+        const isDisabled = maxValOnThisLevel <= lastVal;
+
+        btn.disabled = isDisabled;
+        btn.innerText = lvl;
+
+        if (isDisabled) {
+          btn.className = 'bg-slate-800 text-slate-600 font-extrabold py-1.5 rounded-lg text-xs cursor-not-allowed border border-slate-700/50';
+        } else if (selectedLevel === lvl) {
+          btn.className = 'bg-amber-400 text-slate-900 font-extrabold py-1.5 rounded-lg text-xs shadow-md border border-amber-300 scale-105';
+        } else {
+          btn.className = 'bg-white hover:bg-slate-100 text-slate-800 font-extrabold py-1.5 rounded-lg text-xs shadow border border-slate-200';
+        }
+
+        btn.onclick = () => {
+          selectedLevel = lvl;
+          renderBiddingBox();
+        };
+
+        levelContainer.appendChild(btn);
+      }
+
+      if (!selectedLevel) {
+        for (let lvl = 1; lvl <= 7; lvl++) {
+          if (getBidValue(lvl, 5) > (lastContractBid ? lastContractBid.val : 0)) {
+            selectedLevel = lvl;
+            break;
+          }
+        }
+      }
+
+      // 2. Render Suit Buttons
+      const suitContainer = document.getElementById('suit-buttons');
+      suitContainer.innerHTML = '';
+
+      suits.forEach(s => {
+        const btn = document.createElement('button');
+        const thisBidVal = getBidValue(selectedLevel, s.order);
+        const lastVal = lastContractBid ? lastContractBid.val : 0;
+        const isDisabled = thisBidVal <= lastVal;
+
+        btn.disabled = isDisabled;
+        btn.innerText = s.code;
+
+        if (isDisabled) {
+          btn.className = 'bg-slate-800 text-slate-600 font-extrabold py-2 rounded-xl text-base cursor-not-allowed border border-slate-700/50 opacity-40';
+        } else {
+          btn.className = 'bg-white hover:bg-slate-100 font-extrabold py-2 rounded-xl text-base shadow border border-slate-200 transition transform active:scale-95';
+          btn.style.color = s.color;
+        }
+
+        btn.onclick = () => {
+          makeBid(selectedLevel, s);
+        };
+
+        suitContainer.appendChild(btn);
+      });
+    }
+
+    function makeBid(level, suitObj) {
+      if (isFinished) return;
+
+      const player = POSITIONS[currentTurnIdx];
+      const val = getBidValue(level, suitObj.order);
+      const code = `${level}${suitObj.code}`;
+
+      lastContractBid = { level, suitOrder: suitObj.order, code, val, player };
+      history.push({ player, call: code });
+      passStreak = 0;
+      selectedLevel = null;
+
+      currentTurnIdx = (currentTurnIdx + 1) % 4;
+      updateUI();
+    }
+
+    function placeSpecialCall(call) {
+      if (isFinished) return;
+
+      const player = POSITIONS[currentTurnIdx];
+
+      if (call === 'PASS') {
+        passStreak++;
+        history.push({ player, call: 'PASS' });
+
+        if ((lastContractBid && passStreak === 3) || (!lastContractBid && passStreak === 4)) {
+          isFinished = true;
+        }
+      } else {
+        history.push({ player, call });
+      }
+
+      currentTurnIdx = (currentTurnIdx + 1) % 4;
+      updateUI();
+    }
+
+    function renderAuctionMatrixTable() {
+      const tbody = document.getElementById('auction-table-body');
+      tbody.innerHTML = '';
+
+      // Tentukan offset pengosongan di baris 1 berdasarkan Dealer
+      const dealerIdx = POSITIONS.indexOf(dealerPos);
+      
+      // Matriks per baris 4 kolom [North, East, South, West]
+      const rows = [];
+      let currentRow = Array(4).fill('-');
+
+      // Isi offset '-' untuk kolom sebelum Dealer di Baris 1
+      for (let i = 0; i < dealerIdx; i++) {
+        currentRow[i] = '-';
+      }
+
+      let fillIdx = dealerIdx;
+
+      history.forEach(item => {
+        currentRow[fillIdx] = item.call;
+        fillIdx++;
+
+        if (fillIdx === 4) {
+          rows.push([...currentRow]);
+          currentRow = Array(4).fill('-');
+          fillIdx = 0;
+        }
+      });
+
+      // Push sisa baris terakhir jika belum 4 kolom penuh
+      if (fillIdx > 0) {
+        rows.push([...currentRow]);
+      }
+
+      // Jika belum ada history sama sekali, tampilkan minimal 1 baris awal offset
+      if (rows.length === 0) {
+        rows.push([...currentRow]);
+      }
+
+      // Render ke DOM
+      rows.forEach(rowArr => {
+        const tr = document.createElement('tr');
+        tr.className = 'py-1.5';
+        rowArr.forEach(cellText => {
+          const td = document.createElement('td');
+          td.className = 'py-1.5';
+          if (cellText === '-') {
+            td.className += ' text-slate-600 font-normal';
+          } else if (cellText === 'PASS') {
+            td.className += ' text-slate-400';
+          } else {
+            td.className += ' text-amber-400 font-extrabold';
+          }
+          td.innerText = cellText;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateUI() {
+      renderAuctionMatrixTable();
+
+      const currentPos = POSITIONS[currentTurnIdx].toUpperCase();
+      document.getElementById('turn-indicator').innerText = `Giliran: ${currentPos}`;
+      document.getElementById('dealer-badge').innerText = `Dealer Pertama: ${dealerPos.toUpperCase()}`;
+
+      if (isFinished) {
+        document.getElementById('contract-banner').classList.remove('hidden');
+        document.getElementById('bidding-box-panel').classList.add('opacity-50', 'pointer-events-none');
+        
+        if (lastContractBid) {
+          document.getElementById('contract-result').innerText = `FINAL CONTRACT: ${lastContractBid.code} by ${lastContractBid.player.toUpperCase()}`;
+        } else {
+          document.getElementById('contract-result').innerText = `FINAL CONTRACT: PASSED OUT (Semua Pass)`;
+        }
+      } else {
+        renderBiddingBox();
+      }
+    }
+
+    function resetAuction() {
+      dealerPos = document.getElementById('dealer-select').value;
+      currentTurnIdx = POSITIONS.indexOf(dealerPos);
+      history = [];
+      passStreak = 0;
+      lastContractBid = null;
+      selectedLevel = null;
+      isFinished = false;
+      document.getElementById('contract-banner').classList.add('hidden');
+      document.getElementById('bidding-box-panel').classList.remove('opacity-50', 'pointer-events-none');
+      updateUI();
+    }
+
+    resetAuction();
+  </script>
+
+</body>
+</html>

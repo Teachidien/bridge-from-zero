@@ -1,0 +1,18 @@
+{
+  "app": {
+    "title": "Bridge From Zero",
+    "tagline": "Kuasai Game Bridge, Langkah demi Langkah"
+  },
+  "common": {
+    "askCoach": "Tanya Pelatih AI",
+    "undo": "Batal (Undo)",
+    "biddingBox": "Bidding Box",
+    "playCard": "Mainkan Kartu",
+    "language": "Bahasa"
+  },
+  "game": {
+    "contract": "Kontrak",
+    "declarer": "Declarer",
+    "tricks": "Trick"
+  }
+}

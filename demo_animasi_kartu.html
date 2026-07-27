@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulasi 4 Arah Mata Angin & Animasi Pemenang Trick - Bridge From Zero</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    
+    /* Layout Adaptif Kipas Kartu di Tangan (Mobile & Desktop Responsive) */
+    .hand-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      width: 100%;
+      padding-top: 24px;
+      padding-bottom: 8px;
+    }
+    
+    /* Ukuran HP: Kedempetan -44px agar 13 kartu muat utuh tanpa terpotong */
+    .card-hand-item {
+      margin-left: -44px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    /* Ukuran Laptop/PC (sm: 640px ke atas): Kedempetan -64px dengan kartu lebih besar */
+    @media (min-width: 640px) {
+      .card-hand-item {
+        margin-left: -64px;
+      }
+    }
+    
+    .card-hand-item:first-child {
+      margin-left: 0;
+    }
+    
+    /* Hover Lift lurus ke atas */
+    .card-hand-item:hover,
+    .card-hand-item:active {
+      transform: translateY(-24px);
+      z-index: 999 !important;
+    }
+
+    /* Keyframes Animasi Keluar Kartu 4 Arah ke Tengah */
+    @keyframes playFromSouth {
+      from { transform: translateY(140px) scale(0.8); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    @keyframes playFromNorth {
+      from { transform: translateY(-140px) scale(0.8); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    @keyframes playFromWest {
+      from { transform: translateX(-140px) scale(0.8); opacity: 0; }
+      to { transform: translateX(0) scale(1); opacity: 1; }
+    }
+    @keyframes playFromEast {
+      from { transform: translateX(140px) scale(0.8); opacity: 0; }
+      to { transform: translateX(0) scale(1); opacity: 1; }
+    }
+
+    /* Keyframes Animasi Kartu Disapu DITERTUP (BALIK KARTU TERBALIK) ke Pemenang Trick */
+    @keyframes sweepToNorth {
+      to { transform: translateY(-300px) rotateY(180deg) scale(0.3); opacity: 0; }
+    }
+    @keyframes sweepToSouth {
+      to { transform: translateY(300px) rotateY(180deg) scale(0.3); opacity: 0; }
+    }
+    @keyframes sweepToWest {
+      to { transform: translateX(-300px) rotateY(180deg) scale(0.3); opacity: 0; }
+    }
+    @keyframes sweepToEast {
+      to { transform: translateX(300px) rotateY(180deg) scale(0.3); opacity: 0; }
+    }
+
+    /* Animasi Pembagian 13 Kartu di Awal */
+    @keyframes dealHand {
+      0% { transform: translateY(-250px) scale(0.1); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .anim-south { animation: playFromSouth 0.35s ease-out forwards; }
+    .anim-north { animation: playFromNorth 0.35s ease-out forwards; }
+    .anim-west { animation: playFromWest 0.35s ease-out forwards; }
+    .anim-east { animation: playFromEast 0.35s ease-out forwards; }
+
+    .sweep-north { animation: sweepToNorth 0.55s ease-in forwards; }
+    .sweep-south { animation: sweepToSouth 0.55s ease-in forwards; }
+    .sweep-west { animation: sweepToWest 0.55s ease-in forwards; }
+    .sweep-east { animation: sweepToEast 0.55s ease-in forwards; }
+
+    .animate-deal-hand { animation: dealHand 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#0B231B] text-slate-100 min-h-screen flex flex-col justify-between p-2 sm:p-4 select-none">
+
+  <!-- Header Control Simulasi -->
+  <header class="max-w-5xl mx-auto w-full bg-[#061812] p-2.5 sm:p-3 rounded-2xl border border-emerald-900 shadow-xl flex flex-wrap justify-between items-center gap-2">
+    <button onclick="triggerDealHand()" class="bg-white text-slate-900 text-[11px] sm:text-xs font-extrabold px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl shadow hover:bg-slate-100 transition border border-slate-200">
+      🎴 BAGI 13 KARTU (DEAL)
+    </button>
+    
+    <div class="flex items-center space-x-1.5 flex-wrap gap-1">
+      <button onclick="runFullTrick('south')" class="bg-[#059669] hover:bg-[#047857] text-white text-[11px] sm:text-xs font-bold px-2.5 py-1.5 rounded-lg shadow transition">
+        🏆 Win: South
+      </button>
+      <button onclick="runFullTrick('north')" class="bg-[#14352A] hover:bg-[#1C4839] text-emerald-100 text-[11px] sm:text-xs font-bold px-2.5 py-1.5 rounded-lg border border-emerald-800 transition">
+        🏆 Win: North
+      </button>
+      <button onclick="runFullTrick('west')" class="bg-[#14352A] hover:bg-[#1C4839] text-emerald-100 text-[11px] sm:text-xs font-bold px-2.5 py-1.5 rounded-lg border border-emerald-800 transition">
+        🏆 Win: West
+      </button>
+      <button onclick="runFullTrick('east')" class="bg-[#14352A] hover:bg-[#1C4839] text-emerald-100 text-[11px] sm:text-xs font-bold px-2.5 py-1.5 rounded-lg border border-emerald-800 transition">
+        🏆 Win: East
+      </button>
+    </div>
+  </header>
+
+  <!-- MEJA GAME UTAMA (4 ARAH MATA ANGIN) -->
+  <main class="flex-1 max-w-4xl mx-auto w-full flex items-center justify-center relative my-2 sm:my-4 min-h-[300px] sm:min-h-[380px]">
+    
+    <!-- NORTH PLAYER (Partner) -->
+    <div id="badge-north" class="absolute top-0 flex flex-col items-center space-y-1 transition duration-300">
+      <div class="bg-[#182232] border border-slate-700 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold text-slate-200 flex items-center gap-1.5">
+        <span>👤 NORTH</span>
+        <span id="score-north" class="bg-emerald-900 text-emerald-200 text-[10px] px-1.5 rounded">Tricks: 0</span>
+      </div>
+    </div>
+
+    <!-- WEST PLAYER (Lawan Kiri) -->
+    <div id="badge-west" class="absolute left-1 flex items-center space-x-1 transition duration-300">
+      <div class="bg-[#182232] border border-slate-700 p-1.5 rounded-xl text-[10px] sm:text-xs font-bold text-slate-200 flex flex-col items-center">
+        <span>⬅️ WEST</span>
+        <span id="score-west" class="bg-emerald-900 text-emerald-200 text-[9px] px-1 rounded mt-0.5">Tricks: 0</span>
+      </div>
+    </div>
+
+    <!-- EAST PLAYER (Lawan Kanan) -->
+    <div id="badge-east" class="absolute right-1 flex items-center space-x-1 transition duration-300">
+      <div class="bg-[#182232] border border-slate-700 p-1.5 rounded-xl text-[10px] sm:text-xs font-bold text-slate-200 flex flex-col items-center">
+        <span>EAST ➡️</span>
+        <span id="score-east" class="bg-emerald-900 text-emerald-200 text-[9px] px-1 rounded mt-0.5">Tricks: 0</span>
+      </div>
+    </div>
+
+    <!-- AREA MEJA TENGAH (4 KARTU BERADA DI SINI) -->
+    <div id="table-center" class="relative w-52 h-52 sm:w-64 sm:h-64 flex items-center justify-center border border-emerald-900/40 rounded-full bg-[#061812]/50 shadow-inner">
+      
+      <!-- Slot Card North -->
+      <div id="slot-north" class="absolute top-1 sm:top-2 hidden">
+        <div class="card-inner w-20 h-28 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2 sm:p-2.5">
+          <div class="text-[#1E293B] font-bold text-xs sm:text-sm leading-none">A<br>♠</div>
+          <div class="text-[#1E293B] text-2xl sm:text-3xl text-center">♠</div>
+          <div class="text-[#1E293B] font-bold text-xs sm:text-sm leading-none text-right">♠<br>A</div>
+        </div>
+      </div>
+
+      <!-- Slot Card West -->
+      <div id="slot-west" class="absolute left-1 sm:left-2 hidden">
+        <div class="card-inner w-20 h-28 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2 sm:p-2.5">
+          <div class="text-[#059669] font-bold text-xs sm:text-sm leading-none">J<br>♣</div>
+          <div class="text-[#059669] text-2xl sm:text-3xl text-center">♣</div>
+          <div class="text-[#059669] font-bold text-xs sm:text-sm leading-none text-right">♣<br>J</div>
+        </div>
+      </div>
+
+      <!-- Slot Card East -->
+      <div id="slot-east" class="absolute right-1 sm:right-2 hidden">
+        <div class="card-inner w-20 h-28 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-xl border border-slate-200 flex flex-col justify-between p-2 sm:p-2.5">
+          <div class="text-[#D97706] font-bold text-xs sm:text-sm leading-none">K<br>♦</div>
+          <div class="text-[#D97706] text-2xl sm:text-3xl text-center">♦</div>
+          <div class="text-[#D97706] font-bold text-xs sm:text-sm leading-none text-right">♦<br>K</div>
+        </div>
+      </div>
+
+      <!-- Slot Card South (Pemain) -->
+      <div id="slot-south" class="absolute bottom-1 sm:bottom-2 hidden">
+        <div class="card-inner w-20 h-28 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-xl border-2 border-amber-500 flex flex-col justify-between p-2 sm:p-2.5">
+          <div class="text-[#E11D48] font-bold text-xs sm:text-sm leading-none">A<br>♥</div>
+          <div class="text-[#E11D48] text-2xl sm:text-3xl text-center">♥</div>
+          <div class="text-[#E11D48] font-bold text-xs sm:text-sm leading-none text-right">♥<br>A</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- SOUTH PLAYER HAND (13 KARTU ADAPTIF HP: w-16 h-24 di HP & w-24 h-36 di Laptop) -->
+  <footer class="max-w-4xl mx-auto w-full bg-[#071E17] p-2 sm:p-3.5 rounded-2xl border border-emerald-900 shadow-2xl flex flex-col space-y-1 sm:space-y-2">
+    <div class="flex justify-between items-center text-[10px] sm:text-xs text-emerald-300 font-bold px-1">
+      <span>TANGAN SOUTH (13 KARTU ADAPTIF HP):</span>
+      <span id="score-south" class="bg-amber-500 text-slate-900 px-2 py-0.5 rounded font-extrabold">Tricks Anda: 0</span>
+    </div>
+
+    <!-- Container 13 Kartu Responsive HP & PC -->
+    <div class="w-full flex justify-center items-center overflow-x-auto min-h-[120px] sm:min-h-[170px] py-1">
+      <div id="hand-container-box" class="hand-container">
+        
+        <!-- 13 Kartu Adaptif: w-16 h-24 di HP, w-24 h-36 di Desktop -->
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 10;">
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none">A<br><span class="text-[10px] sm:text-xs">♠</span></div>
+          <div class="text-[#1E293B] text-sm sm:text-2xl text-center font-bold">♠</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none text-right">♠<br>A</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 11;">
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none">K<br><span class="text-[10px] sm:text-xs">♠</span></div>
+          <div class="text-[#1E293B] text-sm sm:text-2xl text-center font-bold">♠</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none text-right">♠<br>K</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 12;">
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none">10<br><span class="text-[10px] sm:text-xs">♠</span></div>
+          <div class="text-[#1E293B] text-xs sm:text-lg text-center font-bold">10</div>
+          <div class="text-[#1E293B] font-extrabold text-[11px] sm:text-sm leading-none text-right">♠<br>10</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 13;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none">A<br><span class="text-[10px] sm:text-xs">♥</span></div>
+          <div class="text-[#E11D48] text-sm sm:text-2xl text-center font-bold">♥</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none text-right">♥<br>A</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 14;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none">Q<br><span class="text-[10px] sm:text-xs">♥</span></div>
+          <div class="text-[#E11D48] text-sm sm:text-2xl text-center font-bold">♥</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none text-right">♥<br>Q</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 15;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none">7<br><span class="text-[10px] sm:text-xs">♥</span></div>
+          <div class="text-[#E11D48] text-xs sm:text-lg text-center font-bold">7</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none text-right">♥<br>7</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 16;">
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none">3<br><span class="text-[10px] sm:text-xs">♥</span></div>
+          <div class="text-[#E11D48] text-xs sm:text-lg text-center font-bold">3</div>
+          <div class="text-[#E11D48] font-extrabold text-[11px] sm:text-sm leading-none text-right">♥<br>3</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 17;">
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none">A<br><span class="text-[10px] sm:text-xs">♦</span></div>
+          <div class="text-[#D97706] text-sm sm:text-2xl text-center font-bold">♦</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none text-right">♦<br>A</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 18;">
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none">8<br><span class="text-[10px] sm:text-xs">♦</span></div>
+          <div class="text-[#D97706] text-xs sm:text-lg text-center font-bold">8</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none text-right">♦<br>8</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 19;">
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none">2<br><span class="text-[10px] sm:text-xs">♦</span></div>
+          <div class="text-[#D97706] text-xs sm:text-lg text-center font-bold">2</div>
+          <div class="text-[#D97706] font-extrabold text-[11px] sm:text-sm leading-none text-right">♦<br>2</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 20;">
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none">K<br><span class="text-[10px] sm:text-xs">♣</span></div>
+          <div class="text-[#059669] text-sm sm:text-2xl text-center font-bold">♣</div>
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none text-right">♣<br>K</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 21;">
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none">9<br><span class="text-[10px] sm:text-xs">♣</span></div>
+          <div class="text-[#059669] text-xs sm:text-lg text-center font-bold">9</div>
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none text-right">♣<br>9</div>
+        </div>
+
+        <div class="card-hand-item w-16 h-24 sm:w-24 sm:h-36 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2 cursor-pointer" style="z-index: 22;">
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none">5<br><span class="text-[10px] sm:text-xs">♣</span></div>
+          <div class="text-[#059669] text-sm sm:text-2xl text-center font-bold">♣</div>
+          <div class="text-[#059669] font-extrabold text-[11px] sm:text-sm leading-none text-right">♣<br>5</div>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let scores = { south: 0, north: 0, west: 0, east: 0 };
+
+    function triggerDealHand() {
+      const container = document.getElementById('hand-container-box');
+      container.classList.remove('animate-deal-hand');
+      void container.offsetWidth; // reflow
+      container.classList.add('animate-deal-hand');
+    }
+
+    function resetSlots() {
+      ['south', 'north', 'west', 'east'].forEach(pos => {
+        const slot = document.getElementById(`slot-${pos}`);
+        slot.className = 'absolute hidden';
+        const cardInner = slot.querySelector('.card-inner');
+        if(cardInner) {
+          cardInner.style.backgroundColor = '#ffffff';
+          cardInner.innerHTML = getOriginalSlotContent(pos);
+        }
+      });
+    }
+
+    function getOriginalSlotContent(pos) {
+      if(pos === 'south') return '<div class="text-[#E11D48] font-bold text-xs sm:text-sm leading-none">A<br>♥</div><div class="text-[#E11D48] text-2xl sm:text-3xl text-center">♥</div><div class="text-[#E11D48] font-bold text-xs sm:text-sm leading-none text-right">♥<br>A</div>';
+      if(pos === 'north') return '<div class="text-[#1E293B] font-bold text-xs sm:text-sm leading-none">A<br>♠</div><div class="text-[#1E293B] text-2xl sm:text-3xl text-center">♠</div><div class="text-[#1E293B] font-bold text-xs sm:text-sm leading-none text-right">♠<br>A</div>';
+      if(pos === 'west') return '<div class="text-[#059669] font-bold text-xs sm:text-sm leading-none">J<br>♣</div><div class="text-[#059669] text-2xl sm:text-3xl text-center">♣</div><div class="text-[#059669] font-bold text-xs sm:text-sm leading-none text-right">♣<br>J</div>';
+      if(pos === 'east') return '<div class="text-[#D97706] font-bold text-xs sm:text-sm leading-none">K<br>♦</div><div class="text-[#D97706] text-2xl sm:text-3xl text-center">♦</div><div class="text-[#D97706] font-bold text-xs sm:text-sm leading-none text-right">♦<br>K</div>';
+    }
+
+    function runFullTrick(winner) {
+      resetSlots();
+
+      setTimeout(() => {
+        const s = document.getElementById('slot-south');
+        s.className = 'absolute bottom-1 sm:bottom-2 block anim-south';
+      }, 100);
+
+      setTimeout(() => {
+        const w = document.getElementById('slot-west');
+        w.className = 'absolute left-1 sm:left-2 block anim-west';
+      }, 400);
+
+      setTimeout(() => {
+        const n = document.getElementById('slot-north');
+        n.className = 'absolute top-1 sm:top-2 block anim-north';
+      }, 700);
+
+      setTimeout(() => {
+        const e = document.getElementById('slot-east');
+        e.className = 'absolute right-1 sm:right-2 block anim-east';
+      }, 1000);
+
+      setTimeout(() => {
+        ['south', 'north', 'west', 'east'].forEach(pos => {
+          const slot = document.getElementById(`slot-${pos}`);
+          const cardInner = slot.querySelector('.card-inner');
+          
+          if(cardInner) {
+            cardInner.style.backgroundColor = '#182232';
+            cardInner.innerHTML = '<div class="w-full h-full border border-slate-600/60 rounded-md sm:rounded-lg flex items-center justify-center bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:6px_6px]"><span class="text-slate-500 font-bold text-[10px] sm:text-xs">♠♥♦♣</span></div>';
+          }
+          
+          slot.className = `absolute block sweep-${winner}`;
+        });
+
+        scores[winner]++;
+        document.getElementById(`score-${winner}`).innerText = `Tricks: ${scores[winner]}`;
+        
+        const badge = document.getElementById(`badge-${winner}`);
+        if(badge) {
+          badge.classList.add('scale-110');
+          setTimeout(() => badge.classList.remove('scale-110'), 600);
+        }
+      }, 1800);
+    }
+  </script>
+
+</body>
+</html>

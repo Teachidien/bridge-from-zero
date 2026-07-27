@@ -1,0 +1,18 @@
+{
+  "app": {
+    "title": "Bridge From Zero",
+    "tagline": "Master Contract Bridge, One Step at a Time"
+  },
+  "common": {
+    "askCoach": "Ask AI Coach",
+    "undo": "Undo Move",
+    "biddingBox": "Bidding Box",
+    "playCard": "Play Card",
+    "language": "Language"
+  },
+  "game": {
+    "contract": "Contract",
+    "declarer": "Declarer",
+    "tricks": "Tricks"
+  }
+}

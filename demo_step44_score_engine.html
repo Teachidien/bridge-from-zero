@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Kalkulasi Skor Overtrick 1NT +2 vs 3NT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#F1F5F9] text-slate-800 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+  <!-- Header Navigation -->
+  <header class="w-full max-w-4xl mx-auto flex flex-col space-y-3 py-2 px-1">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <span class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+          PENJELASAN SKOR OVERTRICK: 1NT +2 VS 3NT
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA: PERBANDINGAN SKOR 1NT +2 VS 3NT -->
+  <main class="flex-1 max-w-3xl mx-auto w-full flex flex-col items-center justify-center my-2 sm:my-4 space-y-4">
+    
+    <!-- CARD UTAMA OVERTRICK 1NT +2 -->
+    <div class="w-full bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-8 shadow-xl flex flex-col space-y-6">
+      
+      <div class="space-y-2 border-b border-slate-200 pb-3">
+        <div class="flex justify-between items-center">
+          <h2 class="text-lg font-extrabold text-slate-900">📊 HASIL SKOR KONTRAK: <span class="text-emerald-700">1NT +2 (9 TRICK)</span></h2>
+          <span class="text-xl font-extrabold text-emerald-700 bg-emerald-100 px-4 py-1 rounded-full border border-emerald-300">+150 POIN</span>
+        </div>
+        <p class="text-xs text-slate-600">Sama-sama menang 9 Trick, namun karena yang ditawar hanya 1NT (bukan 3NT), poinnya adalah 150 Poin:</p>
+      </div>
+
+      <!-- RINCIAN BREAKDOWN POIN 1NT +2 -->
+      <div class="bg-[#F8FAFC] border border-slate-200 p-4 rounded-2xl space-y-2.5 font-mono text-xs">
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-slate-700">1. Contract Score Dasar 1NT (7 Trick Target):</span>
+          <span class="font-extrabold text-slate-900">40 Poin</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-slate-700">2. Part-Score Bonus (karena Trick Score < 100):</span>
+          <span class="font-extrabold text-slate-900">+50 Poin</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-slate-700">3. Overtrick Bonus (+2 Trick x 30 Poin):</span>
+          <span class="font-extrabold text-emerald-700">+60 Poin</span>
+        </div>
+        <div class="border-t border-slate-300 pt-2 flex justify-between items-center text-sm font-extrabold font-sans">
+          <span class="text-slate-900">TOTAL SKOR 1NT +2:</span>
+          <span class="text-emerald-700">150 POIN</span>
+        </div>
+      </div>
+
+      <!-- BOARD COMPARISON 1NT +2 VS 3NT -->
+      <div class="bg-[#0B231B] border border-emerald-900 p-4 sm:p-5 rounded-2xl text-slate-100 space-y-3 shadow-xl">
+        <span class="text-xs font-extrabold text-amber-400">💡 MENGAPA BIDDING SANGAT PENTING DALAM BRIDGE?</span>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <!-- 1NT +2 -->
+          <div class="bg-[#071E17] border border-emerald-800 p-3 rounded-xl space-y-1">
+            <span class="font-extrabold text-slate-300">Jika Menawar 1NT (Menang 9 Trick):</span>
+            <div class="text-lg font-extrabold text-slate-200">+150 Poin</div>
+            <span class="text-[11px] text-slate-400">Hanya dapat Part-Score Bonus (+50).</span>
+          </div>
+
+          <!-- 3NT PAS -->
+          <div class="bg-[#071E17] border border-emerald-500 p-3 rounded-xl space-y-1">
+            <span class="font-extrabold text-amber-400">Jika Berani Menawar 3NT (Menang 9 Trick):</span>
+            <div class="text-lg font-extrabold text-amber-400">+400 Poin (NV) / +600 Poin (V)</div>
+            <span class="text-[11px] text-emerald-300">Mendapatkan GAME BONUS (+300/+500)!</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Simulasikan Logika Bot SAYC Rules (Step 5.1)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#F1F5F9] text-slate-800 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+  <!-- Header Navigation -->
+  <header class="w-full max-w-4xl mx-auto flex flex-col space-y-3 py-2 px-1">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <span class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+          STEP 5.1: SIMULATOR ATURAN BIDDING BOT LAWAN (SAYC ENGINE)
+        </span>
+      </div>
+      <button onclick="testRandomBotHand()" class="bg-[#059669] hover:bg-[#047857] text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow transition border border-emerald-600 flex items-center gap-1.5">
+        <span>🤖</span>
+        <span>KOCOK TANGAN BOT BARU & UJI BIDDING</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA: SIMULATOR EVALUATOR BIDDING BOT SAYC -->
+  <main class="flex-1 max-w-3xl mx-auto w-full flex flex-col items-center justify-center my-2 sm:my-4 space-y-4">
+    
+    <div class="w-full bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-8 shadow-xl flex flex-col space-y-6">
+      
+      <div class="space-y-1 border-b border-slate-200 pb-3">
+        <h2 class="text-lg font-extrabold text-slate-900">🤖 EVALUASI KARTU BOT (RULE-BASED SAYC NO-API)</h2>
+        <p class="text-xs text-slate-600">Sistem ini mengkalkulasi HCP + Distribusi tangan Bot dan menghasilkan Bid otomatis secara instan:</p>
+      </div>
+
+      <!-- HASIL EVALUASI HAND BOT -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[#F8FAFC] p-4 rounded-2xl border border-slate-200">
+        <div class="space-y-1">
+          <span class="text-xs font-bold text-slate-500">TOTAL POIN HCP:</span>
+          <div id="bot-hcp" class="text-xl font-extrabold text-emerald-700">16 HCP</div>
+        </div>
+        <div class="space-y-1">
+          <span class="text-xs font-bold text-slate-500">BENTUK DISTRIBUSI:</span>
+          <div id="bot-dist" class="text-xl font-extrabold text-slate-800">5-3-3-2 (Balanced)</div>
+        </div>
+        <div class="space-y-1">
+          <span class="text-xs font-bold text-slate-500">PANJANG SUIT:</span>
+          <div id="bot-suits" class="text-xs font-extrabold text-slate-700">♠ 5 | ♥ 3 | ♦ 3 | ♣ 2</div>
+        </div>
+      </div>
+
+      <!-- KEPUTUSAN BIDDING BOT (KEPUSAN RESMI ENGINE SAYC) -->
+      <div class="bg-[#0B231B] border border-emerald-900 rounded-2xl p-5 text-slate-200 space-y-3 shadow-2xl">
+        <span class="text-xs font-extrabold text-amber-400 tracking-wider">🎯 KEPUTUSAN BIDDING OTOMATIS BOT:</span>
+        
+        <div class="flex items-center space-x-4">
+          <div id="bot-decision-badge" class="text-3xl font-extrabold text-amber-400 bg-[#071E17] border border-amber-400/50 px-6 py-2 rounded-2xl shadow-lg">
+            1NT
+          </div>
+          <div id="bot-decision-reason" class="text-xs text-emerald-200 font-bold leading-relaxed">
+            HCP 15-17 (16 HCP) dengan pola seimbang 5-3-3-2. Bot memilih 1NT Open Bid!
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    const suits = ['spades', 'hearts', 'diamonds', 'clubs'];
+    const ranks = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
+    const hcpMap = { 'A': 4, 'K': 3, 'Q': 2, 'J': 1 };
+    const suitSymbols = { spades: '♠', hearts: '♥', diamonds: '♦', clubs: '♣' };
+
+    function createDeck() {
+      const deck = [];
+      suits.forEach(s => { ranks.forEach(r => { deck.push({ suit: s, rank: r, hcp: hcpMap[r] || 0 }); }); });
+      return deck;
+    }
+
+    function shuffle(deck) {
+      const shuffled = [...deck];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    // LOGIKA ATURAN BIDDING BOT SAYC SESUAI KEBUTUHAN ANDA
+    function decideBotOpeningBid(hand) {
+      let hcp = 0;
+      let count = { spades: 0, hearts: 0, diamonds: 0, clubs: 0 };
+      
+      hand.forEach(c => {
+        hcp += c.hcp;
+        count[c.suit]++;
+      });
+
+      const sortedCounts = Object.values(count).sort((a, b) => b - a);
+      const is5332 = sortedCounts[0] === 5 && sortedCounts[1] === 3 && sortedCounts[2] === 3 && sortedCounts[3] === 2;
+      const isBalanced = (sortedCounts[0] <= 4 && sortedCounts[3] >= 2) || is5332;
+
+      // 1. Strong 2C (HCP 22+)
+      if (hcp >= 22) {
+        return { bid: '2♣', reason: `HCP Sangat Kuat 22+ (${hcp} HCP). Bot melakukan Strong 2♣ Open Bid!` };
+      }
+
+      // 2. Balanced 2NT (HCP 20-21 & Balanced)
+      if (hcp >= 20 && hcp <= 21 && isBalanced) {
+        return { bid: '2NT', reason: `HCP 20-21 (${hcp} HCP) dengan susunan seimbang. Bot melakukan 2NT Open Bid!` };
+      }
+
+      // 3. Balanced 1NT (HCP 15-17 & Balanced termasuk 5-3-3-2 walau 5-nya Major!)
+      if (hcp >= 15 && hcp <= 17 && isBalanced) {
+        return { bid: '1NT', reason: `HCP 15-17 (${hcp} HCP) dengan bentuk seimbang (termasuk 5-3-3-2). Bot melakukan 1NT Open Bid!` };
+      }
+
+      // 4. Preemptive 3-Level 3C/3D/3H/3S (HCP 4-9 & 7 Kartu Suit)
+      if (hcp >= 4 && hcp <= 9) {
+        if (count.spades >= 7) return { bid: '3♠', reason: `Preemptive 3♠ Open Bid dengan 7 kartu Spades (${hcp} HCP).` };
+        if (count.hearts >= 7) return { bid: '3♥', reason: `Preemptive 3♥ Open Bid dengan 7 kartu Hearts (${hcp} HCP).` };
+        if (count.diamonds >= 7) return { bid: '3♦', reason: `Preemptive 3♦ Open Bid dengan 7 kartu Diamonds (${hcp} HCP).` };
+        if (count.clubs >= 7) return { bid: '3♣', reason: `Preemptive 3♣ Open Bid dengan 7 kartu Clubs (${hcp} HCP).` };
+      }
+
+      // 5. Weak-Two 2D/2H/2S (HCP 7-11 & 6 Kartu Suit D/H/S)
+      if (hcp >= 7 && hcp <= 11) {
+        if (count.spades >= 6) return { bid: '2♠', reason: `Weak-Two 2♠ Open Bid dengan 6 kartu Spades (${hcp} HCP).` };
+        if (count.hearts >= 6) return { bid: '2♥', reason: `Weak-Two 2♥ Open Bid dengan 6 kartu Hearts (${hcp} HCP).` };
+        if (count.diamonds >= 6) return { bid: '2♦', reason: `Weak-Two 2♦ Open Bid dengan 6 kartu Diamonds (${hcp} HCP).` };
+      }
+
+      // 6. Normal Opening 1H / 1S (HCP 12-21 & 5+ Major)
+      if (hcp >= 12 && hcp <= 21) {
+        if (count.spades >= 5) return { bid: '1♠', reason: `HCP 12-21 (${hcp} HCP) dengan ${count.spades} kartu Spades. Bot melakukan 1♠ Open Bid!` };
+        if (count.hearts >= 5) return { bid: '1♥', reason: `HCP 12-21 (${hcp} HCP) dengan ${count.hearts} kartu Hearts. Bot melakukan 1♥ Open Bid!` };
+        if (count.diamonds >= 4) return { bid: '1♦', reason: `HCP 12-21 (${hcp} HCP) dengan ${count.diamonds} kartu Diamonds. Bot melakukan 1♦ Open Bid!` };
+        return { bid: '1♣', reason: `HCP 12-21 (${hcp} HCP). Bot melakukan Better Minor 1♣ Open Bid!` };
+      }
+
+      // 6. PASS (HCP < 12)
+      return { bid: 'PASS', reason: `HCP Kurang dari 12 (${hcp} HCP) & tidak memenuhi Weak-Two. Bot PASS!` };
+    }
+
+    function testRandomBotHand() {
+      const deck = shuffle(createDeck());
+      const botHand = deck.slice(0, 13);
+
+      let hcp = 0;
+      let count = { spades: 0, hearts: 0, diamonds: 0, clubs: 0 };
+      botHand.forEach(c => { hcp += c.hcp; count[c.suit]++; });
+
+      const sortedCounts = Object.values(count).sort((a, b) => b - a);
+      const distStr = sortedCounts.join('-');
+
+      const res = decideBotOpeningBid(botHand);
+
+      document.getElementById('bot-hcp').innerText = `${hcp} HCP`;
+      document.getElementById('bot-dist').innerText = `${distStr}`;
+      document.getElementById('bot-suits').innerText = `♠ ${count.spades} | ♥ ${count.hearts} | ♦ ${count.diamonds} | ♣ ${count.clubs}`;
+      document.getElementById('bot-decision-badge').innerText = res.bid;
+      document.getElementById('bot-decision-reason').innerText = res.reason;
+    }
+
+    testRandomBotHand();
+  </script>
+
+</body>
+</html>

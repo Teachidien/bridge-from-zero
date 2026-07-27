@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Step 4.3: Trump Ruffing Scenario & Center Layout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#F1F5F9] text-slate-800 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+  <!-- Header Navigation -->
+  <header class="w-full max-w-4xl mx-auto flex flex-col space-y-3 py-2 px-1">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <span class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+          STEP 4.3: SKENARIO TRUMP RUFFING (MEMOTONG DENGAN ♠)
+        </span>
+      </div>
+      <button onclick="resetGame()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-4 py-2 rounded-xl shadow transition border border-slate-600">
+        🔄 ULANGI SKENARIO
+      </button>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA: ARENA MEJA GAME KASINO 4 MATA ANGIN BERHADAPAN -->
+  <main class="flex-1 max-w-4xl mx-auto w-full flex flex-col items-center justify-between my-2 sm:my-4 space-y-3">
+    
+    <div class="w-full bg-[#0B231B] border border-emerald-900 rounded-3xl p-4 sm:p-6 shadow-2xl space-y-4">
+      
+      <!-- STATUS KONTRAK TRUMP & SCORE -->
+      <div class="flex justify-between items-center border-b border-emerald-800/80 pb-3">
+        <div class="flex items-center space-x-2">
+          <span class="text-xs font-bold text-amber-400">TRUMP CONTRACT: <strong class="text-white bg-emerald-950 px-2.5 py-1 rounded-full border border-emerald-800">4♠ (Spades Trump)</strong></span>
+        </div>
+        <span id="turn-badge" class="text-xs font-bold bg-emerald-900 text-emerald-200 px-3 py-1 rounded-full border border-emerald-700">
+          Giliran: WEST (Lead)
+        </span>
+      </div>
+
+      <!-- MID-TABLE: POSISI 4 MATA ANGIN MELETAKKAN KARTU KE TENGAH MEJA -->
+      <div class="w-full bg-[#071E17] border border-emerald-800 rounded-2xl p-4 sm:p-6 min-h-[260px] flex flex-col justify-between items-center relative shadow-inner">
+        
+        <!-- 1. KARTU NORTH (ATAS TENGAH) -->
+        <div class="flex flex-col items-center space-y-1">
+          <span class="text-[10px] font-bold text-slate-400">NORTH (Partner)</span>
+          <div id="card-north" class="w-14 h-20 bg-emerald-950 border border-emerald-900 rounded-lg flex items-center justify-center text-xs font-bold text-slate-600 shadow-md">--</div>
+        </div>
+
+        <!-- BARIS TENGAH: WEST (KIRI) | BANNER KEMENANGAN | EAST (KANAN) -->
+        <div class="w-full flex justify-between items-center px-4 sm:px-12 my-1">
+          <!-- WEST -->
+          <div class="flex flex-col items-center space-y-1">
+            <span class="text-[10px] font-bold text-slate-400">WEST (Leader)</span>
+            <div id="card-west" class="w-14 h-20 bg-emerald-950 border border-emerald-900 rounded-lg flex items-center justify-center text-xs font-bold text-slate-600 shadow-md">--</div>
+          </div>
+
+          <!-- BANNER HASIL EKSKUSI WINNER TENGAH MEJA -->
+          <div id="winner-banner" class="hidden bg-emerald-900/95 border border-amber-400 p-3 sm:p-4 rounded-2xl text-center space-y-1 shadow-2xl animate-bounce">
+            <span class="text-xs font-extrabold text-amber-400 tracking-wider">🎉 TRICK DIMENANGKAN OLEH SOUTH!</span>
+            <div id="winner-desc" class="text-xs font-bold text-white">Kartu 2♠ (Trump) memotong K♥, A♥ & Q♥!</div>
+          </div>
+
+          <!-- EAST -->
+          <div class="flex flex-col items-center space-y-1">
+            <span class="text-[10px] font-bold text-slate-400">EAST</span>
+            <div id="card-east" class="w-14 h-20 bg-emerald-950 border border-emerald-900 rounded-lg flex items-center justify-center text-xs font-bold text-slate-600 shadow-md">--</div>
+          </div>
+        </div>
+
+        <!-- 3. KARTU SOUTH (BAWAH TENGAH) -->
+        <div class="flex flex-col items-center space-y-1">
+          <div id="card-south" class="w-14 h-20 bg-emerald-950 border border-emerald-900 rounded-lg flex items-center justify-center text-xs font-bold text-slate-600 shadow-md">--</div>
+          <span class="text-[10px] font-bold text-emerald-400">SOUTH (Anda)</span>
+        </div>
+
+      </div>
+
+      <!-- KONTROL KARTU DI TANGAN SOUTH (KARTU KERTAS 100% TIDAK PUNYA HEART/VOID HEART) -->
+      <div class="space-y-2 pt-1">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-extrabold text-emerald-300">🎮 KARTU DI TANGAN SOUTH (TIDAK MEMILIKI HEART ➔ BEBAS MEMOTONG DENGAN TRUMP ♠):</span>
+          <span id="led-info" class="text-[11px] font-bold text-amber-400">Led Suit: --</span>
+        </div>
+
+        <!-- Tombol Fisik Kartu South -->
+        <div id="south-hand" class="flex flex-wrap gap-2 justify-center">
+          <!-- Render dinamis kartu South -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    // South Hand: VOID HEART (Tidak punya Heart!), punya 2♠ (Trump), A♦, K♣
+    const SOUTH_HAND = [
+      { id: 's1', suit: 'spades', rank: '2', code: '2♠', color: '#1E293B', isTrump: true },
+      { id: 's2', suit: 'diamonds', rank: 'A', code: 'A♦', color: '#D97706', isTrump: false },
+      { id: 's3', suit: 'diamonds', rank: '10', code: '10♦', color: '#D97706', isTrump: false },
+      { id: 's4', suit: 'clubs', rank: 'K', code: 'K♣', color: '#059669', isTrump: false }
+    ];
+
+    const POSITIONS = ['north', 'east', 'south', 'west'];
+    let currentTurnIdx = 3; // West (3)
+    let playedCards = {};
+    let ledSuit = null;
+    let isFinished = false;
+
+    function renderUI() {
+      document.getElementById('turn-badge').innerText = `Giliran Main: ${POSITIONS[currentTurnIdx].toUpperCase()}`;
+      document.getElementById('led-info').innerText = ledSuit ? `Led Suit: ${ledSuit.toUpperCase()}` : 'Led Suit: --';
+
+      // Render 4 Kartu di Meja Tengah
+      ['west', 'north', 'east', 'south'].forEach(p => {
+        const el = document.getElementById(`card-${p}`);
+        if (playedCards[p]) {
+          el.innerText = playedCards[p].code;
+          el.style.color = playedCards[p].color;
+          el.className = 'w-14 h-20 bg-white border border-slate-300 rounded-lg flex items-center justify-center text-sm font-extrabold shadow-lg border-2 ' + (playedCards[p].isTrump ? 'border-amber-400 scale-105' : 'border-slate-300');
+        } else {
+          el.innerText = '--';
+          el.style.color = '#475569';
+          el.className = 'w-14 h-20 bg-emerald-950 border border-emerald-900 rounded-lg flex items-center justify-center text-xs font-bold text-slate-600 shadow-md';
+        }
+      });
+
+      // Render South Hand Buttons
+      const handContainer = document.getElementById('south-hand');
+      handContainer.innerHTML = '';
+
+      SOUTH_HAND.forEach(c => {
+        const btn = document.createElement('button');
+        btn.innerText = c.code;
+        btn.style.color = c.color;
+
+        const isTurnSouth = POSITIONS[currentTurnIdx] === 'south' && !isFinished;
+
+        if (isTurnSouth) {
+          btn.className = 'bg-white hover:bg-slate-100 font-extrabold px-4 py-2.5 rounded-xl text-sm shadow-md border border-slate-200 transition transform hover:-translate-y-1 active:scale-95 flex items-center gap-1';
+          if (c.isTrump) btn.innerHTML = `${c.code} <span class="text-[10px] bg-amber-100 text-amber-900 px-1 rounded font-bold">TRUMP</span>`;
+          btn.onclick = () => playCardSouth(c);
+        } else {
+          btn.disabled = true;
+          btn.className = 'bg-slate-800 text-slate-600 font-extrabold px-4 py-2.5 rounded-xl text-sm border border-slate-700/50 cursor-not-allowed opacity-40';
+        }
+
+        handContainer.appendChild(btn);
+      });
+
+      // Bot Simulation Sequence
+      if (POSITIONS[currentTurnIdx] !== 'south' && !isFinished && Object.keys(playedCards).length < 4) {
+        setTimeout(botPlayCard, 800);
+      }
+    }
+
+    function botPlayCard() {
+      const p = POSITIONS[currentTurnIdx];
+      let botCard;
+
+      if (p === 'west') {
+        // West Lead K♥
+        botCard = { suit: 'hearts', rank: 'K', code: 'K♥', color: '#E11D48', value: 13 };
+        ledSuit = 'hearts';
+      } else if (p === 'north') {
+        // North Partner Follow Heart Q♥
+        botCard = { suit: 'hearts', rank: 'Q', code: 'Q♥', color: '#E11D48', value: 12 };
+      } else if (p === 'east') {
+        // East Lawan Follow Heart A♥ (Kartu Heart Tertinggi!)
+        botCard = { suit: 'hearts', rank: 'A', code: 'A♥', color: '#E11D48', value: 14 };
+      }
+
+      playedCards[p] = botCard;
+      currentTurnIdx = (currentTurnIdx + 1) % 4;
+
+      if (Object.keys(playedCards).length === 4) {
+        evaluateWinner();
+      } else {
+        renderUI();
+      }
+    }
+
+    function playCardSouth(c) {
+      if (POSITIONS[currentTurnIdx] !== 'south') return;
+
+      playedCards['south'] = c;
+
+      // Hapus dari tangan South
+      const idx = SOUTH_HAND.findIndex(item => item.id === c.id);
+      if (idx > -1) SOUTH_HAND.splice(idx, 1);
+
+      currentTurnIdx = (currentTurnIdx + 1) % 4;
+
+      if (Object.keys(playedCards).length === 4) {
+        evaluateWinner();
+      } else {
+        renderUI();
+      }
+    }
+
+    function evaluateWinner() {
+      isFinished = true;
+      
+      // LOGIKA EVALUASI PEMENANG ENGINE:
+      // West: K♥ (Led Suit)
+      // North: Q♥ (Led Suit)
+      // East: A♥ (Led Suit Tertinggi)
+      // South: 2♠ (TRUMP MEMOTONG!)
+      // KARENA SOUTH MENGELUARKAN TRUMP (2♠), TRUMP MEMENANGKAN TRICK DISAMPING A♥ K♥ Q♥!
+
+      const banner = document.getElementById('winner-banner');
+      const desc = document.getElementById('winner-desc');
+
+      banner.classList.remove('hidden');
+
+      if (playedCards['south'].suit === 'spades') {
+        desc.innerHTML = '🔥 <strong>KARTU 2♠ (TRUMP) RUFFING BERHASIL!</strong><br>Kartu 2♠ memotong A♥ (East), K♥ (West) & Q♥ (North)! SOUTH MENANG!';
+      } else {
+        desc.innerHTML = '❌ East Menang dengan A♥ (karena Anda membuang suit lain tanpa Trump).';
+      }
+
+      renderUI();
+    }
+
+    function resetGame() {
+      currentTurnIdx = 3;
+      playedCards = {};
+      ledSuit = null;
+      isFinished = false;
+      document.getElementById('winner-banner').classList.add('hidden');
+      renderUI();
+    }
+
+    renderUI();
+  </script>
+
+</body>
+</html>

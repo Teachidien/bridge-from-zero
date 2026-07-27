@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Pratinjau Modul 3: Menghitung Poin Kartu (HCP)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    
+    .hand-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      width: 100%;
+      padding-top: 16px;
+      padding-bottom: 8px;
+    }
+    
+    .card-hand-item {
+      margin-left: -44px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+      position: relative;
+    }
+    @media (min-width: 640px) {
+      .card-hand-item {
+        margin-left: -64px;
+      }
+    }
+    .card-hand-item:first-child {
+      margin-left: 0;
+    }
+    
+    .card-hand-item:hover {
+      transform: translateY(-20px);
+      z-index: 999 !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#F1F5F9] text-slate-800 min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+  <!-- Header Navigation & Progress Bar -->
+  <header class="w-full max-w-4xl mx-auto flex flex-col space-y-3 py-2 px-1">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <span class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+          MODUL 3: MENGHITUNG POIN KARTU (HCP)
+        </span>
+      </div>
+      <span class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200 font-bold">
+        Tingkat 1 (Pemula)
+      </span>
+    </div>
+
+    <!-- Progress Bar Modul (Selesai Tingkat 1) -->
+    <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden border border-slate-300">
+      <div class="bg-gradient-to-r from-emerald-500 to-amber-500 h-full w-full transition-all duration-500"></div>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA MODUL 3 (COMPACT HCP SUMMARY CARD) -->
+  <main class="flex-1 max-w-3xl mx-auto w-full flex flex-col items-center justify-center my-4">
+    
+    <div class="w-full bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-8 shadow-xl flex flex-col space-y-6">
+      
+      <!-- COMPACT RUMUS POIN HCP (TANPA HURUF 'p', CUKUP ANGKA SAJA: 4, 3, 2, 1) -->
+      <div class="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div class="flex items-center space-x-2">
+          <span class="text-lg">🧮</span>
+          <span class="text-xs sm:text-sm font-extrabold text-slate-900">Nilai Poin Kartu Honor (HCP):</span>
+        </div>
+
+        <!-- Pill Badge Ringkas Horizontal (A=4, K=3, Q=2, J=1) -->
+        <div class="flex items-center gap-2">
+          <span class="bg-white border border-slate-200 px-3 py-1 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5">
+            <span>A</span>
+            <span class="bg-emerald-100 text-emerald-800 text-[11px] px-1.5 py-0.5 rounded-md font-extrabold">4</span>
+          </span>
+          <span class="bg-white border border-slate-200 px-3 py-1 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5">
+            <span>K</span>
+            <span class="bg-emerald-100 text-emerald-800 text-[11px] px-1.5 py-0.5 rounded-md font-extrabold">3</span>
+          </span>
+          <span class="bg-white border border-slate-200 px-3 py-1 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5">
+            <span>Q</span>
+            <span class="bg-emerald-100 text-emerald-800 text-[11px] px-1.5 py-0.5 rounded-md font-extrabold">2</span>
+          </span>
+          <span class="bg-white border border-slate-200 px-3 py-1 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5">
+            <span>J</span>
+            <span class="bg-emerald-100 text-emerald-800 text-[11px] px-1.5 py-0.5 rounded-md font-extrabold">1</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- VISUAL KARTU DI TANGAN DAN KUIS MENGHITUNG POIN -->
+      <div class="space-y-2">
+        <span class="text-xs font-extrabold text-slate-700">HITUNG TOTAL POIN HCP PADA 13 KARTU DI TANGAN ANDA:</span>
+        
+        <!-- Arena Tangan Kartu (South) -->
+        <div class="bg-[#0B231B] p-3 rounded-2xl border border-emerald-900 overflow-x-auto min-h-[120px] sm:min-h-[180px]">
+          <div class="hand-container">
+            <!-- A♠ (4), K♠ (3), Q♥ (2), J♦ (1), A♣ (4) -> Total = 14 HCP -->
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 10;"><div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none">A<br>♠</div><div class="text-[#1E293B] text-sm sm:text-3xl text-center font-bold">♠</div><div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none text-right">♠<br>A</div></div>
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 11;"><div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none">K<br>♠</div><div class="text-[#1E293B] text-sm sm:text-3xl text-center font-bold">♠</div><div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none text-right">♠<br>K</div></div>
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 12;"><div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none">10<br>♠</div><div class="text-[#1E293B] text-xs sm:text-xl text-center font-bold">10</div><div class="text-[#1E293B] font-extrabold text-[11px] sm:text-base leading-none text-right">♠<br>10</div></div>
+            
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 13;"><div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none">Q<br>♥</div><div class="text-[#E11D48] text-sm sm:text-3xl text-center font-bold">♥</div><div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none text-right">♥<br>Q</div></div>
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 14;"><div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none">7<br>♥</div><div class="text-[#E11D48] text-xs sm:text-xl text-center font-bold">7</div><div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none text-right">♥<br>7</div></div>
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 15;"><div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none">2<br>♥</div><div class="text-[#E11D48] text-xs sm:text-xl text-center font-bold">2</div><div class="text-[#E11D48] font-extrabold text-[11px] sm:text-base leading-none text-right">♥<br>2</div></div>
+            
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 16;"><div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none">J<br>♦</div><div class="text-[#D97706] text-sm sm:text-3xl text-center font-bold">♦</div><div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none text-right">♦<br>J</div></div>
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 17;"><div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none">9<br>♦</div><div class="text-[#D97706] text-xs sm:text-xl text-center font-bold">9</div><div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none text-right">♦<br>9</div></div>
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 18;"><div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none">4<br>♦</div><div class="text-[#D97706] text-xs sm:text-xl text-center font-bold">4</div><div class="text-[#D97706] font-extrabold text-[11px] sm:text-base leading-none text-right">♦<br>4</div></div>
+
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 19;"><div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none">A<br>♣</div><div class="text-[#059669] text-sm sm:text-3xl text-center font-bold">♣</div><div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none text-right">♣<br>A</div></div>
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 20;"><div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none">8<br>♣</div><div class="text-[#059669] text-xs sm:text-xl text-center font-bold">8</div><div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none text-right">♣<br>8</div></div>
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 21;"><div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none">5<br>♣</div><div class="text-[#059669] text-sm sm:text-3xl text-center font-bold">5</div><div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none text-right">♣<br>5</div></div>
+            <div class="card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5" style="z-index: 22;"><div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none">2<br>♣</div><div class="text-[#059669] text-xs sm:text-xl text-center font-bold">2</div><div class="text-[#059669] font-extrabold text-[11px] sm:text-base leading-none text-right">♣<br>2</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KUIS MENGHITUNG POIN -->
+      <div class="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold text-amber-600 tracking-wider">🎯 KUIS HITUNG HCP</span>
+          <span class="text-[10px] text-slate-500 font-bold">Soal 3 dari 3</span>
+        </div>
+
+        <p class="text-xs sm:text-sm font-bold text-slate-900">
+          Berapa total nilai High Card Points (HCP) pada 13 kartu di tangan Anda di atas?
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+          <button onclick="answerQuiz(10)" class="bg-white hover:bg-emerald-50 text-center p-3 rounded-xl border border-slate-300 font-bold text-sm text-slate-800 shadow-sm">
+            10 Poin
+          </button>
+          <button onclick="answerQuiz(12)" class="bg-white hover:bg-emerald-50 text-center p-3 rounded-xl border border-slate-300 font-bold text-sm text-slate-800 shadow-sm">
+            12 Poin
+          </button>
+          <button onclick="answerQuiz(14)" class="bg-white hover:bg-emerald-50 text-center p-3 rounded-xl border border-slate-300 font-bold text-sm text-slate-800 shadow-sm">
+            14 Poin
+          </button>
+          <button onclick="answerQuiz(16)" class="bg-white hover:bg-emerald-50 text-center p-3 rounded-xl border border-slate-300 font-bold text-sm text-slate-800 shadow-sm">
+            16 Poin
+          </button>
+        </div>
+
+        <div id="quiz-feedback" class="hidden p-3 rounded-xl text-xs font-bold transition"></div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer Navigation Modul -->
+  <footer class="max-w-3xl mx-auto w-full flex justify-between items-center pt-2">
+    <button class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-bold px-4 py-2 rounded-xl shadow-sm">
+      ⬅️ Sebelumnya
+    </button>
+    <button class="bg-[#059669] hover:bg-[#047857] text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md transition">
+      🏆 Selesai Tingkat 1 ➔
+    </button>
+  </footer>
+
+  <script>
+    function answerQuiz(points) {
+      const feedback = document.getElementById('quiz-feedback');
+      
+      if (points === 14) {
+        feedback.className = 'p-3 rounded-xl text-xs font-bold transition bg-emerald-100 border border-emerald-300 text-emerald-900 block';
+        feedback.innerHTML = '🎉 <strong>100% BENAR!</strong> Rinciannya: A♠ (4) + K♠ (3) + Q♥ (2) + J♦ (1) + A♣ (4) = <strong>14 HCP Poin</strong>!';
+      } else {
+        feedback.className = 'p-3 rounded-xl text-xs font-bold transition bg-rose-100 border border-rose-300 text-rose-900 block';
+        feedback.innerHTML = '❌ <strong>KURANG TEPAT!</strong> Coba hitung kartu Honor Anda: A♠(4) + K♠(3) + Q♥(2) + J♦(1) + A♣(4). Total = 14 Poin!';
+      }
+    }
+  </script>
+
+</body>
+</html>

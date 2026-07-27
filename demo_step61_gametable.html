@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridge From Zero - Step 6.1: Clean Bezel Natural Felt Theme</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    /* CLEAN NATURAL CASINO FELT:
+       HAPUS SEMUA BEZEL / GARIS OUTLINE NEON SILAU!
+       Menggunakan bayangan lembut (subtle soft shadow) dan gradasi felt murni yang sangat tenang di mata.
+    */
+    .hand-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      width: 100%;
+      padding-top: 12px;
+      padding-bottom: 6px;
+    }
+    
+    .card-hand-item {
+      margin-left: -54px; /* Pas menutupi lambang tengah */
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+      position: relative;
+    }
+    @media (min-width: 640px) {
+      .card-hand-item {
+        margin-left: -74px;
+      }
+    }
+    .card-hand-item:first-child {
+      margin-left: 0;
+    }
+    
+    .card-hand-item:hover {
+      transform: translateY(-24px);
+      z-index: 999 !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#064E3B] text-slate-100 min-h-screen flex flex-col justify-between p-2 sm:p-4 select-none overflow-hidden">
+
+  <!-- HEADER BAR CLEAN (TANPA GARIS BEZEL NEON) -->
+  <header class="w-full max-w-5xl mx-auto flex justify-between items-center bg-[#033629] rounded-2xl px-4 py-2.5 shadow-md text-xs">
+    <div class="flex items-center space-x-3">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+      <span class="font-extrabold text-amber-300 tracking-wider">BRIDGE ARENA</span>
+      <span class="text-emerald-100">| Dealer: <strong class="text-white">WEST</strong></span>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <button onclick="askAiCoach()" class="bg-[#D97706] hover:bg-[#B45309] text-white font-extrabold px-3.5 py-1.5 rounded-xl shadow transition text-[11px] flex items-center gap-1.5">
+        <span>💡</span>
+        <span>Tanya Pelatih AI</span>
+      </button>
+      <button onclick="redealGame()" class="bg-[#059669] hover:bg-[#047857] text-white font-extrabold px-3.5 py-1.5 rounded-xl shadow transition text-[11px]">
+        🔄 Deal Baru
+      </button>
+    </div>
+  </header>
+
+  <!-- ARENA MEJA GAME UTAMA (CLEAN NATURAL CASINO GREEN) -->
+  <main class="flex-1 max-w-5xl mx-auto w-full grid grid-rows-[auto_1fr_auto] grid-cols-1 my-2 gap-2 relative">
+    
+    <!-- 1. NORTH (PARTNER BOT) -->
+    <div class="flex flex-col items-center space-y-1">
+      <div class="bg-[#033629] px-3.5 py-1 rounded-full text-[11px] font-bold text-emerald-100 shadow-sm flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        NORTH (Partner Bot)
+      </div>
+      <div class="flex -space-x-8 opacity-75">
+        <div class="w-9 h-12 bg-[#02231A] rounded-lg shadow"></div>
+        <div class="w-9 h-12 bg-[#02231A] rounded-lg shadow"></div>
+        <div class="w-9 h-12 bg-[#02231A] rounded-lg shadow"></div>
+        <div class="w-9 h-12 bg-[#02231A] rounded-lg shadow"></div>
+      </div>
+    </div>
+
+    <!-- 2. MID SECTION (WEST - TABLE CENTER - EAST) -->
+    <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3 w-full">
+      <!-- WEST -->
+      <div class="flex flex-col items-center space-y-1">
+        <div class="bg-[#033629] px-3.5 py-1 rounded-full text-[11px] font-bold text-emerald-100 shadow-sm">
+          WEST
+        </div>
+      </div>
+
+      <!-- CENTER MEJA CLEAN (TANPA OUTLINE / GARIS BEZEL NEON SILAU) -->
+      <div class="bg-[#033629] rounded-3xl p-5 flex flex-col items-center justify-center space-y-3.5 min-h-[240px] shadow-xl relative">
+        
+        <!-- PBN MATRIX 4 KOLOM CLEAN -->
+        <div class="w-full max-w-md bg-[#02231A] rounded-2xl p-3 shadow-inner">
+          <div class="grid grid-cols-4 text-center font-extrabold text-[11px] pb-1 text-amber-300 border-b border-[#044D39]">
+            <div>NORTH</div><div>EAST</div><div>SOUTH</div><div>WEST</div>
+          </div>
+          <div id="pbn-matrix-rows" class="text-[11px] font-mono divide-y divide-[#044D39]/50 text-slate-200">
+            <div class="grid grid-cols-4 text-center py-1">
+              <span class="text-emerald-300/40">-</span>
+              <span class="text-emerald-300/40">-</span>
+              <span class="text-emerald-300/40">-</span>
+              <span class="text-amber-300 font-extrabold">1♠</span>
+            </div>
+            <div class="grid grid-cols-4 text-center py-1">
+              <span class="text-emerald-200">PASS</span>
+              <span class="text-emerald-200">PASS</span>
+              <span class="text-emerald-400 font-bold">2♠</span>
+              <span class="text-emerald-200">PASS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STREAMLINED BIDDING BOX CLEAN UI -->
+        <div id="bidding-box-area" class="w-full max-w-md bg-[#022B20] rounded-2xl p-3 flex flex-col space-y-2.5 shadow-lg">
+          <span class="text-[10px] font-extrabold text-emerald-300 text-center uppercase tracking-wider">Bidding Box Anda:</span>
+          
+          <!-- Row Level 1-7 -->
+          <div class="flex justify-between gap-1">
+            <button class="flex-1 bg-[#02231A] hover:bg-[#044D39] text-white font-extrabold text-xs py-1.5 rounded-lg text-center shadow-sm">1</button>
+            <button class="flex-1 bg-[#059669] text-white font-extrabold text-xs py-1.5 rounded-lg text-center shadow ring-2 ring-amber-300">2</button>
+            <button class="flex-1 bg-[#02231A] hover:bg-[#044D39] text-white font-extrabold text-xs py-1.5 rounded-lg text-center shadow-sm">3</button>
+            <button class="flex-1 bg-[#02231A] hover:bg-[#044D39] text-white font-extrabold text-xs py-1.5 rounded-lg text-center shadow-sm">4</button>
+            <button class="flex-1 bg-[#02231A] hover:bg-[#044D39] text-white font-extrabold text-xs py-1.5 rounded-lg text-center shadow-sm">5</button>
+            <button class="flex-1 bg-[#02231A] hover:bg-[#044D39] text-white font-extrabold text-xs py-1.5 rounded-lg text-center shadow-sm">6</button>
+            <button class="flex-1 bg-[#02231A] hover:bg-[#044D39] text-white font-extrabold text-xs py-1.5 rounded-lg text-center shadow-sm">7</button>
+          </div>
+
+          <!-- Row Suits ♣ ♦ ♥ ♠ NT -->
+          <div class="flex justify-between gap-1">
+            <button class="flex-1 bg-white opacity-40 cursor-not-allowed font-extrabold text-xs py-1.5 rounded-lg text-[#059669]">♣</button>
+            <button class="flex-1 bg-white opacity-40 cursor-not-allowed font-extrabold text-xs py-1.5 rounded-lg text-[#D97706]">♦</button>
+            <button class="flex-1 bg-white opacity-40 cursor-not-allowed font-extrabold text-xs py-1.5 rounded-lg text-[#E11D48]">♥</button>
+            <button class="flex-1 bg-white hover:bg-slate-100 font-extrabold text-xs py-1.5 rounded-lg text-[#1E293B] shadow">♠</button>
+            <button class="flex-1 bg-white hover:bg-slate-100 font-extrabold text-xs py-1.5 rounded-lg text-[#1E293B] shadow">NT</button>
+          </div>
+
+          <!-- Row Special Calls PASS / DBL / RDBL -->
+          <div class="flex justify-between gap-2 pt-1">
+            <button class="flex-1 bg-[#059669] hover:bg-[#047857] text-white font-extrabold text-xs py-2 rounded-xl shadow-sm">PASS</button>
+            <button class="flex-1 bg-amber-700 opacity-50 cursor-not-allowed text-white font-extrabold text-xs py-2 rounded-xl">DBL</button>
+            <button class="flex-1 bg-rose-800 opacity-50 cursor-not-allowed text-white font-extrabold text-xs py-2 rounded-xl">RDBL</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- EAST -->
+      <div class="flex flex-col items-center space-y-1">
+        <div class="bg-[#033629] px-3.5 py-1 rounded-full text-[11px] font-bold text-emerald-100 shadow-sm">
+          EAST
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. SOUTH (PERFECT BALANCED OVERLAP) -->
+    <div class="flex flex-col items-center space-y-1 w-full">
+      <div class="text-xs font-bold text-amber-300 bg-[#033629] px-4 py-1 rounded-full flex items-center gap-2 shadow-sm">
+        <span>👤 KARTU ANDA (SOUTH)</span>
+        <span class="text-[10px] bg-[#02231A] text-emerald-300 px-2 py-0.5 rounded-md">14 HCP</span>
+      </div>
+
+      <div class="w-full flex justify-center items-center overflow-x-auto min-h-[110px] sm:min-h-[170px]">
+        <div id="player-hand-cards" class="hand-container">
+          <!-- Render 13 Kartu South Clean -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const sampleSouthHand = [
+      { rank: 'Q', suit: 'spades', color: '#1E293B', isHigh: true },
+      { rank: '10', suit: 'spades', color: '#1E293B', isHigh: false },
+      { rank: '6', suit: 'spades', color: '#1E293B', isHigh: false },
+      { rank: '2', suit: 'spades', color: '#1E293B', isHigh: false },
+      { rank: 'A', suit: 'hearts', color: '#E11D48', isHigh: true },
+      { rank: '5', suit: 'hearts', color: '#E11D48', isHigh: false },
+      { rank: 'A', suit: 'diamonds', color: '#D97706', isHigh: true },
+      { rank: 'J', suit: 'diamonds', color: '#D97706', isHigh: true },
+      { rank: '8', suit: 'diamonds', color: '#D97706', isHigh: false },
+      { rank: '3', suit: 'diamonds', color: '#D97706', isHigh: false },
+      { rank: 'K', suit: 'clubs', color: '#059669', isHigh: true },
+      { rank: '8', suit: 'clubs', color: '#059669', isHigh: false },
+      { rank: '4', suit: 'clubs', color: '#059669', isHigh: false },
+    ];
+
+    const suitSymbols = { spades: '♠', hearts: '♥', diamonds: '♦', clubs: '♣' };
+
+    function renderSouthHandClean() {
+      const container = document.getElementById('player-hand-cards');
+      container.innerHTML = '';
+
+      sampleSouthHand.forEach((card, idx) => {
+        const div = document.createElement('div');
+        div.className = 'card-hand-item w-16 h-24 sm:w-28 sm:h-40 bg-white rounded-lg sm:rounded-xl shadow-md border border-slate-300 flex flex-col justify-between p-1 sm:p-2.5';
+        div.style.zIndex = 10 + idx;
+
+        const rankFontSize = card.isHigh ? 'text-sm sm:text-3xl' : 'text-xs sm:text-xl';
+
+        div.innerHTML = `
+          <div class="font-extrabold text-[11px] sm:text-base leading-none" style="color: ${card.color};">
+            ${card.rank}<br>${suitSymbols[card.suit]}
+          </div>
+          <div class="${rankFontSize} text-center font-bold" style="color: ${card.color};">
+            ${card.isHigh ? suitSymbols[card.suit] : card.rank}
+          </div>
+          <div class="font-extrabold text-[11px] sm:text-base leading-none text-right" style="color: ${card.color};">
+            ${suitSymbols[card.suit]}<br>${card.rank}
+          </div>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+
+    renderSouthHandClean();
+  </script>
+
+</body>
+</html>
