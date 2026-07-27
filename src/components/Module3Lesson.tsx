@@ -59,14 +59,13 @@ export const Module3Lesson: React.FC = () => {
       </header>
 
       {/* Konten Utama Modul 3 */}
-      <main className="max-w-3xl mx-auto w-full">
+      <main className="max-w-4xl mx-auto w-full">
         <div className="w-full bg-white border border-slate-200/80 rounded-2xl p-3 sm:p-6 shadow-xl flex flex-col space-y-3 sm:space-y-4">
           
           {/* Rumus HCP Ringkas + Tombol Redeal di Dalamnya */}
           <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-3 sm:p-4 flex flex-wrap justify-between items-center gap-2">
             <div className="flex items-center space-x-2">
-              <span className="text-base sm:text-lg">🧮</span>
-              <span className="text-xs sm:text-sm font-extrabold text-slate-900">Nilai HCP:</span>
+              <span className="text-xs sm:text-sm font-extrabold text-slate-900">HCP:</span>
               <div className="flex items-center gap-1">
                 {honors.map(({ rank, points }) => (
                   <span key={rank} className="bg-white border border-slate-200 px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1">
@@ -132,7 +131,7 @@ export const Module3Lesson: React.FC = () => {
       </main>
 
       {/* Footer Navigation */}
-      <footer className="max-w-3xl mx-auto w-full flex justify-between items-center">
+      <footer className="max-w-4xl mx-auto w-full flex justify-between items-center">
         <button className="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-bold px-4 py-2 rounded-xl shadow-sm">
           ⬅️ Sebelumnya
         </button>
