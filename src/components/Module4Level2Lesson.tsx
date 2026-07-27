@@ -3,14 +3,14 @@ import { CardHand } from './CardHand';
 import { PlayingCard } from './PlayingCard';
 import type { Card } from '../types/card';
 
-interface FinesseVariant {
-  title: string;
-  northHand: Card[];
-  southHand: Card[];
-  explanation: string;
-  correctCardId: string;
-  correctFeedback: string;
-  wrongFeedback: string;
+interface StepSimulation {
+  prompt: string;
+  allowedCards: string[]; // ID card yang benar untuk dimainkan pada step ini
+  westResponseCard?: Card;
+  eastResponseCard?: Card;
+  dummyCardPlayed?: Card;
+  feedbackSuccess: string;
+  feedbackFailure: string;
 }
 
 interface VisualLesson {
@@ -25,62 +25,53 @@ interface VisualLesson {
   westCard?: Card;
   playedCard?: Card;
   actionNote: string;
-  finesseVariants?: FinesseVariant[];
-  correctCardId?: string;
-  correctFeedback?: string;
-  wrongFeedback?: string;
+  simulationSteps?: StepSimulation[];
 }
+
+const FINESSE_1_NORTH: Card[] = [
+  { id: 'f1-n-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
+  { id: 'f1-n-2', suit: 'spades', rank: 'Q', value: 12, hcp: 2 },
+  { id: 'f1-n-3', suit: 'spades', rank: 'J', value: 11, hcp: 1 },
+  { id: 'f1-n-4', suit: 'diamonds', rank: '3', value: 3, hcp: 0 },
+];
+
+const FINESSE_1_SOUTH: Card[] = [
+  { id: 'f1-s-1', suit: 'spades', rank: '4', value: 4, hcp: 0 },
+  { id: 'f1-s-2', suit: 'spades', rank: '3', value: 3, hcp: 0 },
+  { id: 'f1-s-3', suit: 'spades', rank: '2', value: 2, hcp: 0 },
+  { id: 'f1-s-4', suit: 'diamonds', rank: 'A', value: 14, hcp: 4 },
+];
+
+const CROSSRUFF_NORTH: Card[] = [
+  { id: 'cr-n-1', suit: 'spades', rank: 'K', value: 13, hcp: 3 },
+  { id: 'cr-n-2', suit: 'clubs', rank: '3', value: 3, hcp: 0 },
+];
+
+const CROSSRUFF_SOUTH: Card[] = [
+  { id: 'cr-s-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
+  { id: 'cr-s-2', suit: 'hearts', rank: '3', value: 3, hcp: 0 },
+];
 
 const LEVEL_2_LESSONS: VisualLesson[] = [
   {
     id: 'finesse',
-    title: 'Teknik Finesse (Jebakan Kartu High)',
+    title: 'Teknik Finesse (A-Q-J vs 2-3-4 + Tangga ♦)',
     category: 'Play',
-    description: 'Finesse adalah teknik menjebak kartu kehormatan musuh (seperti King lawan) yang tersembunyi dengan mengalirkan kartu kecil dari tangan menuju kartu kombinasi kehormatan.',
-    keyRule: 'Prinsip Finesse: Selalu jalankan kartu kecil menuju kombinasi tenas (A-Q / A-Q-10)!',
-    northHand: [],
-    southHand: [],
-    actionNote: '',
-    finesseVariants: [
-      {
-        title: 'Variasi 1: Finesse Standard (A-Q-J vs 2-3-4 + Tangga ♦)',
-        northHand: [
-          { id: 'f1-n-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
-          { id: 'f1-n-2', suit: 'spades', rank: 'Q', value: 12, hcp: 2 },
-          { id: 'f1-n-3', suit: 'spades', rank: 'J', value: 11, hcp: 1 },
-          { id: 'f1-n-4', suit: 'diamonds', rank: '3', value: 3, hcp: 0 },
-        ],
-        southHand: [
-          { id: 'f1-s-1', suit: 'spades', rank: '4', value: 4, hcp: 0 },
-          { id: 'f1-s-2', suit: 'spades', rank: '3', value: 3, hcp: 0 },
-          { id: 'f1-s-3', suit: 'spades', rank: '2', value: 2, hcp: 0 },
-          { id: 'f1-s-4', suit: 'diamonds', rank: 'A', value: 14, hcp: 4 },
-        ],
-        correctCardId: 'f1-s-3', // ♠2 dari South
-        correctFeedback: '🎉 TEPAT SEKALI! Anda memainkan ♠2 kecil dari South menuju ♠A-Q-J North. Jika West (Kiri) pasang ♠K, sergap dengan ♠A. Jika West pasang kecil, pasang ♠J / ♠Q ➔ Menang 3 Trick!',
-        wrongFeedback: '❌ KURANG TEPAT! Memainkan ♠A langsung dari North akan membuat ♠K musuh selamat. Selalu jalan kartu kecil (♠2) dari tangan South menuju kombinasi ♠A-Q-J!',
-        explanation: 'Bagaimana cara agar kombinasi kartu A-Q-J di North dan 2-3-4 di South bisa menang 3x (3 Trick)? Syarat utamanya: King lawan (K) harus berada di KIRI (West / Sebelum North), bukan di kanan (East)! Kartu ♦A di South & ♦3 di North digunakan sebagai "Tangga (Entry)" untuk masuk kembali ke tangan South.',
-      },
-      {
-        title: 'Variasi 2: Finesse Lanjutan (A-Q-10 vs J-2-3 + Tangga ♦)',
-        northHand: [
-          { id: 'f2-n-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
-          { id: 'f2-n-2', suit: 'spades', rank: 'Q', value: 12, hcp: 2 },
-          { id: 'f2-n-3', suit: 'spades', rank: '10', value: 10, hcp: 0 },
-          { id: 'f2-n-4', suit: 'diamonds', rank: '2', value: 2, hcp: 0 },
-        ],
-        southHand: [
-          { id: 'f2-s-1', suit: 'spades', rank: 'J', value: 11, hcp: 1 },
-          { id: 'f2-s-2', suit: 'spades', rank: '3', value: 3, hcp: 0 },
-          { id: 'f2-s-3', suit: 'spades', rank: '2', value: 2, hcp: 0 },
-          { id: 'f2-s-4', suit: 'diamonds', rank: 'A', value: 14, hcp: 4 },
-        ],
-        correctCardId: 'f2-s-1', // ♠J atau ♠2 dari South
-        correctFeedback: '🎉 TEPAT SEKALI! Anda mengalirkan ♠J (atau ♠2) dari South. Jika West tidak pasang ♠K, biarkan ♠J terus berjalan! Jika West membalas ♠K, sergap dengan ♠A.',
-        wrongFeedback: '❌ KURANG TEPAT! Memainkan ♠A atau ♠Q langsung dari North membuat ♠K musuh bisa memakan kartu kehormatan Anda. Alirkan ♠J dari South!',
-        explanation: 'Pada variasi A-Q-10 di North dan J-2-3 di South, Anda mengalirkan Jack (♠J) dari South. Jika West tidak menutup dengan ♠K, biarkan ♠J berjalan! Jika ditutup ♠K, makan dengan ♠A ➔ ♠Q & ♠10 milik North menjadi kartu pemenang!',
-      }
-    ]
+    description: 'Finesse adalah teknik menjebak King lawan di KIRI (West). Alirkan kartu kecil ♠2 dari South menuju ♠A-Q-J North. Setelah North menang dengan ♠J, gunakan "Tangga" ♦3 ke ♦A di South untuk mengulangi Finesse sekali lagi!',
+    keyRule: 'Prinsip Finesse: Jalankan kartu kecil ke arah kehormatan, dan gunakan Tangga (Entry) untuk kembali!',
+    northHand: FINESSE_1_NORTH,
+    southHand: FINESSE_1_SOUTH,
+    actionNote: 'Teka-teki Finesse: Mainkan ♠2 ➔ West keluarkan ♠5 ➔ North pasang ♠J (Menang 1)! Lalu jalan ♦3 ke ♦A di South (Menang 2)! Lalu mainkan ♠3 ke ♠Q North (Menang 3)!'
+  },
+  {
+    id: 'crossruff',
+    title: 'Teknik Cross-Ruff (Memotong Silang)',
+    category: 'Play',
+    description: 'Dengan Spades ♠ sebagai Trump, South memimpin ♥3 agar North memotong dengan ♠K! Kemudian North memimpin ♣3 agar South memotong dengan ♠A secara bergantian.',
+    keyRule: 'Prinsip Cross-Ruff: Potong silang suit yang Anda tidak miliki menggunakan kartu Trump pasangan!',
+    northHand: CROSSRUFF_NORTH,
+    southHand: CROSSRUFF_SOUTH,
+    actionNote: 'Alur Cross-Ruff: South jalan ♥3 ➔ North potong dengan ♠K! Lalu North jalan ♣3 ➔ South potong dengan ♠A ➔ Menang 2 Trick!'
   },
   {
     id: 'drop',
@@ -103,25 +94,6 @@ const LEVEL_2_LESSONS: VisualLesson[] = [
     ],
     eastCard: { id: 'drp-e-1', suit: 'hearts', rank: 'Q', value: 12, hcp: 2 },
     actionNote: 'Total 9 Kartu ♥! Tarik ♥A lalu ♥K ➔ ♥Q milik lawan langsung jatuh (drop).'
-  },
-  {
-    id: 'crossruff',
-    title: 'Teknik Cross-Ruff (Memotong Silang)',
-    category: 'Play',
-    description: 'Dengan Spades ♠ sebagai Trump, North memotong (ruff) suit Hearts ♥ menggunakan ♠K, dan South memotong suit Clubs ♣ menggunakan ♠A. Keduanya saling memotong secara bergantian!',
-    keyRule: 'Prinsip Cross-Ruff: Potong silang suit yang Anda tidak miliki menggunakan kartu Trump pasangan!',
-    northHand: [
-      { id: 'cr-n-1', suit: 'spades', rank: 'K', value: 13, hcp: 3 },
-      { id: 'cr-n-2', suit: 'clubs', rank: '3', value: 3, hcp: 0 },
-    ],
-    southHand: [
-      { id: 'cr-s-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
-      { id: 'cr-s-2', suit: 'hearts', rank: '3', value: 3, hcp: 0 },
-    ],
-    correctCardId: 'cr-s-2', // ♥3 dari South ke North ♠K
-    correctFeedback: '🎉 TEPAT SEKALI! South memainkan ♥3 ➔ North potong dengan ♠K! Kemudian North memimpin ♣3 ➔ South potong dengan ♠A ➔ Berhasil menang 2 Trick!',
-    wrongFeedback: '❌ KURANG TEPAT! Memainkan ♠A langsung dari South membuang kartu Trump Anda tanpa hasil. Jalan ♥3 dulu dari South agar North bisa memotongnya!',
-    actionNote: 'Alur Main (Trump ♠ Spades): South jalan ♥3 ➔ North potong dengan ♠K (Ruff ♥)! Lalu North jalan ♣3 ➔ South potong dengan ♠A (Ruff ♣) ➔ Menang 2 Trick!'
   },
   {
     id: 'lead',
@@ -159,36 +131,156 @@ const LEVEL_2_LESSONS: VisualLesson[] = [
 
 export const Module4Level2Lesson: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [finesseSubTab, setFinesseSubTab] = useState<number>(0);
-  const [playResult, setPlayResult] = useState<{ isCorrect: boolean; feedback: string } | null>(null);
+  
+  // State Simulasi Bermain Kartu Real-Time
+  const [stepIndex, setStepIndex] = useState<number>(0);
+  const [northCards, setNorthCards] = useState<Card[]>(FINESSE_1_NORTH);
+  const [southCards, setSouthCards] = useState<Card[]>(FINESSE_1_SOUTH);
+  const [trickCards, setTrickCards] = useState<{ south?: Card; west?: Card; north?: Card; east?: Card }>({});
+  const [feedback, setFeedback] = useState<{ isError: boolean; message: string } | null>(null);
+  const [tricksWon, setTricksWon] = useState<number>(0);
 
   const currentLesson = LEVEL_2_LESSONS[activeTab];
 
+  // Reset Simulasi saat ganti Tab
+  const resetSimulation = (lessonId: string) => {
+    setStepIndex(0);
+    setTrickCards({});
+    setFeedback(null);
+    setTricksWon(0);
+
+    if (lessonId === 'finesse') {
+      setNorthCards(FINESSE_1_NORTH);
+      setSouthCards(FINESSE_1_SOUTH);
+    } else if (lessonId === 'crossruff') {
+      setNorthCards(CROSSRUFF_NORTH);
+      setSouthCards(CROSSRUFF_SOUTH);
+    }
+  };
+
   const handleTabChange = (idx: number) => {
     setActiveTab(idx);
-    setFinesseSubTab(0);
-    setPlayResult(null);
+    resetSimulation(LEVEL_2_LESSONS[idx].id);
   };
 
-  const handleSubTabChange = (subIdx: number) => {
-    setFinesseSubTab(subIdx);
-    setPlayResult(null);
-  };
+  // Logika Eksekusi Langkah Bermain (Finesse & Cross-Ruff)
+  const handlePlayCard = (card: Card, source: 'south' | 'north') => {
+    if (currentLesson.id === 'finesse') {
+      // FINESSE SIMULATION
+      if (stepIndex === 0) {
+        // Step 1: South harus mainkan kartu kecil Spades (♠2/♠3/♠4)
+        if (source === 'south' && card.suit === 'spades' && card.rank !== 'A') {
+          // West pasang ♠5 (kecil), North pasang ♠J, East pasang ♠8 ➔ North menang!
+          const westCard: Card = { id: 'w-5s', suit: 'spades', rank: '5', value: 5, hcp: 0 };
+          const northPlayed: Card = { id: 'f1-n-3', suit: 'spades', rank: 'J', value: 11, hcp: 1 };
+          const eastCard: Card = { id: 'e-8s', suit: 'spades', rank: '8', value: 8, hcp: 0 };
 
-  const handleCardClick = (card: Card) => {
-    // Cek Finesse / Crossruff interactive play
-    if (currentLesson.id === 'finesse' && currentLesson.finesseVariants) {
-      const variant = currentLesson.finesseVariants[finesseSubTab];
-      if (card.id === variant.correctCardId || (finesseSubTab === 1 && card.id === 'f2-s-3')) {
-        setPlayResult({ isCorrect: true, feedback: variant.correctFeedback });
-      } else {
-        setPlayResult({ isCorrect: false, feedback: variant.wrongFeedback });
+          setTrickCards({ south: card, west: westCard, north: northPlayed, east: eastCard });
+          setSouthCards(prev => prev.filter(c => c.id !== card.id));
+          setNorthCards(prev => prev.filter(c => c.id !== northPlayed.id));
+          setTricksWon(1);
+          setStepIndex(1);
+          setFeedback({
+            isError: false,
+            message: '🎉 BANGET TEPAT! South jalan ♠2 ➔ West pasang ♠5 ➔ North sergap ♠J ➔ Menang Trick 1! Sekarang giliran North (karena North yang menang).'
+          });
+        } else {
+          setFeedback({
+            isError: true,
+            message: '❌ CARA BERMAIN ANDA SALAH! Jangan memimpin ♠A dari North atau Diamonds dulu. Jalan kartu kecil Spades (♠2/♠3) dari South!'
+          });
+        }
+      } else if (stepIndex === 1) {
+        // Step 2: North di atas harus memainkan ♦3 (Tangga) menuju South
+        if (source === 'north' && card.suit === 'diamonds') {
+          const eastCard: Card = { id: 'e-4d', suit: 'diamonds', rank: '4', value: 4, hcp: 0 };
+          const southPlayed: Card = { id: 'f1-s-4', suit: 'diamonds', rank: 'A', value: 14, hcp: 4 };
+          const westCard: Card = { id: 'w-2d', suit: 'diamonds', rank: '2', value: 2, hcp: 0 };
+
+          setTrickCards({ north: card, east: eastCard, south: southPlayed, west: westCard });
+          setNorthCards(prev => prev.filter(c => c.id !== card.id));
+          setSouthCards(prev => prev.filter(c => c.id !== southPlayed.id));
+          setTricksWon(2);
+          setStepIndex(2);
+          setFeedback({
+            isError: false,
+            message: '🎉 HEBAT! North jalan ♦3 ➔ South makan dengan ♦A (Tangga/Entry)! Sekarang giliran pindah kembali ke South untuk Finesse ke-2.'
+          });
+        } else {
+          setFeedback({
+            isError: true,
+            message: '❌ CARA BERMAIN ANDA SALAH! Gunakan "Tangga" Diamond ♦3 dari North ke South agar giliran kembali ke South!'
+          });
+        }
+      } else if (stepIndex === 2) {
+        // Step 3: South jalan ♠3 ke ♠Q North ➔ Menang Trick 3!
+        if (source === 'south' && card.suit === 'spades') {
+          const westCard: Card = { id: 'w-9s', suit: 'spades', rank: '9', value: 9, hcp: 0 };
+          const northPlayed: Card = { id: 'f1-n-2', suit: 'spades', rank: 'Q', value: 12, hcp: 2 };
+          const eastCard: Card = { id: 'e-[#s]', suit: 'spades', rank: '10', value: 10, hcp: 0 };
+
+          setTrickCards({ south: card, west: westCard, north: northPlayed, east: eastCard });
+          setSouthCards(prev => prev.filter(c => c.id !== card.id));
+          setNorthCards(prev => prev.filter(c => c.id !== northPlayed.id));
+          setTricksWon(3);
+          setStepIndex(3);
+          setFeedback({
+            isError: false,
+            message: '🏆 LUAR BIASA! Finesse 2x Berhasil! South jalan ♠3 ➔ West ♠9 ➔ North ♠Q ➔ Total Menang 3 Trick!'
+          });
+        } else {
+          setFeedback({
+            isError: true,
+            message: '❌ CARA BERMAIN ANDA SALAH! Jalan kartu kecil ♠3 dari South menuju ♠Q di North!'
+          });
+        }
       }
     } else if (currentLesson.id === 'crossruff') {
-      if (card.id === currentLesson.correctCardId) {
-        setPlayResult({ isCorrect: true, feedback: currentLesson.correctFeedback! });
-      } else {
-        setPlayResult({ isCorrect: false, feedback: currentLesson.wrongFeedback! });
+      // CROSS-RUFF SIMULATION
+      if (stepIndex === 0) {
+        // Step 1: South jalan ♥3 ➔ North potong dengan ♠K
+        if (source === 'south' && card.suit === 'hearts') {
+          const westCard: Card = { id: 'w-kh', suit: 'hearts', rank: 'K', value: 13, hcp: 3 };
+          const northPlayed: Card = { id: 'cr-n-1', suit: 'spades', rank: 'K', value: 13, hcp: 3 };
+          const eastCard: Card = { id: 'e-5h', suit: 'hearts', rank: '5', value: 5, hcp: 0 };
+
+          setTrickCards({ south: card, west: westCard, north: northPlayed, east: eastCard });
+          setSouthCards(prev => prev.filter(c => c.id !== card.id));
+          setNorthCards(prev => prev.filter(c => c.id !== northPlayed.id));
+          setTricksWon(1);
+          setStepIndex(1);
+          setFeedback({
+            isError: false,
+            message: '🎉 TEPAT! South jalan ♥3 ➔ West pasang ♥K ➔ North POTONG SILANG dengan ♠K (Ruff)! North Menang 1 Trick!'
+          });
+        } else {
+          setFeedback({
+            isError: true,
+            message: '❌ CARA BERMAIN ANDA SALAH! Jalan ♥3 dari South dulu agar North bisa memotongnya dengan ♠K!'
+          });
+        }
+      } else if (stepIndex === 1) {
+        // Step 2: North jalan ♣3 ➔ South potong dengan ♠A
+        if (source === 'north' && card.suit === 'clubs') {
+          const eastCard: Card = { id: 'e-kc', suit: 'clubs', rank: 'K', value: 13, hcp: 3 };
+          const southPlayed: Card = { id: 'cr-s-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 };
+          const westCard: Card = { id: 'w-4c', suit: 'clubs', rank: '4', value: 4, hcp: 0 };
+
+          setTrickCards({ north: card, east: eastCard, south: southPlayed, west: westCard });
+          setNorthCards(prev => prev.filter(c => c.id !== card.id));
+          setSouthCards(prev => prev.filter(c => c.id !== southPlayed.id));
+          setTricksWon(2);
+          setStepIndex(2);
+          setFeedback({
+            isError: false,
+            message: '🏆 SEMPURNA! North jalan ♣3 ➔ East pasang ♣K ➔ South POTONG SILANG dengan ♠A (Ruff)! Berhasil Menang 2 Trick!'
+          });
+        } else {
+          setFeedback({
+            isError: true,
+            message: '❌ CARA BERMAIN ANDA SALAH! Jalan ♣3 dari North agar South bisa memotongnya dengan ♠A!'
+          });
+        }
       }
     }
   };
@@ -230,159 +322,135 @@ export const Module4Level2Lesson: React.FC = () => {
         {/* Meja Kasino Hijau Emerald */}
         <div className="w-full bg-[#0B231B] border border-emerald-900 rounded-3xl p-3 sm:p-5 shadow-2xl flex flex-col space-y-4">
           
-          {/* Judul Utama Teknik */}
+          {/* Header Meja & Tombol Redeal / Reset */}
           <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-white flex justify-between items-center">
-            <h3 className="text-sm sm:text-base font-extrabold text-amber-400 flex items-center gap-1.5">
-              <span>{currentLesson.category === 'Play' ? '🃏' : '🛡️'}</span>
-              {currentLesson.title}
-            </h3>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300 uppercase">
-              {currentLesson.category}
-            </span>
-          </div>
-
-          {/* KHUSUS FINESSE: Sub-Tab Variasi (Variasi 1 vs Variasi 2) */}
-          {currentLesson.finesseVariants && (
-            <div className="flex gap-2 justify-center">
-              {currentLesson.finesseVariants.map((v, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handleSubTabChange(idx)}
-                  className={`px-3 py-1 rounded-xl text-xs font-extrabold transition border ${
-                    finesseSubTab === idx
-                      ? 'bg-amber-500 text-slate-900 border-amber-400 shadow-md scale-105'
-                      : 'bg-[#071E17] text-slate-300 border-emerald-800 hover:bg-emerald-900'
-                  }`}
-                >
-                  {v.title.split(':')[0]}
-                </button>
-              ))}
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm sm:text-base font-extrabold text-amber-400">
+                {currentLesson.title}
+              </h3>
+              {(currentLesson.id === 'finesse' || currentLesson.id === 'crossruff') && (
+                <span className="text-xs font-extrabold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                  Trick Menang: {tricksWon}
+                </span>
+              )}
             </div>
-          )}
-
-          {/* Pertanyaan Utama di Atas Kartu (Finesse & Cross-Ruff) */}
-          {currentLesson.id === 'finesse' && (
-            <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-center">
-              <p className="text-xs sm:text-sm font-extrabold text-amber-300">
-                ❓ Pertanyaan: KETUK/MAINKAN KARTU ANDA di bawah ini untuk menang 3x (3 Trick)!
-              </p>
-            </div>
-          )}
-
-          {currentLesson.id === 'crossruff' && (
-            <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-center">
-              <p className="text-xs sm:text-sm font-extrabold text-amber-300">
-                ❓ Pertanyaan: KETUK/MAINKAN KARTU ANDA di bawah ini untuk menang 2x (Trump ♠ Spades)!
-              </p>
-            </div>
-          )}
-
-          {/* 1. VISUALISASI KARTU DI ATAS (INTERAKTIF KETUK KARTU) */}
-          <div className="space-y-3 py-1">
-            {currentLesson.finesseVariants ? (
-              (() => {
-                const variant = currentLesson.finesseVariants[finesseSubTab];
-                return (
-                  <div className="space-y-3">
-                    <div className="flex flex-col items-center space-y-1">
-                      <span className="text-[10px] font-bold text-slate-400">NORTH (DUMMY)</span>
-                      <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
-                        <CardHand cards={variant.northHand} onSelectCard={handleCardClick} />
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center space-y-1">
-                      <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
-                        <CardHand cards={variant.southHand} onSelectCard={handleCardClick} />
-                      </div>
-                      <span className="text-[10px] font-bold text-emerald-300">SOUTH (ANDA - KETUK KARTU UNTUK MAIN)</span>
-                    </div>
-                  </div>
-                );
-              })()
-            ) : (
-              <div className="space-y-3">
-                {currentLesson.northHand.length > 0 && (
-                  <div className="flex flex-col items-center space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400">PARTNER / DUMMY (NORTH)</span>
-                    <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
-                      <CardHand cards={currentLesson.northHand} onSelectCard={handleCardClick} />
-                    </div>
-                  </div>
-                )}
-
-                {(currentLesson.eastCard || currentLesson.westCard || currentLesson.playedCard) && (
-                  <div className="flex justify-center items-center gap-4 py-2">
-                    {currentLesson.westCard && (
-                      <div className="flex flex-col items-center gap-1">
-                        <span className="text-[10px] font-bold text-rose-400">PARTNER LEAD (WEST)</span>
-                        <div className="transform scale-90">
-                          <PlayingCard card={currentLesson.westCard} />
-                        </div>
-                      </div>
-                    )}
-
-                    {currentLesson.eastCard && (
-                      <div className="flex flex-col items-center gap-1">
-                        <span className="text-[10px] font-bold text-rose-400">KARTU MUSUH (EAST)</span>
-                        <div className="transform scale-90">
-                          <PlayingCard card={currentLesson.eastCard} />
-                        </div>
-                      </div>
-                    )}
-
-                    {currentLesson.playedCard && (
-                      <div className="flex flex-col items-center gap-1">
-                        <span className="text-[10px] font-bold text-emerald-300">LEAD TERBAIK</span>
-                        <div className="transform scale-90 ring-4 ring-amber-400 rounded-xl shadow-2xl">
-                          <PlayingCard card={currentLesson.playedCard} />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {currentLesson.southHand.length > 0 && (
-                  <div className="flex flex-col items-center space-y-1">
-                    <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
-                      <CardHand cards={currentLesson.southHand} onSelectCard={handleCardClick} />
-                    </div>
-                    <span className="text-[10px] font-bold text-emerald-300">KARTU ANDA (SOUTH - KETUK KARTU)</span>
-                  </div>
-                )}
-              </div>
+            {(currentLesson.id === 'finesse' || currentLesson.id === 'crossruff') && (
+              <button
+                onClick={() => resetSimulation(currentLesson.id)}
+                className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-3 py-1 rounded-xl text-xs font-extrabold shadow transition active:scale-95"
+              >
+                🔄 Redeal / Reset
+              </button>
             )}
           </div>
 
-          {/* HASIL PERCOBAAN BERMAIN (JIKA MAIN SALAH ATAU BENAR) */}
-          {playResult && (
-            <div className={`p-3 rounded-xl text-xs font-bold border text-center ${
-              playResult.isCorrect
-                ? 'bg-emerald-100 border-emerald-300 text-emerald-900'
-                : 'bg-rose-100 border-rose-300 text-rose-900'
-            }`}>
-              {playResult.feedback}
+          {/* Pertanyaan Utama di Atas Kartu */}
+          {(currentLesson.id === 'finesse' || currentLesson.id === 'crossruff') && (
+            <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-2.5 text-center">
+              <p className="text-xs sm:text-sm font-extrabold text-amber-300">
+                ❓ {currentLesson.id === 'finesse' 
+                    ? `[Langkah ${stepIndex + 1}/3]: ${stepIndex === 0 ? 'Mainkan ♠2 kecil dari South!' : stepIndex === 1 ? 'Mainkan ♦3 (Tangga) dari North!' : 'Mainkan ♠3 dari South menuju ♠Q North!'}`
+                    : `[Langkah ${stepIndex + 1}/2]: ${stepIndex === 0 ? 'Mainkan ♥3 dari South agar North potong dengan ♠K!' : 'Mainkan ♣3 dari North agar South potong dengan ♠A!'}`}
+              </p>
             </div>
           )}
 
-          {/* 2. PENJELASAN MURNI BARU MUNCIUL SETELAH DIMAIN KAN / SECARA NORMAL TERSEMBUNYI UNTUK FITUR INTERAKTIF */}
-          {(playResult || (!currentLesson.finesseVariants && currentLesson.id !== 'crossruff')) && (
+          {/* 1. VISUALISASI KARTU MEJA (NORTH, WEST, EAST, SOUTH & TRICK MAT) */}
+          <div className="space-y-3 py-1">
+            {/* North Hand */}
+            <div className="flex flex-col items-center space-y-1">
+              <span className="text-[10px] font-bold text-slate-400">NORTH (DUMMY)</span>
+              <div className="transform scale-[1.25] sm:scale-100 origin-center my-1">
+                <CardHand cards={currentLesson.id === 'finesse' || currentLesson.id === 'crossruff' ? northCards : currentLesson.northHand} onSelectCard={(c) => handlePlayCard(c, 'north')} />
+              </div>
+            </div>
+
+            {/* Middle Play Area: West Card, Played Trick, East Card */}
+            <div className="flex justify-center items-center gap-4 py-2 min-h-[100px]">
+              {/* West Opponent Card */}
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-[10px] font-bold text-rose-400">WEST (KIRI)</span>
+                <div className="transform scale-90">
+                  {trickCards.west ? (
+                    <PlayingCard card={trickCards.west} />
+                  ) : (
+                    <div className="w-16 h-24 sm:w-20 sm:h-28 border-2 border-dashed border-emerald-800 rounded-xl flex items-center justify-center text-[10px] text-emerald-600 font-bold">
+                      WEST
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Mat Arena Tengah / Status Kartu Dimainkan */}
+              <div className="flex flex-col items-center justify-center px-3 py-2 bg-[#061812] border border-emerald-800 rounded-2xl">
+                <span className="text-[10px] font-bold text-amber-300 mb-1">TRICK BERJALAN</span>
+                <div className="flex gap-2">
+                  {trickCards.south && (
+                    <div className="text-center">
+                      <span className="text-[9px] text-emerald-300 block">South</span>
+                      <div className="transform scale-75 origin-top"><PlayingCard card={trickCards.south} /></div>
+                    </div>
+                  )}
+                  {trickCards.north && (
+                    <div className="text-center">
+                      <span className="text-[9px] text-amber-300 block">North</span>
+                      <div className="transform scale-75 origin-top"><PlayingCard card={trickCards.north} /></div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* East Opponent Card */}
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-[10px] font-bold text-rose-400">EAST (KANAN)</span>
+                <div className="transform scale-90">
+                  {trickCards.east ? (
+                    <PlayingCard card={trickCards.east} />
+                  ) : (
+                    <div className="w-16 h-24 sm:w-20 sm:h-28 border-2 border-dashed border-emerald-800 rounded-xl flex items-center justify-center text-[10px] text-emerald-600 font-bold">
+                      EAST
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* South Hand */}
+            <div className="flex flex-col items-center space-y-1">
+              <div className="transform scale-[1.25] sm:scale-100 origin-center my-1">
+                <CardHand cards={currentLesson.id === 'finesse' || currentLesson.id === 'crossruff' ? southCards : currentLesson.southHand} onSelectCard={(c) => handlePlayCard(c, 'south')} />
+              </div>
+              <span className="text-[10px] font-bold text-emerald-300">SOUTH (ANDA - KETUK KARTU UNTUK BERMAIN)</span>
+            </div>
+          </div>
+
+          {/* EVALUASI HASIL BERMAIN (TERHUBUNG KE FEEDBACK AKSI) */}
+          {feedback && (
+            <div className={`p-3 rounded-xl text-xs font-bold border text-center ${
+              feedback.isError
+                ? 'bg-rose-950/80 border-rose-800 text-rose-200'
+                : 'bg-emerald-950/80 border-emerald-700 text-emerald-200'
+            }`}>
+              {feedback.message}
+            </div>
+          )}
+
+          {/* 2. PENJELASAN MURNI BARU MUNCIUL JIKA BUKAN TAB INTERAKTIF ATAU SETELAH MAIN */}
+          {(feedback || (currentLesson.id !== 'finesse' && currentLesson.id !== 'crossruff')) && (
             <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-white space-y-2">
               <h4 className="text-xs sm:text-sm font-extrabold text-amber-400">
-                💡 {currentLesson.finesseVariants ? currentLesson.finesseVariants[finesseSubTab].title : 'Penjelasan Teknik:'}
+                💡 Penjelasan Teknik:
               </h4>
               <p className="text-xs text-slate-200 leading-relaxed">
-                {currentLesson.finesseVariants ? currentLesson.finesseVariants[finesseSubTab].explanation : currentLesson.description}
+                {currentLesson.description}
               </p>
             </div>
           )}
 
           {/* 3. ALUR AKSI MAIN */}
-          {(playResult || (!currentLesson.finesseVariants && currentLesson.id !== 'crossruff')) && (
-            <div className="bg-[#071E17] border border-emerald-800 rounded-xl p-2.5 text-xs text-amber-200 font-bold text-center">
-              ⚡ {currentLesson.actionNote || (playResult?.isCorrect ? 'Langkah bermain Anda sudah tepat!' : 'Cobalah alur langkah yang disarankan di atas.')}
-            </div>
-          )}
+          <div className="bg-[#071E17] border border-emerald-800 rounded-xl p-2.5 text-xs text-amber-200 font-bold text-center">
+            ⚡ {currentLesson.actionNote}
+          </div>
 
           {/* 4. KUNCI PRINSIP */}
           <div className="bg-amber-500/10 border border-amber-500/30 p-2.5 rounded-xl text-xs text-amber-300 font-bold flex items-center gap-2">
