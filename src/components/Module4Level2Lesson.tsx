@@ -3,6 +3,14 @@ import { CardHand } from './CardHand';
 import { PlayingCard } from './PlayingCard';
 import type { Card } from '../types/card';
 
+interface FinesseVariant {
+  title: string;
+  northHand: Card[];
+  southHand: Card[];
+  explanation: string;
+  actionNote: string;
+}
+
 interface VisualLesson {
   id: string;
   title: string;
@@ -15,6 +23,7 @@ interface VisualLesson {
   westCard?: Card;
   playedCard?: Card;
   actionNote: string;
+  finesseVariants?: FinesseVariant[];
 }
 
 const LEVEL_2_LESSONS: VisualLesson[] = [
@@ -22,20 +31,43 @@ const LEVEL_2_LESSONS: VisualLesson[] = [
     id: 'finesse',
     title: 'Teknik Finesse (Jebakan Kartu High)',
     category: 'Play',
-    description: 'Bagaimana cara agar kombinasi kartu A-Q-J di North dan 2-3-4 di South bisa menang 3x (3 Trick)? Syarat utamanya: King lawan (K) harus berada di KIRI (West / Sebelum North), bukan di kanan (East)!',
-    keyRule: 'Prinsip Finesse: Finesse hanya berhasil jika King lawan berada di sebelah KIRI (sebelum kartu kehormatan A-Q-J)!',
-    northHand: [
-      { id: 'fin-n-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
-      { id: 'fin-n-2', suit: 'spades', rank: 'Q', value: 12, hcp: 2 },
-      { id: 'fin-n-3', suit: 'spades', rank: 'J', value: 11, hcp: 1 },
-    ],
-    southHand: [
-      { id: 'fin-s-1', suit: 'spades', rank: '4', value: 4, hcp: 0 },
-      { id: 'fin-s-2', suit: 'spades', rank: '3', value: 3, hcp: 0 },
-      { id: 'fin-s-3', suit: 'spades', rank: '2', value: 2, hcp: 0 },
-    ],
-    westCard: { id: 'fin-w-1', suit: 'spades', rank: 'K', value: 13, hcp: 3 },
-    actionNote: 'Teka-Teki Finesse: Mainkan kartu kecil ♠2 dari South ➔ West (Kiri) memegang ♠K. Jika West pasang ♠K, sergap dengan ♠A. Jika West pasang kecil, mainkan ♠J / ♠Q ➔ Menang 3x (3 Trick)!'
+    description: 'Finesse adalah teknik menjebak kartu kehormatan musuh (seperti King lawan) yang tersembunyi dengan mengalirkan kartu kecil dari tangan menuju kartu kombinasi kehormatan.',
+    keyRule: 'Prinsip Finesse: Selalu jalankan kartu kecil/intermediat menuju kombinasi tenas (A-Q / A-Q-10)!',
+    northHand: [],
+    southHand: [],
+    actionNote: '',
+    finesseVariants: [
+      {
+        title: 'Variasi 1: Finesse Standard (A-Q-J vs 2-3-4)',
+        northHand: [
+          { id: 'f1-n-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
+          { id: 'f1-n-2', suit: 'spades', rank: 'Q', value: 12, hcp: 2 },
+          { id: 'f1-n-3', suit: 'spades', rank: 'J', value: 11, hcp: 1 },
+        ],
+        southHand: [
+          { id: 'f1-s-1', suit: 'spades', rank: '4', value: 4, hcp: 0 },
+          { id: 'f1-s-2', suit: 'spades', rank: '3', value: 3, hcp: 0 },
+          { id: 'f1-s-3', suit: 'spades', rank: '2', value: 2, hcp: 0 },
+        ],
+        explanation: 'Bagaimana cara agar kombinasi kartu A-Q-J di North dan 2-3-4 di South bisa menang 3x (3 Trick)? Syarat utamanya: King lawan (K) harus berada di KIRI (West / Sebelum North), bukan di kanan (East)!',
+        actionNote: 'Alur Main: Jalan kartu kecil ♠2 dari South ➔ Jika West pasang ♠K, sergap dengan ♠A. Jika West pasang kecil, mainkan ♠J / ♠Q ➔ Menang 3 Trick!'
+      },
+      {
+        title: 'Variasi 2: Finesse Lanjutan (A-Q-10 vs J-2-3)',
+        northHand: [
+          { id: 'f2-n-1', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
+          { id: 'f2-n-2', suit: 'spades', rank: 'Q', value: 12, hcp: 2 },
+          { id: 'f2-n-3', suit: 'spades', rank: '10', value: 10, hcp: 0 },
+        ],
+        southHand: [
+          { id: 'f2-s-1', suit: 'spades', rank: 'J', value: 11, hcp: 1 },
+          { id: 'f2-s-2', suit: 'spades', rank: '3', value: 3, hcp: 0 },
+          { id: 'f2-s-3', suit: 'spades', rank: '2', value: 2, hcp: 0 },
+        ],
+        explanation: 'Pada variasi A-Q-10 di North dan J-2-3 di South, Anda dapat melakukan finesse dengan dua cara fleksibel: mengalirkan Jack (J) dari South ke arah 10/Q, atau jalan kartu kecil (2/3) dari South menuju 10/Q.',
+        actionNote: 'Alur Main: Jalan ♠J dari South ➔ Jika West tidak pasang ♠K, biarkan ♠J terus berjalan! Jika ditutup ♠K, makan dengan ♠A ➔ Kartu ♠Q & ♠10 jadi kartu pemenang!'
+      }
+    ]
   },
   {
     id: 'drop',
@@ -113,11 +145,13 @@ const LEVEL_2_LESSONS: VisualLesson[] = [
 
 export const Module4Level2Lesson: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [finesseSubTab, setFinesseSubTab] = useState<number>(0);
   const currentLesson = LEVEL_2_LESSONS[activeTab];
 
   return (
     <div className="bg-[#F1F5F9] text-slate-800 p-3 sm:p-5 select-none">
       <div className="space-y-3 max-w-4xl mx-auto w-full">
+        {/* Header Modul */}
         <header className="w-full flex flex-col space-y-2">
           <div className="flex justify-between items-center">
             <span className="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
@@ -130,6 +164,7 @@ export const Module4Level2Lesson: React.FC = () => {
           </div>
         </header>
 
+        {/* Tab Buttons (5 Teknik) */}
         <div className="flex flex-wrap gap-1.5 sm:gap-2">
           {LEVEL_2_LESSONS.map((l, idx) => (
             <button
@@ -147,89 +182,141 @@ export const Module4Level2Lesson: React.FC = () => {
           ))}
         </div>
 
+        {/* Meja Kasino Hijau Emerald */}
         <div className="w-full bg-[#0B231B] border border-emerald-900 rounded-3xl p-3 sm:p-5 shadow-2xl flex flex-col space-y-4">
-          <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-white space-y-1">
-            <div className="flex justify-between items-center">
-              <h3 className="text-sm sm:text-base font-extrabold text-amber-400 flex items-center gap-1.5">
-                <span>{currentLesson.category === 'Play' ? '🃏' : '🛡️'}</span>
-                {currentLesson.title}
-              </h3>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300 uppercase">
-                {currentLesson.category}
-              </span>
+          
+          {/* Judul Utama Teknik */}
+          <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-white flex justify-between items-center">
+            <h3 className="text-sm sm:text-base font-extrabold text-amber-400 flex items-center gap-1.5">
+              <span>{currentLesson.category === 'Play' ? '🃏' : '🛡️'}</span>
+              {currentLesson.title}
+            </h3>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300 uppercase">
+              {currentLesson.category}
+            </span>
+          </div>
+
+          {/* KHUSUS FINESSE: Sub-Tab Variasi (Variasi 1 vs Variasi 2) */}
+          {currentLesson.finesseVariants && (
+            <div className="flex gap-2 justify-center">
+              {currentLesson.finesseVariants.map((v, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setFinesseSubTab(idx)}
+                  className={`px-3 py-1 rounded-xl text-xs font-extrabold transition border ${
+                    finesseSubTab === idx
+                      ? 'bg-amber-500 text-slate-900 border-amber-400 shadow-md scale-105'
+                      : 'bg-[#071E17] text-slate-300 border-emerald-800 hover:bg-emerald-900'
+                  }`}
+                >
+                  {v.title.split(':')[0]}
+                </button>
+              ))}
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              {currentLesson.description}
+          )}
+
+          {/* 1. VISUALISASI KARTU DI ATAS */}
+          <div className="space-y-3 py-1">
+            {/* Tampilan Kartu Finesse Variasi atau Standard */}
+            {currentLesson.finesseVariants ? (
+              (() => {
+                const variant = currentLesson.finesseVariants[finesseSubTab];
+                return (
+                  <div className="space-y-3">
+                    <div className="flex flex-col items-center space-y-1">
+                      <span className="text-[10px] font-bold text-slate-400">NORTH (DUMMY)</span>
+                      <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
+                        <CardHand cards={variant.northHand} />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-center space-y-1">
+                      <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
+                        <CardHand cards={variant.southHand} />
+                      </div>
+                      <span className="text-[10px] font-bold text-emerald-300">SOUTH (ANDA)</span>
+                    </div>
+                  </div>
+                );
+              })()
+            ) : (
+              <div className="space-y-3">
+                {currentLesson.northHand.length > 0 && (
+                  <div className="flex flex-col items-center space-y-1">
+                    <span className="text-[10px] font-bold text-slate-400">PARTNER / DUMMY (NORTH)</span>
+                    <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
+                      <CardHand cards={currentLesson.northHand} />
+                    </div>
+                  </div>
+                )}
+
+                {(currentLesson.eastCard || currentLesson.westCard || currentLesson.playedCard) && (
+                  <div className="flex justify-center items-center gap-4 py-2">
+                    {currentLesson.westCard && (
+                      <div className="flex flex-col items-center gap-1">
+                        <span className="text-[10px] font-bold text-rose-400 font-bold">PARTNER LEAD (WEST)</span>
+                        <div className="transform scale-90">
+                          <PlayingCard card={currentLesson.westCard} />
+                        </div>
+                      </div>
+                    )}
+
+                    {currentLesson.eastCard && (
+                      <div className="flex flex-col items-center gap-1">
+                        <span className="text-[10px] font-bold text-rose-400 font-bold">KARTU MUSUH (EAST)</span>
+                        <div className="transform scale-90">
+                          <PlayingCard card={currentLesson.eastCard} />
+                        </div>
+                      </div>
+                    )}
+
+                    {currentLesson.playedCard && (
+                      <div className="flex flex-col items-center gap-1">
+                        <span className="text-[10px] font-bold text-emerald-300">LEAD TERBAIK</span>
+                        <div className="transform scale-90 ring-4 ring-amber-400 rounded-xl shadow-2xl">
+                          <PlayingCard card={currentLesson.playedCard} />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {currentLesson.southHand.length > 0 && (
+                  <div className="flex flex-col items-center space-y-1">
+                    <div className="transform scale-[1.25] sm:scale-100 origin-center my-2">
+                      <CardHand cards={currentLesson.southHand} />
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-300">KARTU ANDA (SOUTH)</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* 2. PENJELASAN DI BAWAH KARTU */}
+          <div className="bg-[#071E17] border border-emerald-800 rounded-2xl p-3 text-white space-y-2">
+            <h4 className="text-xs sm:text-sm font-extrabold text-amber-400">
+              💡 {currentLesson.finesseVariants ? currentLesson.finesseVariants[finesseSubTab].title : 'Penjelasan Teknik:'}
+            </h4>
+            <p className="text-xs text-slate-200 leading-relaxed">
+              {currentLesson.finesseVariants ? currentLesson.finesseVariants[finesseSubTab].explanation : currentLesson.description}
             </p>
           </div>
 
-          <div className="space-y-3 py-1">
-            <div className="text-center">
-              <span className="text-[11px] font-extrabold text-amber-300 bg-[#061812] px-3 py-1 rounded-full border border-emerald-900">
-                🎮 SIMULASI VISUAL KARTU
-              </span>
-            </div>
-
-            {currentLesson.northHand.length > 0 && (
-              <div className="flex flex-col items-center space-y-1">
-                <span className="text-[10px] font-bold text-slate-400">PARTNER / DUMMY (NORTH)</span>
-                <div className="transform scale-[1.1] sm:scale-100 origin-center my-1">
-                  <CardHand cards={currentLesson.northHand} />
-                </div>
-              </div>
-            )}
-
-            {(currentLesson.eastCard || currentLesson.westCard || currentLesson.playedCard) && (
-              <div className="flex justify-center items-center gap-4 py-2">
-                {currentLesson.westCard && (
-                  <div className="flex flex-col items-center gap-1">
-                    <span className="text-[10px] font-bold text-rose-400">PARTNER LEAD (WEST)</span>
-                    <div className="transform scale-90">
-                      <PlayingCard card={currentLesson.westCard} />
-                    </div>
-                  </div>
-                )}
-
-                {currentLesson.eastCard && (
-                  <div className="flex flex-col items-center gap-1">
-                    <span className="text-[10px] font-bold text-rose-400">KARTU MUSUH (EAST)</span>
-                    <div className="transform scale-90">
-                      <PlayingCard card={currentLesson.eastCard} />
-                    </div>
-                  </div>
-                )}
-
-                {currentLesson.playedCard && (
-                  <div className="flex flex-col items-center gap-1">
-                    <span className="text-[10px] font-bold text-emerald-300">LEAD TERBAIK</span>
-                    <div className="transform scale-90 ring-4 ring-amber-400 rounded-xl shadow-2xl">
-                      <PlayingCard card={currentLesson.playedCard} />
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {currentLesson.southHand.length > 0 && (
-              <div className="flex flex-col items-center space-y-1">
-                <span className="text-[10px] font-bold text-emerald-300">KARTU ANDA (SOUTH)</span>
-                <div className="transform scale-[1.1] sm:scale-100 origin-center my-1">
-                  <CardHand cards={currentLesson.southHand} />
-                </div>
-              </div>
-            )}
-          </div>
-
+          {/* 3. ALUR AKSI MAIN */}
           <div className="bg-[#071E17] border border-emerald-800 rounded-xl p-2.5 text-xs text-amber-200 font-bold text-center">
-            ⚡ {currentLesson.actionNote}
+            ⚡ {currentLesson.finesseVariants ? currentLesson.finesseVariants[finesseSubTab].actionNote : currentLesson.actionNote}
           </div>
 
+          {/* 4. KUNCI RINGS */}
           <div className="bg-amber-500/10 border border-amber-500/30 p-2.5 rounded-xl text-xs text-amber-300 font-bold flex items-center gap-2">
             <span>📌</span>
             <span>{currentLesson.keyRule}</span>
           </div>
+
         </div>
 
+        {/* Footer Navigation */}
         <div className="flex justify-between items-center pt-2 w-full">
           <button
             disabled={activeTab === 0}
@@ -251,3 +338,4 @@ export const Module4Level2Lesson: React.FC = () => {
     </div>
   );
 };
+
