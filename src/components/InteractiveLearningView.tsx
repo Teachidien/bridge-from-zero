@@ -13,7 +13,6 @@ export const InteractiveLearningView: React.FC = () => {
       {/* Module Selector Sub-header */}
       <div className="bg-[#033629] p-3 sm:p-4 rounded-2xl shadow-lg border border-[#055C45] flex flex-col sm:flex-row justify-between items-center gap-3">
         <div>
-          <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider">Kurikulum Bridge (Tingkat 1 & Tingkat 2)</span>
           <h2 className="text-base sm:text-lg font-extrabold text-white">Interactive Learning Arena</h2>
         </div>
 
