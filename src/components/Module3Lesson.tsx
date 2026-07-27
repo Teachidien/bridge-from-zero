@@ -95,8 +95,8 @@ export const Module3Lesson: React.FC = () => {
               </button>
             </div>
             
-            <div className="bg-[#0B231B] p-1.5 sm:p-2.5 rounded-2xl border border-emerald-900 shadow-inner overflow-hidden">
-              <div className="transform scale-75 sm:scale-85 origin-center -my-3 sm:-my-2">
+            <div className="bg-[#0B231B] p-2 sm:p-3 rounded-2xl border border-emerald-900 shadow-inner overflow-hidden flex justify-center">
+              <div className="transform scale-85 sm:scale-95 origin-center my-1">
                 <CardHand cards={currentHand} />
               </div>
             </div>
