@@ -93,39 +93,39 @@ export const Module2Lesson: React.FC = () => {
           
           {/* Kartu North (Partner) + Tombol Redeal */}
           <div className="w-full flex flex-col items-center space-y-1">
-            <div className="w-full flex justify-between items-center px-2">
-              <div className="text-xs font-bold text-amber-400 bg-[#061812] px-3 py-1 rounded-full border border-emerald-900">
-                👤 KARTU PARTNER (NORTH)
+            <div className="w-full flex justify-between items-center px-1 sm:px-2">
+              <div className="text-[10px] sm:text-xs font-bold text-amber-400 bg-[#061812] px-2.5 py-0.5 sm:py-1 rounded-full border border-emerald-900">
+                👤 PARTNER (NORTH)
               </div>
               <button
                 onClick={handleRedeal}
-                className="bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5 transition active:scale-95"
+                className="bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-[11px] sm:text-xs px-2.5 py-1 rounded-xl shadow flex items-center gap-1 transition active:scale-95"
               >
                 <span>🔄</span>
-                <span>Kocok Ulang 2 Deck (Redeal)</span>
+                <span>Kocok Ulang (Redeal)</span>
               </button>
             </div>
             
-            <div className="w-full overflow-hidden flex justify-center">
-              <div className="transform scale-85 sm:scale-95 origin-center my-1">
+            <div className="w-full overflow-hidden flex justify-center py-1">
+              <div className="transform scale-[0.65] xs:scale-75 sm:scale-95 origin-center -my-3 sm:my-0">
                 <CardHand cards={northCards} />
               </div>
             </div>
           </div>
 
-          {/* Bidding Box Mini Khusus Lambang di Tengah Meja */}
-          <div className="w-full max-w-xl mx-auto bg-[#071E17] border border-emerald-800 rounded-2xl p-3 sm:p-4 shadow-xl flex flex-col items-center space-y-3">
+          {/* Bidding Box Mini Ringkas di Tengah Meja */}
+          <div className="w-full max-w-md mx-auto bg-[#071E17] border border-emerald-800 rounded-2xl p-2.5 sm:p-4 shadow-xl flex flex-col items-center space-y-2">
             <p className="text-xs sm:text-sm font-extrabold text-amber-400 text-center">
-              Berdasarkan 2 set kartu berhadapan di atas, manakah <strong className="text-white">SUIT TRUMP</strong> terbanyak (Fit Pasangan)?
+              Apa kontrak yang cocok?
             </p>
 
-            <div className="w-full flex items-center justify-center gap-2">
+            <div className="w-full flex items-center justify-center gap-1.5">
               {SUITS.map(({ suit, symbol, color }) => (
                 <button
                   key={suit}
                   onClick={() => handleSuitSelect(suit)}
                   style={{ color }}
-                  className={`flex-1 bg-white hover:bg-slate-100 font-extrabold py-2 sm:py-3 rounded-xl text-lg sm:text-2xl shadow transition border ${
+                  className={`flex-1 bg-white hover:bg-slate-100 font-extrabold py-1.5 sm:py-2.5 rounded-lg text-base sm:text-xl shadow transition border ${
                     selectedSuit === suit ? 'ring-2 ring-amber-500 scale-105' : 'border-slate-200'
                   }`}
                 >
@@ -135,17 +135,17 @@ export const Module2Lesson: React.FC = () => {
             </div>
 
             {selectedSuit && (
-              <div className={`w-full p-3 rounded-xl text-xs font-bold text-center border ${
+              <div className={`w-full p-2 sm:p-3 rounded-xl text-[11px] sm:text-xs font-bold text-center border ${
                 selectedSuit === bestFitSuit || (bestFitTotal < 8 && selectedSuit === 'NT')
                   ? 'bg-emerald-100 border-emerald-300 text-emerald-900'
                   : 'bg-rose-100 border-rose-300 text-rose-900'
               }`}>
                 {selectedSuit === bestFitSuit ? (
-                  <span>🎉 <strong>100% BENAR!</strong> North ({combinedCounts[bestFitSuit].north}) + South ({combinedCounts[bestFitSuit].south}) = <strong>{bestFitTotal} Kartu {suitNameMap[bestFitSuit]}</strong> (Fit Terbanyak)!</span>
+                  <span>🎉 <strong>BENAR!</strong> North ({combinedCounts[bestFitSuit].north}) + South ({combinedCounts[bestFitSuit].south}) = <strong>{bestFitTotal} Kartu {suitNameMap[bestFitSuit]}</strong>!</span>
                 ) : bestFitTotal < 8 && selectedSuit === 'NT' ? (
-                  <span>🎉 <strong>100% BENAR!</strong> Tidak ada suit yang mencapai 8 kartu fit, sehingga opsi No-Trump (NT) paling tepat!</span>
+                  <span>🎉 <strong>BENAR!</strong> Tidak ada suit 8+ fit, No-Trump (NT) paling tepat!</span>
                 ) : (
-                  <span>❌ <strong>KURANG TEPAT!</strong> Fit terbanyak pasangan Anda adalah <strong>{suitNameMap[bestFitSuit]} ({bestFitTotal} Kartu)</strong>. Ketuk <strong>Kocok Ulang</strong> untuk mencoba lagi!</span>
+                  <span>❌ <strong>KURANG TEPAT.</strong> Fit terbanyak adalah <strong>{suitNameMap[bestFitSuit]} ({bestFitTotal} Kartu)</strong>.</span>
                 )}
               </div>
             )}
@@ -153,13 +153,13 @@ export const Module2Lesson: React.FC = () => {
 
           {/* Kartu South (Anda) */}
           <div className="w-full flex flex-col items-center space-y-1">
-            <div className="w-full overflow-hidden flex justify-center">
-              <div className="transform scale-85 sm:scale-95 origin-center my-1">
+            <div className="w-full overflow-hidden flex justify-center py-1">
+              <div className="transform scale-[0.65] xs:scale-75 sm:scale-95 origin-center -my-3 sm:my-0">
                 <CardHand cards={southCards} />
               </div>
             </div>
-            <div className="text-xs font-bold text-emerald-300 bg-[#061812] px-3 py-1 rounded-full border border-emerald-900">
-              👤 KARTU ANDA (SOUTH)
+            <div className="text-[10px] sm:text-xs font-bold text-emerald-300 bg-[#061812] px-2.5 py-0.5 sm:py-1 rounded-full border border-emerald-900">
+              👤 ANDA (SOUTH)
             </div>
           </div>
 

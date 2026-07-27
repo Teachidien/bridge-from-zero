@@ -19,8 +19,8 @@ export const CardHand: React.FC<CardHandProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`w-full flex justify-center items-end min-h-[140px] sm:min-h-[180px] overflow-x-auto py-2 ${className}`}>
-      <div className="flex justify-center items-end relative">
+    <div className={`w-full flex justify-center items-end min-h-[110px] sm:min-h-[180px] py-1 sm:py-2 ${className}`}>
+      <div className="flex justify-center items-end relative max-w-full">
         <AnimatePresence>
           {cards.map((card, index) => {
             const isSelected = selectedCardId === card.id;
