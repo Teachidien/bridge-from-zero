@@ -1,41 +1,9 @@
 import React, { useState } from 'react';
 import { CardHand } from './CardHand';
-import type { Card } from '../types/card';
 import type { BidSuit } from '../types/bidding';
+import type { Suit } from '../types/card';
 import { COLOR_PALETTE } from '../theme/colors';
-
-// Sample Hands untuk Modul 2
-const NORTH_CARDS: Card[] = [
-  { id: 'n-s-A', suit: 'spades', rank: 'A', value: 14, hcp: 4 },
-  { id: 'n-s-K', suit: 'spades', rank: 'K', value: 13, hcp: 3 },
-  { id: 'n-s-J', suit: 'spades', rank: 'J', value: 11, hcp: 1 },
-  { id: 'n-s-8', suit: 'spades', rank: '8', value: 8, hcp: 0 },
-  { id: 'n-s-3', suit: 'spades', rank: '3', value: 3, hcp: 0 },
-  { id: 'n-h-Q', suit: 'hearts', rank: 'Q', value: 12, hcp: 2 },
-  { id: 'n-h-7', suit: 'hearts', rank: '7', value: 7, hcp: 0 },
-  { id: 'n-h-2', suit: 'hearts', rank: '2', value: 2, hcp: 0 },
-  { id: 'n-d-K', suit: 'diamonds', rank: 'K', value: 13, hcp: 3 },
-  { id: 'n-d-9', suit: 'diamonds', rank: '9', value: 9, hcp: 0 },
-  { id: 'n-d-4', suit: 'diamonds', rank: '4', value: 4, hcp: 0 },
-  { id: 'n-c-10', suit: 'clubs', rank: '10', value: 10, hcp: 0 },
-  { id: 'n-c-5', suit: 'clubs', rank: '5', value: 5, hcp: 0 },
-];
-
-const SOUTH_CARDS: Card[] = [
-  { id: 's-s-Q', suit: 'spades', rank: 'Q', value: 12, hcp: 2 },
-  { id: 's-s-10', suit: 'spades', rank: '10', value: 10, hcp: 0 },
-  { id: 's-s-6', suit: 'spades', rank: '6', value: 6, hcp: 0 },
-  { id: 's-s-2', suit: 'spades', rank: '2', value: 2, hcp: 0 },
-  { id: 's-h-A', suit: 'hearts', rank: 'A', value: 14, hcp: 4 },
-  { id: 's-h-5', suit: 'hearts', rank: '5', value: 5, hcp: 0 },
-  { id: 's-d-A', suit: 'diamonds', rank: 'A', value: 14, hcp: 4 },
-  { id: 's-d-J', suit: 'diamonds', rank: 'J', value: 11, hcp: 1 },
-  { id: 's-d-8', suit: 'diamonds', rank: '8', value: 8, hcp: 0 },
-  { id: 's-d-3', suit: 'diamonds', rank: '3', value: 3, hcp: 0 },
-  { id: 's-c-K', suit: 'clubs', rank: 'K', value: 13, hcp: 3 },
-  { id: 's-c-8', suit: 'clubs', rank: '8', value: 8, hcp: 0 },
-  { id: 's-c-4', suit: 'clubs', rank: '4', value: 4, hcp: 0 },
-];
+import { dealHands } from '../utils/dealer';
 
 const SUITS: { suit: BidSuit; symbol: string; color: string }[] = [
   { suit: 'clubs', symbol: '♣', color: COLOR_PALETTE.card.club },
@@ -46,10 +14,53 @@ const SUITS: { suit: BidSuit; symbol: string; color: string }[] = [
 ];
 
 export const Module2Lesson: React.FC = () => {
+  const [deal, setDeal] = useState(() => dealHands());
   const [selectedSuit, setSelectedSuit] = useState<BidSuit | null>(null);
+
+  const northCards = deal.hands.north;
+  const southCards = deal.hands.south;
+
+  // Hitung jumlah gabungan North + South per suit untuk menentukan suit mana yang Fit (>= 8 kartu)
+  const getCombinedCounts = () => {
+    const counts: Record<Suit, { north: number; south: number; total: number }> = {
+      spades: { north: 0, south: 0, total: 0 },
+      hearts: { north: 0, south: 0, total: 0 },
+      diamonds: { north: 0, south: 0, total: 0 },
+      clubs: { north: 0, south: 0, total: 0 },
+    };
+
+    northCards.forEach((c) => counts[c.suit].north++);
+    southCards.forEach((c) => counts[c.suit].south++);
+    (Object.keys(counts) as Suit[]).forEach((s) => {
+      counts[s].total = counts[s].north + counts[s].south;
+    });
+
+    return counts;
+  };
+
+  const combinedCounts = getCombinedCounts();
+
+  // Temukan suit dengan total gabungan terbesar (best fit)
+  const bestFitSuit = (Object.keys(combinedCounts) as Suit[]).reduce((best, current) => {
+    return combinedCounts[current].total > combinedCounts[best].total ? current : best;
+  }, 'spades' as Suit);
+
+  const bestFitTotal = combinedCounts[bestFitSuit].total;
 
   const handleSuitSelect = (suit: BidSuit) => {
     setSelectedSuit(suit);
+  };
+
+  const handleRedeal = () => {
+    setDeal(dealHands());
+    setSelectedSuit(null);
+  };
+
+  const suitNameMap: Record<Suit, string> = {
+    spades: 'Spades ♠',
+    hearts: 'Hearts ♥',
+    diamonds: 'Diamonds ♦',
+    clubs: 'Clubs ♣',
   };
 
   return (
@@ -74,24 +85,38 @@ export const Module2Lesson: React.FC = () => {
         </div>
       </header>
 
-      {/* Konten Utama (2 Set Kartu Normal Berhadapan + Mini Suit Bidding Box) */}
+      {/* Konten Utama */}
       <main className="max-w-4xl mx-auto w-full">
         
         {/* Meja Kasino Hijau Emerald */}
         <div className="w-full bg-[#0B231B] border border-emerald-900 rounded-3xl p-3 sm:p-5 shadow-2xl flex flex-col justify-between space-y-4">
           
-          {/* Kartu North (Partner) */}
+          {/* Kartu North (Partner) + Tombol Redeal */}
           <div className="w-full flex flex-col items-center space-y-1">
-            <div className="text-xs font-bold text-amber-400 bg-[#061812] px-3 py-1 rounded-full border border-emerald-900">
-              👤 KARTU PARTNER (NORTH)
+            <div className="w-full flex justify-between items-center px-2">
+              <div className="text-xs font-bold text-amber-400 bg-[#061812] px-3 py-1 rounded-full border border-emerald-900">
+                👤 KARTU PARTNER (NORTH)
+              </div>
+              <button
+                onClick={handleRedeal}
+                className="bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5 transition active:scale-95"
+              >
+                <span>🔄</span>
+                <span>Kocok Ulang 2 Deck (Redeal)</span>
+              </button>
             </div>
-            <CardHand cards={NORTH_CARDS} />
+            
+            <div className="w-full overflow-hidden flex justify-center">
+              <div className="transform scale-85 sm:scale-95 origin-center my-1">
+                <CardHand cards={northCards} />
+              </div>
+            </div>
           </div>
 
           {/* Bidding Box Mini Khusus Lambang di Tengah Meja */}
           <div className="w-full max-w-xl mx-auto bg-[#071E17] border border-emerald-800 rounded-2xl p-3 sm:p-4 shadow-xl flex flex-col items-center space-y-3">
             <p className="text-xs sm:text-sm font-extrabold text-amber-400 text-center">
-              Berdasarkan 2 set kartu berhadapan di atas, manakah <strong className="text-white">SUIT TRUMP</strong> yang paling cocok (Fit ≥ 8 Kartu)?
+              Berdasarkan 2 set kartu berhadapan di atas, manakah <strong className="text-white">SUIT TRUMP</strong> terbanyak (Fit Pasangan)?
             </p>
 
             <div className="w-full flex items-center justify-center gap-2">
@@ -100,7 +125,9 @@ export const Module2Lesson: React.FC = () => {
                   key={suit}
                   onClick={() => handleSuitSelect(suit)}
                   style={{ color }}
-                  className="flex-1 bg-white hover:bg-slate-100 font-extrabold py-2 sm:py-3 rounded-xl text-lg sm:text-2xl shadow transition border border-slate-200"
+                  className={`flex-1 bg-white hover:bg-slate-100 font-extrabold py-2 sm:py-3 rounded-xl text-lg sm:text-2xl shadow transition border ${
+                    selectedSuit === suit ? 'ring-2 ring-amber-500 scale-105' : 'border-slate-200'
+                  }`}
                 >
                   {symbol}
                 </button>
@@ -108,11 +135,17 @@ export const Module2Lesson: React.FC = () => {
             </div>
 
             {selectedSuit && (
-              <div className={`w-full p-3 rounded-xl text-xs font-bold text-center border ${selectedSuit === 'spades' ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-rose-100 border-rose-300 text-rose-900'}`}>
-                {selectedSuit === 'spades' ? (
-                  <span>🎉 <strong>100% BENAR!</strong> North (5♠) + South (4♠) = <strong>9 Kartu Spades ♠</strong>. Pasangan Anda mencapai FIT 9 kartu Spades ♠!</span>
+              <div className={`w-full p-3 rounded-xl text-xs font-bold text-center border ${
+                selectedSuit === bestFitSuit || (bestFitTotal < 8 && selectedSuit === 'NT')
+                  ? 'bg-emerald-100 border-emerald-300 text-emerald-900'
+                  : 'bg-rose-100 border-rose-300 text-rose-900'
+              }`}>
+                {selectedSuit === bestFitSuit ? (
+                  <span>🎉 <strong>100% BENAR!</strong> North ({combinedCounts[bestFitSuit].north}) + South ({combinedCounts[bestFitSuit].south}) = <strong>{bestFitTotal} Kartu {suitNameMap[bestFitSuit]}</strong> (Fit Terbanyak)!</span>
+                ) : bestFitTotal < 8 && selectedSuit === 'NT' ? (
+                  <span>🎉 <strong>100% BENAR!</strong> Tidak ada suit yang mencapai 8 kartu fit, sehingga opsi No-Trump (NT) paling tepat!</span>
                 ) : (
-                  <span>❌ <strong>KURANG TEPAT!</strong> Coba hitung kartu Spades (♠). North punya 5♠ dan South punya 4♠ (Total 9 Kartu Fit). Ketuk lambang ♠!</span>
+                  <span>❌ <strong>KURANG TEPAT!</strong> Fit terbanyak pasangan Anda adalah <strong>{suitNameMap[bestFitSuit]} ({bestFitTotal} Kartu)</strong>. Ketuk <strong>Kocok Ulang</strong> untuk mencoba lagi!</span>
                 )}
               </div>
             )}
@@ -120,7 +153,11 @@ export const Module2Lesson: React.FC = () => {
 
           {/* Kartu South (Anda) */}
           <div className="w-full flex flex-col items-center space-y-1">
-            <CardHand cards={SOUTH_CARDS} />
+            <div className="w-full overflow-hidden flex justify-center">
+              <div className="transform scale-85 sm:scale-95 origin-center my-1">
+                <CardHand cards={southCards} />
+              </div>
+            </div>
             <div className="text-xs font-bold text-emerald-300 bg-[#061812] px-3 py-1 rounded-full border border-emerald-900">
               👤 KARTU ANDA (SOUTH)
             </div>
@@ -143,3 +180,4 @@ export const Module2Lesson: React.FC = () => {
     </div>
   );
 };
+
