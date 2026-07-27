@@ -52,4 +52,5 @@ Your goal is to build a modern, high-quality, professional educational Bridge ca
    - **YAGNI & Reuse First:** Prefer native features, standard libraries, and existing helpers. Write the minimum, highly efficient code that solves the problem.
    - **Root Cause Fixing:** Always fix underlying causes across shared utilities, avoiding band-aid/symptom patches.
    - **Clean & Boring Code:** Shortest working diff wins. Avoid over-engineering, extra abstractions, or unrequested boilerplate.
+5. **Auto-Deploy Habit:** Every time code modifications/fixes requested or approved by the user are completed, immediately perform `git add`, `git commit`, and `git push origin main` to automatically trigger the GitHub Actions CI/CD deployment pipeline.
 
